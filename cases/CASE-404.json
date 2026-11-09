@@ -1,0 +1,171 @@
+{
+  "case_id": "CASE-404",
+  "pack_id": "pack_criminal",
+  "version": 1,
+  "meta": {
+    "title": "Vaka 404: Soğuk Sunucu Odası",
+    "subtitle": "Veri Merkezinde Sıfır Gün Cinayeti",
+    "difficulty": 3,
+    "duration_seconds": 1200,
+    "solo_token_limit": 4,
+    "min_players": 1,
+    "max_players": 6,
+    "is_tutorial": false,
+    "supported_modes": ["SOLO", "DUO", "GROUP"]
+  },
+  "briefing": {
+    "victim": "Emre Tekin (33, Baş Siber Güvenlik Uzmanı)",
+    "location": "NovaTech Veri Merkezi — B2 Soğuk Sunucu Odası",
+    "time_of_discovery": "01:10",
+    "summary": "NovaTech baş siber güvenlik uzmanı Emre Tekin, yerin iki kat altındaki yüksek güvenlikli B2 Sunucu Odası'nda gece 01:10'da oksijen tükenmesi ve hipotermi sonucu ölü bulundu. Oda kapısı dışarıdan elektronik olarak kilitlenmiş ve yangın söndürme gazı (Halon) manuel olarak boşaltılmıştır."
+  },
+  "suspects": [
+    {
+      "id": "susp_kaan",
+      "name": "Kaan Soylu",
+      "age": 37,
+      "role": "CTO (Teknoloji Direktörü)",
+      "relation": "Üst Yöneticisi",
+      "alibi": "Gece 00:00'da şirketten çıktım, sunucu odasına uzaktan bile bağlanmadım."
+    },
+    {
+      "id": "susp_zeynep",
+      "name": "Zeynep Akın",
+      "age": 30,
+      "role": "Kıdemli Sistem Mühendisi",
+      "relation": "Ekip Arkadaşı",
+      "alibi": "Saat 00:15'te B2 koridoruna indim ama sunucu güncellemesini iptal edip kantine çıktım."
+    },
+    {
+      "id": "susp_burak",
+      "name": "Burak Çetin",
+      "age": 41,
+      "role": "Gece Vardiyası Teknisyeni",
+      "relation": "İklimlendirme Sorumlusu",
+      "alibi": "Bütün gece B1 katında jeneratör bakımı yaptım, Halon gazı valfine kimse dokunmadı."
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": "KNT-404-1",
+      "template": "OFFICIAL_REPORT",
+      "category": "ADLİ TIP",
+      "title": "Adli Tıp ve Gaz Boğulma Raporu",
+      "file_no": "OTOPSİ #404-A",
+      "date": "08.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Ölüm saati 00:35 - 00:42 aralığıdır. Ölüm nedeni B2 odasına basılan Halon gazı kaynaklı ani oksijen düşüşüdür. Maktulün elinde koparılmış 'ASSET-99' etiketli soğuk cüzdan USB belleği kapağı bulundu.",
+      "highlights": ["00:35 - 00:42", "Halon gazı", "ASSET-99"]
+    },
+    {
+      "node_id": "KNT-404-2",
+      "template": "RECEIPT",
+      "category": "GÜVENLİK",
+      "title": "Yangın Paneli Manuel Tetikleme Logu",
+      "file_no": "PANEL #404-B",
+      "date": "08.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "B2 Sunucu Odası Halon Gazı Deşarj Kaydı: Saat 00:34 — Tetikleyen Terminal: [MAC: 00-1B-63-84-45-E6] — Kapı Kilitleme Override Kodu: [ROOT-KAAN-01].",
+      "highlights": ["00:34", "00-1B-63-84-45-E6", "ROOT-KAAN-01"]
+    },
+    {
+      "node_id": "KNT-404-3",
+      "template": "DIGITAL_COMM",
+      "category": "DİJİTAL",
+      "title": "Emre'nin Şifreli Güvenlik Raporu",
+      "file_no": "LOG #404-C",
+      "date": "08.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 0,
+      "is_red_herring": false,
+      "content": "00:20 Sistem Kaydı: 'CTO Kaan Soylu'nun şirket rezervinden 120 Bitcoin'i ASSET-99 soğuk cüzdanına aktardığını tespit ettim. B2 sunucu kabinindeki fiziksel cüzdanı şimdi kasaya alıyorum.'",
+      "highlights": ["Kaan Soylu", "120 Bitcoin", "ASSET-99"]
+    },
+    {
+      "node_id": "KNT-404-4",
+      "template": "DIGITAL_COMM",
+      "category": "DİJİTAL",
+      "title": "Zeynep Akın'ın Slack Mesajı",
+      "file_no": "SLACK #404-D",
+      "date": "08.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": true,
+      "content": "00:18 [Zeynep -> Rakip İK]: 'Emre'nin yazdığı yeni güvenlik duvarı algoritmasını kopyaladım, 00:20'de kantine çıkıp dosyayı size yükleyeceğim.' [KURTARILMIŞ VERİ]",
+      "highlights": ["00:18", "algoritmasını kopyaladım", "00:20'de kantine"]
+    },
+    {
+      "node_id": "KNT-404-5",
+      "template": "OFFICIAL_REPORT",
+      "category": "OLAY YERİ",
+      "title": "B2 Koridoru ve Araç Arama Tutanağı",
+      "file_no": "ARAMA #404-E",
+      "date": "08.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Kaan Soylu'nun otoparktaki aracında yapılan aramada, kapağı kırık 'ASSET-99' etiketli soğuk cüzdan USB belleği ele geçirilmiştir. Kaan'ın aracının otoparktan gerçek çıkış saati 00:00 değil, 00:48'dir.",
+      "highlights": ["Kaan Soylu", "ASSET-99", "00:48"]
+    },
+    {
+      "node_id": "KNT-404-6",
+      "template": "OFFICIAL_REPORT",
+      "category": "BELGE",
+      "title": "IT Donanım Envanter Listesi",
+      "file_no": "ENVANTER #404-F",
+      "date": "08.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Şirket Dizüstü Bilgisayar MAC Adresleri: [00-1B-63-84-45-E6] -> CTO Kaan Soylu Özel İş İstasyonu. Cihaz saat 00:30 - 00:45 arasında B2 Acil Durum Portuna kablosuz bağlı kalmıştır.",
+      "highlights": ["00-1B-63-84-45-E6", "Kaan Soylu", "00:30 - 00:45"]
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "EDGE-404-1",
+      "source_node": "KNT-404-1",
+      "target_node": "KNT-404-5",
+      "unlocked_node": {
+        "node_id": "CKR-404-1",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "Kırık ASSET-99 Soğuk Cüzdan Eşleşmesi",
+        "content": "Emre'nin elinde kalan kırık ASSET-99 kapağı, Kaan Soylu'nun aracında bulunan kapaksız soğuk cüzdan USB belleğiyle birleşti. Kaan otoparktan 00:48'de çıkmıştır.",
+        "highlights": ["ASSET-99", "Kaan Soylu", "00:48"]
+      }
+    },
+    {
+      "edge_id": "EDGE-404-2",
+      "source_node": "KNT-404-2",
+      "target_node": "KNT-404-6",
+      "unlocked_node": {
+        "node_id": "CKR-404-2",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "Halon Gazı Tetikleme ve MAC Kanıtı",
+        "content": "Saat 00:34'te B2 kapısını kilitleyip Halon gazını boşaltan 00-1B-63-84-45-E6 MAC adresli bilgisayar CTO Kaan Soylu'ya aittir.",
+        "highlights": ["00:34", "00-1B-63-84-45-E6", "Kaan Soylu"]
+      }
+    }
+  ],
+  "solution": {
+    "killer_id": "susp_kaan",
+    "required_nodes": ["KNT-404-3", "CKR-404-2", "CKR-404-1"],
+    "dirty_cop_frame_target": "susp_zeynep",
+    "dirty_cop_cover_nodes": ["KNT-404-2", "KNT-404-5"],
+    "headline_success": "SIFIR GÜN CİNAYETİ ÇÖZÜLDÜ: CTO KAAN SOYLU TUTUKLANDI!",
+    "headline_failure": "SOĞUK CÜZDAN BUHAR OLDU: 120 BITCOIN İLE KATİL YURTDIŞINA KAÇTI!",
+    "story_summary": "CTO Kaan Soylu, şirket rezervinden çaldığı 120 Bitcoin'in bulunduğu ASSET-99 soğuk cüzdanını kurtarmak için B2 katına indi. Emre Tekin'in elinden USB belleği zorla aldıktan sonra Emre'yi sunucu odasına kilitleyip kendi dizüstü bilgisayarından saat 00:34'te Halon yangın söndürme gazını boşalttı."
+  }
+}

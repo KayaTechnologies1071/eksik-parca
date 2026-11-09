@@ -1,0 +1,229 @@
+{
+  "case_id": "CASE-406",
+  "pack_id": "pack_criminal",
+  "version": 1,
+  "meta": {
+    "title": "Kripto Limanı: Soğuk Konteyner",
+    "subtitle": "5 Şüpheli ve Çok Katmanlı Zincirleme Çıkarım Vakası",
+    "difficulty": 3,
+    "duration_seconds": 1200,
+    "solo_token_limit": 5,
+    "min_players": 1,
+    "max_players": 6,
+    "is_tutorial": false,
+    "supported_modes": ["SOLO", "DUO", "GROUP"]
+  },
+  "briefing": {
+    "victim": "Levent Karahan (47, Gümrük Başmüfettişi)",
+    "location": "Haydarpaşa Konteyner Terminali — Blok C-19 Soğuk Hava Konteyneri",
+    "time_of_discovery": "04:10",
+    "summary": "Gümrük Başmüfettişi Levent Karahan, gece baskını sırasında saat 04:10'da -22 derecelik C-19 soğutuculu konteynerin içinde kilitli bırakılarak donmuş halde bulundu. Konteynerin iç acil açma kolu sökülmüştür."
+  },
+  "suspects": [
+    {
+      "id": "susp_yavuz",
+      "name": "Yavuz Demir",
+      "age": 46,
+      "role": "Liman Saha Operasyon Müdürü",
+      "relation": "Saha Sorumlusu",
+      "alibi": "02:30 - 04:00 arasında kule kontrol odasında vinç planlaması yapıyordum."
+    },
+    {
+      "id": "susp_taner",
+      "name": "Taner Soylu",
+      "age": 39,
+      "role": "Lojistik Acente Sahibi",
+      "relation": "Konteyner İthalatçısı",
+      "alibi": "Gece limana hiç gelmedim, Ataşehir'deki ofisimde konşimento hazırlıyordum."
+    },
+    {
+      "id": "susp_aylin",
+      "name": "Aylin Kaya",
+      "age": 33,
+      "role": "Gümrük Kimyageri",
+      "relation": "Denetim Ekibi Üyesi",
+      "alibi": "Numune çantamı alıp saat 02:45'te liman laboratuvarına geçtim."
+    },
+    {
+      "id": "susp_rasim",
+      "name": "Rasim Çelik",
+      "age": 51,
+      "role": "Baş Vinç Operatörü",
+      "relation": "Gece Vardiyası",
+      "alibi": "Bütün gece 4 numaralı rıhtımda yük indirdim, C-19 bloğuna yaklaşmadım."
+    },
+    {
+      "id": "susp_mertcan",
+      "name": "Mertcan Vural",
+      "age": 28,
+      "role": "Bilgi İşlem Uzmanı",
+      "relation": "Liman Otomasyon",
+      "alibi": "Sunucu odasında yazılım güncelliyordum."
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": "KNT-406-1",
+      "template": "OFFICIAL_REPORT",
+      "category": "ADLİ TIP",
+      "title": "Adli Tıp Hipotermi ve Alet İzi Raporu",
+      "file_no": "OTOPSİ #406-A",
+      "date": "09.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Konteynere kilitlenme saati 03:00 - 03:10 aralığıdır. İç acil çıkış kolu 'SERİ: TORX-T40' özel titanyum lokma anahtarıyla sökülmüştür. Kapı kolunda sarı fosforlu müdür yeleği lifi bulundu.",
+      "highlights": ["03:00 - 03:10", "TORX-T40", "sarı fosforlu müdür yeleği"]
+    },
+    {
+      "node_id": "KNT-406-2",
+      "template": "RECEIPT",
+      "category": "GÜVENLİK",
+      "title": "Reefer Soğutucu Uzaktan Kontrol Logu",
+      "file_no": "TERMİNAL #406-B",
+      "date": "09.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Blok C-19 Konteyner Soğutucusu: Saat 03:04'te saha tableti [TABLET-ID: OPS-01] üzerinden şok dondurma (-28°C) moduna alındı.",
+      "highlights": ["03:04", "OPS-01", "-28°C"]
+    },
+    {
+      "node_id": "KNT-406-3",
+      "template": "DIGITAL_COMM",
+      "category": "DİJİTAL",
+      "title": "Levent Karahan'ın Telsiz Ses Kaydı",
+      "file_no": "TELSİZ #406-C",
+      "date": "09.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 0,
+      "is_red_herring": false,
+      "content": "02:55 Ses Kaydı: 'C-19 konteynerindeki dondurulmuş balık kolilerinin altında kaçak kripto madencilik çipleri buldum! Sevkiyatı onaylayan Liman Müdürü Yavuz Demir'i tutuklatıyorum.'",
+      "highlights": ["C-19", "kaçak kripto madencilik", "Yavuz Demir"]
+    },
+    {
+      "node_id": "KNT-406-4",
+      "template": "RECEIPT",
+      "category": "BELGE",
+      "title": "Vinç Kabini Takograf Kaydı",
+      "file_no": "VİNÇ #406-D",
+      "date": "09.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": true,
+      "content": "Vinç operatörü Rasim Çelik saat 02:00 - 04:15 arasında 30 metre yükseklikteki vinç kabininden hiç inmemiştir.",
+      "highlights": ["Rasim Çelik", "02:00 - 04:15", "hiç inmemiştir"]
+    },
+    {
+      "node_id": "KNT-406-5",
+      "template": "OFFICIAL_REPORT",
+      "category": "OLAY YERİ",
+      "title": "Saha Aracı Arama Tutanağı",
+      "file_no": "ARAMA #406-E",
+      "date": "09.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Operasyon Müdürü Yavuz Demir'in saha pikabında 'SERİ: TORX-T40' titanyum lokma takımı, C-19'un sökülen acil çıkış kolu ve yırtık sarı fosforlu müdür yeleği bulundu.",
+      "highlights": ["Yavuz Demir", "TORX-T40", "sökülen acil çıkış kolu"]
+    },
+    {
+      "node_id": "KNT-406-6",
+      "template": "OFFICIAL_REPORT",
+      "category": "BELGE",
+      "title": "Liman Tablet ve GPS Konum Raporu",
+      "file_no": "GPS #406-F",
+      "date": "09.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "[TABLET-ID: OPS-01] cihazı Operasyon Müdürü Yavuz Demir'e zimmetlidir. Tablet GPS verisi 03:00 - 03:12 arasında kulede değil, tam C-19 konteyneri önünde olduğunu gösteriyor.",
+      "highlights": ["OPS-01", "Yavuz Demir", "03:00 - 03:12"]
+    },
+    {
+      "node_id": "KNT-406-7",
+      "template": "RECEIPT",
+      "category": "FİNANS",
+      "title": "Kaçak Çip Rüşvet Transferi",
+      "file_no": "KRİPTO #406-G",
+      "date": "09.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "C-19 konteynerinin gümrük x-ray taramasından muaf tutulması karşılığında Yavuz Demir'in cüzdanına 250.000 USDT transfer edilmiştir.",
+      "highlights": ["C-19", "Yavuz Demir", "250.000 USDT"]
+    },
+    {
+      "node_id": "KNT-406-8",
+      "template": "DIGITAL_COMM",
+      "category": "DİJİTAL",
+      "title": "Taner Soylu'nun Ofis Kamera Özeti",
+      "file_no": "OFİS #406-H",
+      "date": "09.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 0,
+      "is_red_herring": true,
+      "content": "İthalatçı Taner Soylu gece boyu Ataşehir'deki ofisinde kalmış, ancak vergi kaçırmak için fatura bedelini düşük göstermiştir.",
+      "highlights": ["Taner Soylu", "Ataşehir'deki ofisinde", "vergi kaçırmak"]
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "EDGE-406-1",
+      "source_node": "KNT-406-1",
+      "target_node": "KNT-406-5",
+      "unlocked_node": {
+        "node_id": "CKR-406-1",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "TORX-T40 ve Sökülen Acil Kolu Kanıtı",
+        "content": "İçeriden açılmayı önlemek için sökülen C-19 acil çıkış kolu ve TORX-T40 anahtarı Yavuz Demir'in aracında ele geçirildi.",
+        "highlights": ["C-19", "TORX-T40", "Yavuz Demir"]
+      }
+    },
+    {
+      "edge_id": "EDGE-406-2",
+      "source_node": "KNT-406-2",
+      "target_node": "KNT-406-6",
+      "unlocked_node": {
+        "node_id": "CKR-406-2",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "03:04 OPS-01 Tablet ile Şok Dondurma",
+        "content": "Saat 03:04'te C-19 konteynerini -28°C şok dondurmaya alan OPS-01 tableti, o esnada konteynerin önünde bulunan Yavuz Demir'e aittir.",
+        "highlights": ["03:04", "OPS-01", "Yavuz Demir"]
+      }
+    },
+    {
+      "edge_id": "EDGE-406-3",
+      "source_node": "CKR-406-2",
+      "target_node": "KNT-406-7",
+      "unlocked_node": {
+        "node_id": "CKR-406-3",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "Zincirleme Kanıt: 250.000 USDT Rüşvet ve İnfaz",
+        "content": "C-19 konteynerinden 250.000 USDT rüşvet alan Yavuz Demir, saat 03:04'te bizzat konteynerin önünde OPS-01 tabletiyle şok dondurmayı açarak müfettişi susturmuştur.",
+        "highlights": ["C-19", "250.000 USDT", "Yavuz Demir", "03:04'te"]
+      }
+    }
+  ],
+  "solution": {
+    "killer_id": "susp_yavuz",
+    "required_nodes": ["KNT-406-3", "CKR-406-3", "CKR-406-1"],
+    "alternative_required_nodes": ["KNT-406-3", "CKR-406-2", "CKR-406-1"],
+    "dirty_cop_frame_target": "susp_taner",
+    "dirty_cop_cover_nodes": ["KNT-406-5", "KNT-406-6"],
+    "headline_success": "SOĞUK KONTEYNER VURGUNU ÇÖKTÜ: LİMAN MÜDÜRÜ YAVUZ DEMİR TUTUKLANDI!",
+    "headline_failure": "LİMANDA SESSİZ GECE: KAÇAK ÇİP ŞEBEKESİ İZİNİ KAYBETTİRDİ!",
+    "story_summary": "250.000 USDT rüşvet karşılığında kaçak kripto çiplerini gümrükten geçiren Operasyon Müdürü Yavuz Demir, Başmüfettiş Levent Karahan konteyneri denetlerken acil çıkış kolunu TORX-T40 anahtarıyla söküp kapıyı kilitledi ve OPS-01 tabletiyle şok dondurmayı başlattı."
+  }
+}

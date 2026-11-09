@@ -1,0 +1,303 @@
+# EKSİK PARÇA (THE MISSING PIECE) — VAKA TASARIM VE SENARYO MÜHENDİSLİĞİ ŞARTNAMESİ
+
+**Eksik Parça** oyun motorunda her vaka, edebi bir hikaye değil; düğümlerden (Nodes) ve yönlü bağlantılardan (Edges) oluşan matematiksel bir **Yönlü Asiklik Graf (DAG)** bulmacasıdır. Bu şartname, sisteme eklenecek tüm vakaların kurgusal yapısını, asimetrik veri dağılım kurallarını, yanıltıcı ipucu (Red Herring) dengesini ve doğrudan veritabanına yüklenebilir örnek vaka şablonlarını tanımlar.
+
+## 1. Vaka Mimarisi ve Matematiksel Model
+
+Her vaka, oyuncuyu başlangıçtaki kaos noktasından tek bir kesin sonuca götüren 4 katmanlı bir huni mimarisiyle tasarlanır.
+
+| Katman | Düğüm Türü | Görünürlük | Temel İşlevi |
+| --- | --- | --- | --- |
+| Katman 0 | Vaka Özeti ve Şüpheliler | Ortak (Herkese Açık) | Olay yeri, ölüm saati ve şüphelilerin ilk ifadeleri |
+| Katman 1 | Ham Kanıtlar (Başlangıç) | Özel (Asimetrik Dağıtım) | Oyuncuların elindeki tekil belgeler, fişler ve raporlar |
+| Katman 2 | Çıkarım Düğümleri (Ara Kilit) | Kilitli (Bağlantıyla Açılır) | İki ham kanıtın birleşmesiyle ortaya çıkan yeni gerçekler |
+| Katman 3 | Çözüm Üçgeni (Final) | Suçlama Ekranı | Neden, Fırsat ve Fiziksel Kanıt doğrulaması |
+
+Katman 1 içindeki ham kanıtlar tek başına hiçbir şüpheliyi doğrudan suçlamaz. Bir şüphelinin suçlanması için en az iki farklı oyuncunun ekranındaki Katman 1 kanıtlarının ortak tahtada birleştirilerek Katman 2 çıkarım düğümünü açması zorunludur.
+
+### 1.1. Çözüm Üçgeni (The Solution Triad) Kuralı
+
+Hukuki ve mantıksal tutarlılık gereği, bir vakanın çözülebilmesi için oyuncuların suçlama ekranında seçtiği 3 kanıtın şu üç sütunu eksiksiz doldurması gerekir:
+
+* **Neden (Motive):** Katilin kurbanı öldürmek için sahip olduğu finansal, duygusal veya kriminal gerekçe.
+* **Fırsat (Alibi Çürütme):** Katilin cinayet saatinde olay yerinde olduğunu kanıtlayan ve ilk ifadesindeki yalanı çürüten zaman-mekan verisi.
+* **Fiziksel Kanıt (Forensic Link):** Katili doğrudan ölüm şekline, cinayet silahına veya olay yerindeki bir ize bağlayan somut bulgu.
+
+### 1.2. Zorluk Derecelendirme Matrisi
+
+| Zorluk Seviyesi | Toplam Şüpheli | Başlangıç Kanıtı | Yanıltıcı İpucu | Solo Jeton Hakkı |
+| --- | --- | --- | --- | --- |
+| Seviye 1 (Başlangıç) | 3 Kişi | 8 Düğüm | 1 Adet | 5 Jeton |
+| Seviye 2 (Standart) | 4 Kişi | 12 Düğüm | 2 Adet | 4 Jeton |
+| Seviye 3 (Uzman) | 5 Kişi | 16 Düğüm | 4 Adet | 4 Jeton |
+
+Seviye 1 vakalar oyunun mekaniğini öğretmek için doğrusal (A ile B birleşir, C açılır) bir yapı sunar. Seviye 2 ve Seviye 3 vakalarda ise çapraz doğrulama gerekir; bir bağlantıdan çıkan sonuç, başka bir bağlantının girdisi olarak kullanılır.
+
+## 2. İçerik Yazım ve Metin Mühendisliği Kuralları
+
+Kafede veya arkadaş ortamında sesli iletişim kurulacağı için metinler edebi sıfatlardan arındırılmış, yüksek veri yoğunluklu ve taranabilir (scannable) formatta yazılır.
+
+* **Kelime Sınırı:** Hiçbir kanıt kartı 55 kelimeyi geçemez. Uzun paragraflar yerine saat damgalı maddeler kullanılır.
+* **Somatik Veri Çapaları:** Her kanıt metninde diğer oyuncunun elindeki veriyle eşleşecek en az bir somut çapa (saat, plaka kodu, ilaç etken maddesi, oda numarası, para tutarı) bulunmalıdır.
+* **İsimlendirme Standardı:** Oyuncuların konuşurken isimleri karıştırmaması için aynı vakadaki şüphelilerin isimleri farklı harflerle başlamalı ve hece yapıları birbirinden belirgin şekilde ayrılmalıdır (Örn: Kerem, Selin, Тарık, Beste).
+* **Çapraz Körlük İlkesi:** Bir kanıtta şüphelinin adı geçiyorsa (Örn: Kerem'in aracı 34 KRM 88), o kanıtta olay yeri saati geçmez. Saat bilgisi sadece plakanın yazıldığı otopark fişinde (diğer oyuncunun ekranında) yer alır.
+
+### 2.1. Yanıltıcı İpucu (Red Herring) Tasarım Standardı
+
+Oyunun ilk 5 dakikasında çözülmesini engellemek için her masum şüpheliye **Cinayet Dışı Bir Suç veya Sır** atanır:
+
+* **Masum Şüpheli A:** Cinayet saatinde olay yeri yakınındadır ama kurbanı öldürmek için değil, kurbanın kasasından kendi senetlerini çalmak veya gizli sevgilisiyle buluşmak için oradadır.
+* **Çürütme Mekaniği:** Yanıltıcı ipuçları ilk bakışta kesin kanıt gibi görünür; ancak adli tıp raporuyla (ölüm saati veya ölüm şekliyle) birleştirildiğinde şüphelinin olay yerinden cinayetten 20 dakika önce ayrıldığı kanıtlanır.
+
+### 2.2. "Kirli Polis" (Hain) Manipülasyon Vektörleri
+
+3 ila 6 kişilik grup modunda vakalar, içerideki hainin tek bir veriyi değiştirerek masayı yanlış yönlendirebileceği **Simetrik Şüphe** yapısıyla kurgulanır.
+
+* **Saat Kaydırma Vektörü:** Ölüm saati 23:15 iken, Masum Şüpheli olay yerinde 22:45'te, Gerçek Katil ise 23:20'de görülmüştür. Kirli Polis elindeki otopsi raporunu masaya okurken ölüm saatini "22:30 - 23:00 arası" diye sözlü olarak yanlış aktarırsa tüm masa masum şüpheliye yönelir.
+* **Ortak Tahta Kontrolü:** Dedektifler, Kirli Polisin sözlü yalanını ancak ondan ilgili kanıtı **Ortak Tahtaya İğnelemesini** isteyerek yakalayabilir. Kirli Polis kanıtı tahtaya iğnelemekten kaçınırsa üzerindeki şüphe artar.
+
+## 3. ÖRNEK VAKA 1: "LOCA 402" (Solo ve 2 Kişilik Duo Mod Şablonu)
+
+Bu vaka, çiftlerin bir kafede 15 dakikada çözebileceği veya tek bir oyuncunun Solo Arşiv modunda oynayabileceği Seviye 2 standartlarında tam kurgulanmış bir örnektir.
+
+**Vaka Künyesi**
+
+* **Vaka Kimliği:** CASE-104
+* **Başlık:** Loca 402: Son Müzayede
+* **Süre:** 15 Dakika (900 Saniye)
+* **Solo Mod Jeton Sınırı:** 4 Arşiv Sorgu Hakkı
+
+**Ortak Vaka Özeti (Herkesin Ekranında Açık)**
+Ünlü sanat simsarı **Bora Tekin (48)**, kendi müzayede evinin VIP dinlenme odası olan Loca 402'de gece **00:15'te** güvenlik görevlisi tarafından koltuğunda ölü bulundu. Masada yarısı içilmiş bir kadeh viski ve kırık bir cep saati var. Müzayede saat 22:00'de başlamış, 23:45'te sona ermiştir.
+
+**Şüpheli Profilleri (Herkesin Ekranında Açık)**
+
+1. **Cemre Tekin (34 - Eşi):** Bora ile çekişmeli boşanma sürecinde. İlk ifadesi: *"Bütün gece alt kattaki kokteyl salonundaydım, Loca 402'ye hiç çıkmadım."*
+2. **Hakan Demir (41 - Baş Eksper):** Bora'nın 10 yıllık sağ kolu. İlk ifadesi: *"Saat 23:00'te Bora'nın odasına uğradım, müzayede listesini bırakıp hemen çıktım. Çıktığımda gayet sağlıklıydı."*
+3. **Leyla Sönmez (52 - Koleksiyoner):** Müzayedenin en büyük alıcısı. İlk ifadesi: *"Bora ile saat 22:30'da tablo fiyatı yüzünden tartıştık ama sonra salonu terk edip otelime döndüm."*
+
+### 3.1. Asimetrik Kanıt Dağılımı (Katman 1 Düğümleri)
+
+**Oyuncu 1'in Ekranındaki Gizli Dosyalar (Solo Modda Kilitli Arşiv)**
+
+**KNT-01 — Adli Tıp Ön Raporu (Kategori: Adli Tıp, Solo Maliyet: 1 Jeton)**
+Maktulün ölüm nedeni kalp durmasıdır. Kan örneğinde yüksek dozda **Digoksin** (kalp ilacı etken maddesi) tespit edilmiştir. Madde alkolle karıştırıldığında içildikten **15 ila 20 dakika sonra** ölüme yol açar. Maktulün kırılan kol saati boğuşma esnasında **23:35'te** durmuştur.
+
+**KNT-02 — VIP Koridoru Kartlı Geçiş Kaydı (Kategori: Güvenlik, Solo Maliyet: 1 Jeton)**
+Loca 402'nin bulunduğu üst koridora sadece personel ve VIP kartlarla girilebilmektedir. Gece boyu turnikeden geçen kart kodları:
+
+* Saat 22:40 — Kart No: **VIP-09**
+* Saat 23:00 — Kart No: **PER-04**
+* Saat 23:18 — Kart No: **VIP-02**
+
+**KNT-03 — Bora Tekin'in Gelen Kutusu (Kategori: Dijital, Solo Maliyet: 1 Jeton)**
+Saat 21:45'te **Eksper Hakan Demir'e** gönderilen taslak e-posta: *"Hakan, kasadaki Rönesans tablosunun sahte olduğunu ve orijinalini gizlice sattığını öğrendim. Müzayede biter bitmez saat 00:00'da seni polise ihbar edeceğim."*
+
+**KNT-04 — Otopark Plaka Tanıma Kaydı (Kategori: Güvenlik, Solo Maliyet: 0 - Yanıltıcı)**
+Müzayede evi otoparkından çıkış saatleri:
+
+* **34 LYL 55** (Leyla Sönmez): Çıkış saati **22:45**.
+* **34 CMR 12** (Cemre Tekin): Çıkış saati **00:20**.
+
+**Oyuncu 2'nin Ekranındaki Gizli Dosyalar (Solo Modda Kilitli Arşiv)**
+
+**KNT-05 — Olay Yeri İnceleme Tutanağı (Kategori: Adli Tıp, Solo Maliyet: 1 Jeton)**
+Loca 402'deki viski şişesinde zehir bulunmamış, zehir sadece Bora'nın içtiği **kristal kadehte** saptanmıştır. Kadehin dış yüzeyinde yalnızca Bora'ya ait parmak izi vardır; ancak buz kovasının maşasında **lateks eldiven pudrası** kalıntısı bulunmuştur.
+
+**KNT-06 — Güvenlik Bürosu Kart Dağıtım Listesi (Kategori: Belge, Solo Maliyet: 1 Jeton)**
+Müzayede gecesi tanımlanan manyetik giriş kartları:
+
+* **VIP-02:** Cemre Tekin
+* **VIP-09:** Leyla Sönmez
+* **PER-04:** Hakan Demir (Baş Eksper)
+
+**KNT-07 — Müzayede Evi Revir ve Depo Kaydı (Kategori: Lojistik, Solo Maliyet: 1 Jeton)**
+Tablo restorasyon atölyesinde kullanılan **pudralı lateks eldiven** kutusundan 1 çift eksiktir. Atölyeye sadece **Hakan Demir** şifresiyle girilebilmektedir. Ayrıca Cemre Tekin'in çantasında kendi adına reçeteli **Ritmodan (Digoksin içeren kalp ilacı)** bulunmuştur.
+
+**KNT-08 — Silinmiş WhatsApp Kaydı (Kategori: Dijital, Solo Maliyet: 0 - Yanıltıcı)**
+Cemre Tekin'in telefonundan kurtarılan mesaj (Gönderilen: Avukat Selim, Saat 23:25): *"Loca 402'ye girdim, Bora içeride yoktu, kasadan evlilik sözleşmesini alıp hemen çıktım. Beni kimse görmedi."*
+
+### 3.2. Kanıt Tahtası Bağlantıları ve Açılan Çıkarımlar (Katman 2)
+
+Oyuncular konuşarak ellerindeki kartları ortak tahtaya iğneler ve birbirine bağlar:
+
+1. **Bağlantı 1 (Zaman Çıkarımı):** **KNT-01** (Ölüm 23:35'te, zehir 15-20 dk önce alındı) ile **KNT-05** (Zehir buz maşasıyla kadehe atıldı) birleştirilir.
+* **Açılan Çıkarım Düğümü (ÇKR-01 — Zehirlenme Saati):** *"Zehir, Bora'nın kadehindeki buza saat 23:00 - 23:15 arasında karıştırılmıştır. Katil bu saat aralığında odada bulunan veya buzu hazırlayan kişidir."*
+
+
+2. **Bağlantı 2 (Giriş Eşleşmesi):** **KNT-02** (Kart geçiş saatleri) ile **KNT-06** (Kart isim listesi) birleştirilir.
+* **Açılan Çıkarım Düğümü (ÇKR-02 — Koridor Trafiği):** *"Leyla 22:40'ta, Hakan 23:00'te, Cemre ise 23:18'de koridora girmiştir. Cemre 23:18'de girdiğinde Bora zehri çoktan içmişti; ayrıca KNT-08'deki mesaj Cemre'nin sadece evlilik sözleşmesini çalmaya girdiğini doğrular."*
+
+
+3. **Bağlantı 3 (Silah ve Kaynak):** **KNT-05** (Buz maşasında lateks pudrası) ile **KNT-07** (Restorasyon atölyesi eldiveni ve Cemre'nin çantasındaki ilaç) birleştirilir.
+* **Açılan Çıkarım Düğümü (ÇKR-03 — Komplo Analizi):** *"Hakan Demir, suçu Bora'nın eşi Cemre'ye yıkmak için kokteyl alanında Cemre'nin çantasından kalp ilacını almış, atölyedeki lateks eldiveni takarak saat 23:00'te Loca 402'deki buz kovasına zehri bırakmıştır."*
+
+
+
+### 3.3. Suçlama ve Doğru Çözüm Anahtarı
+
+* **Tutuklanacak Şüpheli:** Hakan Demir
+* **Gerekli 3 Kanıt (Çözüm Üçgeni):**
+1. **Neden:** **KNT-03** (Sahte tablo ihbarı e-postası)
+2. **Fırsat:** **ÇKR-02** (Saat 23:00'te PER-04 kartıyla odaya giriş)
+3. **Fiziksel Kanıt:** **ÇKR-03** (Buz maşasındaki atölye eldiveni pudrası)
+
+
+
+## 4. ÖRNEK VAKA 2: "GECE İHALESİ" (4 Kişilik Grup ve Kirli Polis Şablonu)
+
+Bu vaka, 4 arkadaşın masada oynayacağı, içlerinden birinin gizlice **Kirli Polis (Hain)** atandığı Seviye 3 sosyal çıkarım vakasıdır.
+
+**Vaka Künyesi**
+
+* **Vaka Kimliği:** CASE-209
+* **Başlık:** Gece İhalesi: 14. Katta Cinayet
+* **Mod:** 4 Oyuncu (3 Dedektif + 1 Kirli Polis)
+* **Gerçek Katil:** Mimar Sinan Kılıç
+* **Masum Ama Şüpheli Hedef (Kirli Polisin Suçlayacağı Kişi):** Finans Müdürü Деniz Arslan
+
+**Ortak Vaka Özeti**
+Büyük bir kamu ihalesine saatler kala, inşaat konsorsiyumu başkanı **Tamer Soylu (55)**, şirket genel merkezinin 14. katındaki makam odasında saat **23:50'de** başına sert bir cisimle vurularak öldürülmüş halde bulundu. Masadaki kapalı ihale zarfı çalınmıştır.
+
+### 4.1. 4 Oyuncu Arasında Asimetrik Dağılım
+
+| Oyuncu | Elindeki Özel Kanıt 1 | Elindeki Özel Kanıt 2 |
+| --- | --- | --- |
+| Oyuncu A | **KNT-10:** Asansör Logları (Kart kodları ve saatler) | **KNT-11:** Tamer'in Ses Kaydı (Deniz'i kovma tehdidi) |
+| Oyuncu B | **KNT-12:** Adli Tıp Raporu (Yara açısı ve ölüm saati: 23:30) | **KNT-13:** Çöp Kutusu Tutanağı (Kanlı bronz ödül heykelciği) |
+| Oyuncu C | **KNT-14:** Personel Kart Listesi (Sinan: K-01, Deniz: K-02) | **KNT-15:** Sinan'ın Banka Hesabı (Rakip firmadan 5 Milyon TL) |
+| Oyuncu D | **KNT-16:** Güvenlik Kamerası Özeti (Koridor elektrik kesintisi) | **KNT-17:** Parmak İzi Raporu (Heykelcikte Deniz'in izi var) |
+
+### 4.2. Kirli Polis (Hain) Sabotaj Mimarisi
+
+Oyun başladığında sistem **Oyuncu B'yi** gizlice Kirli Polis seçer ve ekranında şu talimatı gösterir: *"Gerçek katil Sinan Kılıç'tır. Ancak masayı Finans Müdürü Deniz Arslan'ın katil olduğuna ikna etmelisin."*
+
+* **Tuzak Kurgu:** Masum olan Deniz Arslan, gündüz saat 16:00'da Tamer'in odasında tartışırken masadaki bronz ödül heykelciğine dokunmuştur (bu yüzden **KNT-17**'de Deniz'in parmak izi vardır). Gerçek katil Sinan ise gece **23:30'da** heykelciği bezle tutarak Tamer'e vurmuştur.
+* **Kirli Polisin (Oyuncu B) Yalan Stratejisi:** Oyuncu B'nin elindeki **KNT-12 (Adli Tıp Raporu)** belgesinde gerçek ölüm saatinin **23:30** olduğu ve darbenin **solak** biri tarafından (Sinan solaktır) indirildiği yazmaktadır.
+* **Sözlü Manipülasyon:** Oyuncu B, masadaki arkadaşlarına kendi belgesini okurken *"Adli tıp raporuna göre ölüm saati 23:10 ve darbe sağ elle vurulmuş"* diyerek yalan söyler. Çünkü **KNT-10 (Asansör Logları)** belgesinde Deniz'in 23:08'de, Sinan'ın ise 23:28'de 14. kata çıktığı yazmaktadır!
+* **Dedektiflerin Savunma Mekaniği:** Eğer diğer oyuncular Oyuncu B'nin sözüne körü körüne güvenirse yanlışlıkla Deniz'i tutuklarlar ve Kirli Polis oyunu kazanır. Ancak Oyuncu C, *"Bekle, Sinan rakip firmadan 5 milyon TL almış, Oyuncu B şu Adli Tıp raporunu ortak tahtaya iğnelesin de kendi gözümüzle bakalım!"* derse, Oyuncu B köşeye sıkışır.
+
+## 5. Üretim Ortamı JSON Vaka Şeması (Veritabanı Yükleme Formatı)
+
+Aşağıdaki JSON yapısı, sunucunun doğrudan okuyup Redis üzerinde odaya dağıttığı standart vaka paketidir:
+
+```json
+{
+  "case_id": "CASE-104",
+  "version": 1,
+  "meta": {
+    "title": "Loca 402: Son Müzayede",
+    "difficulty": 2,
+    "duration_seconds": 900,
+    "solo_token_limit": 4,
+    "supported_modes": ["SOLO", "DUO", "GROUP"]
+  },
+  "briefing": {
+    "victim": "Bora Tekin (48, Müzayede Evi Sahibi)",
+    "location": "VIP Loca 402",
+    "time_of_discovery": "00:15",
+    "summary": "Bora Tekin müzayede gecesi özel locasında ölü bulundu. Masada yarım kadeh viski ve durmuş bir kol saati var."
+  },
+  "suspects": [
+    {
+      "id": "susp_cemre",
+      "name": "Cemre Tekin",
+      "role": "Eşi (Boşanma Aşamasında)",
+      "alibi": "Bütün gece alt kattaki kokteyl salonundaydım, yukarı hiç çıkmadım."
+    },
+    {
+      "id": "susp_hakan",
+      "name": "Hakan Demir",
+      "role": "Baş Eksper",
+      "alibi": "Saat 23:00'te odasına müzayede listesini bırakıp hemen çıktım."
+    },
+    {
+      "id": "susp_leyla",
+      "name": "Leyla Sönmez",
+      "role": "Koleksiyoner",
+      "alibi": "22:30'da tartıştık ama hemen ardından binadan ayrılıp otelime döndüm."
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": "KNT-01",
+      "template": "OFFICIAL_REPORT",
+      "category": "ADLİ TIP",
+      "title": "Adli Tıp Ön Raporu",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "content": "Kanda yüksek dozda Digoksin saptandı. Madde içildikten 15-20 dk sonra kalbi durdurur. Maktulün kol saati düşme anında 23:35'te kırılıp durmuştur.",
+      "highlights": ["Digoksin", "15-20 dk", "23:35"]
+    },
+    {
+      "node_id": "KNT-02",
+      "template": "RECEIPT",
+      "category": "GÜVENLİK",
+      "title": "VIP Koridoru Turnike Kaydı",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "content": "Loca 402 koridoru giriş saatleri: 22:40 [Kart: VIP-09], 23:00 [Kart: PER-04], 23:18 [Kart: VIP-02].",
+      "highlights": ["23:00", "PER-04", "23:18", "VIP-02"]
+    },
+    {
+      "node_id": "KNT-05",
+      "template": "OFFICIAL_REPORT",
+      "category": "OLAY YERİ",
+      "title": "Olay Yeri Kimyasal Analizi",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "content": "Viski şişesi temizdir. Zehir sadece kadehte ve eriyen buzda bulunmuştur. Buz maşasında pudralı lateks eldiven izi mevcuttur.",
+      "highlights": ["eriyen buzda", "pudralı lateks eldiven"]
+    },
+    {
+      "node_id": "KNT-06",
+      "template": "OFFICIAL_REPORT",
+      "category": "BELGE",
+      "title": "Manyetik Kart Dağıtım Listesi",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "content": "VIP-02: Cemre Tekin. VIP-09: Leyla Sönmez. PER-04: Hakan Demir.",
+      "highlights": ["PER-04: Hakan Demir", "VIP-02: Cemre Tekin"]
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "EDGE-01",
+      "source_node": "KNT-01",
+      "target_node": "KNT-05",
+      "unlocked_node": {
+        "node_id": "CKR-01",
+        "category": "ÇIKARIM",
+        "title": "Zehirleme Zaman Aralığı",
+        "content": "Ölüm 23:35'te gerçekleştiğine ve zehir buzla karıştığına göre, katil zehri saat 23:00 - 23:15 arasında buz kovasına bırakmıştır."
+      }
+    },
+    {
+      "edge_id": "EDGE-02",
+      "source_node": "KNT-02",
+      "target_node": "KNT-06",
+      "unlocked_node": {
+        "node_id": "CKR-02",
+        "category": "ÇIKARIM",
+        "title": "Koridor Giriş Eşleşmesi",
+        "content": "Saat 23:00'te koridora giren kişi Baş Eksper Hakan Demir'dir."
+      }
+    }
+  ],
+  "solution": {
+    "killer_id": "susp_hakan",
+    "required_nodes": ["KNT-03", "CKR-01", "CKR-02"],
+    "dirty_cop_frame_target": "susp_cemre"
+  }
+}
+
+```
+
+## 6. Otomatik Vaka Doğrulama (Validator) Kuralları
+
+Yazılan her yeni vaka JSON dosyası, veritabanına alınmadan önce Python tabanlı bir doğrulama betiğinden (Case Validator Script) geçirilir ve şu 4 testi geçmek zorundadır:
+
+1. **Çözülebilirlik Testi (Reachability Check):** Başlangıçtaki Katman 1 düğümlerinden yola çıkılarak `solution.required_nodes` listesindeki tüm düğümlere `edges` dizisi üzerinden ulaşılabiliyor mu?
+2. **Asimetri Dengesi Testi:** `partition_group: 1` ve `partition_group: 2` kümelerindeki düğüm sayıları birbirine eşit mi ve hiçbir bağlantı (`edge`) aynı küme içindeki iki düğüm arasında kurulmamış mı? (Eğer bir bağlantı aynı oyuncunun elindeki iki kart arasında kurulabiliyorsa, oyuncuların birbiriyle konuşmasına gerek kalmaz; bu durum doğrulama hatası olarak reddedilir).
+3. **Yetim Düğüm Kontrolü (Orphan Check):** Yanıltıcı ipuçları (Red Herrings) hariç, hiçbir düğüm bağlantısız kalmamalıdır.
+4. **Solo Bütçe Kontrolü:** Solo modda çözümü sağlayan asgari düğümlerin `solo_cost` toplamı, vakanın `solo_token_limit` değerine eşit veya daha küçük olmalıdır.

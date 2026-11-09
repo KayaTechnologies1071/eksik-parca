@@ -1,0 +1,171 @@
+{
+  "case_id": "CASE-102",
+  "pack_id": "pack_starter",
+  "version": 1,
+  "meta": {
+    "title": "Gece Ekspresi: Kompartıman 9",
+    "subtitle": "Karlı Raylarda Kilitli Vagon Cinayeti",
+    "difficulty": 1,
+    "duration_seconds": 900,
+    "solo_token_limit": 5,
+    "min_players": 1,
+    "max_players": 6,
+    "is_tutorial": false,
+    "supported_modes": ["SOLO", "DUO", "GROUP"]
+  },
+  "briefing": {
+    "victim": "Coşkun Erdem (60, Emekli Başmüfettiş)",
+    "location": "Doğu Ekspresi — Yataklı Vagon Kompartıman 9",
+    "time_of_discovery": "03:30",
+    "summary": "Emekli müfettiş Coşkun Erdem, Erzurum-Kars etabında gece 03:30'da içeriden zincirli gibi görünen Kompartıman 9'da kalbinden ince bir mektup açacağıyla bıçaklanmış halde bulundu. Çantasındaki eski dava dosyası kayıptır."
+  },
+  "suspects": [
+    {
+      "id": "susp_ufuk",
+      "name": "Ufuk Yıldız",
+      "age": 35,
+      "role": "Yataklı Vagon Kondüktörü",
+      "relation": "Tren Görevlisi",
+      "alibi": "Gece 02:00 - 03:15 arasında vagon sonundaki personel kabininde bilet koçanlarını sayıyordum."
+    },
+    {
+      "id": "susp_berna",
+      "name": "Berna Akın",
+      "age": 29,
+      "role": "Suç Romanı Yazarı",
+      "relation": "Yan Kompartıman Yolcusu",
+      "alibi": "Coşkun Bey ile akşam yemekli vagonda sohbet ettik ama 01:30'dan sonra odamdan hiç çıkmadım."
+    },
+    {
+      "id": "susp_haldun",
+      "name": "Haldun Çelik",
+      "age": 53,
+      "role": "Müteahhit",
+      "relation": "Eski Soruşturma Şüphelisi",
+      "alibi": "Coşkun'la aynı trende olduğumuz tamamen tesadüf. Bütün gece Kompartıman 4'te uyudum."
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": "KNT-102-1",
+      "template": "OFFICIAL_REPORT",
+      "category": "ADLİ TIP",
+      "title": "Tren Doktoru Ön İnceleme Tutanağı",
+      "file_no": "RAPOR #102-A",
+      "date": "12.01.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Ölüm saati 02:35 - 02:50 aralığıdır. Cinayet silahı gümüş işlemeli bir mektup açacağıdır. Maktulün avucunda koparılmış lacivert üniforma düğmesi ve kondüktör düdüğü zinciri bulundu.",
+      "highlights": ["02:35 - 02:50", "mektup açacağıdır", "lacivert üniforma düğmesi"]
+    },
+    {
+      "node_id": "KNT-102-2",
+      "template": "DIGITAL_COMM",
+      "category": "DİJİTAL",
+      "title": "Coşkun Erdem'in Not Defteri Kaydı",
+      "file_no": "NOT #102-B",
+      "date": "12.01.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 0,
+      "is_red_herring": false,
+      "content": "01:40 Sesli Not: '10 yıl önceki tren kazasında babası hapse giren Ufuk Yıldız sahte kimlikle bu vagonda kondüktör olmuş! Kars'a inince kendisini savcılığa bildireceğim.'",
+      "highlights": ["Ufuk Yıldız", "sahte kimlikle", "kondüktör olmuş"]
+    },
+    {
+      "node_id": "KNT-102-3",
+      "template": "RECEIPT",
+      "category": "GÜVENLİK",
+      "title": "Vagon Ara Kapı Geçiş Sensörü",
+      "file_no": "SENSÖR #102-C",
+      "date": "12.01.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Yataklı Vagon Koridor Kaydı: Saat 02:40'ta Kompartıman 9 kapısı dışarıdan [SERVİS-MAYMIYUNCUK-02] anahtarıyla açıldı ve 02:46'da ince tel aparatıyla dışarıdan zincirlendi.",
+      "highlights": ["02:40", "SERVİS-MAYMIYUNCUK-02", "02:46"]
+    },
+    {
+      "node_id": "KNT-102-4",
+      "template": "OFFICIAL_REPORT",
+      "category": "OLAY YERİ",
+      "title": "Personel Kabini Arama Tutanağı",
+      "file_no": "ARAMA #102-D",
+      "date": "12.01.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Kondüktör Ufuk Yıldız'ın ceketinde sol kol düğmesi kopuktur. Çöp torbasında kanlı tel aparatı ve Coşkun Erdem'in çalınan eski kaza soruşturma dosyası ele geçirildi.",
+      "highlights": ["Ufuk Yıldız", "düğmesi kopuktur", "soruşturma dosyası"]
+    },
+    {
+      "node_id": "KNT-102-5",
+      "template": "OFFICIAL_REPORT",
+      "category": "BELGE",
+      "title": "TCDD Vagon Zimmet Defteri",
+      "file_no": "ZİMMET #102-E",
+      "date": "12.01.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "[SERVİS-MAYMIYUNCUK-02] kodlu acil durum kompartıman anahtarı yalnızca vagon kondüktörü Ufuk Yıldız'da bulunmaktadır. Yemekli vagon kamerası Ufuk'un 02:35 - 02:55 arası kabininde olmadığını doğruladı.",
+      "highlights": ["SERVİS-MAYMIYUNCUK-02", "Ufuk Yıldız", "02:35 - 02:55"]
+    },
+    {
+      "node_id": "KNT-102-6",
+      "template": "DIGITAL_COMM",
+      "category": "DİJİTAL",
+      "title": "Müteahhit Haldun'un Mesajı",
+      "file_no": "SMS #102-F",
+      "date": "12.01.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": true,
+      "content": "01:10 [Haldun -> Avukat]: 'Coşkun emekli olmuş ama yanımdaki kaçak altın sikkeleri görürse yanarım, sabaha kadar Kompartıman 4'ten çıkmayacağım.' (Uyku ilacı aldığı doğrulandı).",
+      "highlights": ["01:10", "kaçak altın", "Kompartıman 4'ten"]
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "EDGE-102-1",
+      "source_node": "KNT-102-1",
+      "target_node": "KNT-102-4",
+      "unlocked_node": {
+        "node_id": "CKR-102-1",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "Kopuk Üniforma Düğmesi Eşleşmesi",
+        "content": "Maktulün avucundaki kopuk lacivert üniforma düğmesi, Kondüktör Ufuk Yıldız'ın ceketindeki eksik düğmeyle ve kabinindeki çalıntı dosyayla eşleşti.",
+        "highlights": ["lacivert üniforma düğmesi", "Ufuk Yıldız", "çalıntı dosyayla"]
+      }
+    },
+    {
+      "edge_id": "EDGE-102-2",
+      "source_node": "KNT-102-3",
+      "target_node": "KNT-102-5",
+      "unlocked_node": {
+        "node_id": "CKR-102-2",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "Servis Anahtarı ve Kilitli Oda Hilesi",
+        "content": "Saat 02:40'ta odayı açıp dışarıdan tel aparatıyla zincirleyen SERVİS-MAYMIYUNCUK-02 anahtarı Ufuk Yıldız'a zimmetlidir.",
+        "highlights": ["02:40", "SERVİS-MAYMIYUNCUK-02", "Ufuk Yıldız"]
+      }
+    }
+  ],
+  "solution": {
+    "killer_id": "susp_ufuk",
+    "required_nodes": ["KNT-102-2", "CKR-102-2", "CKR-102-1"],
+    "dirty_cop_frame_target": "susp_haldun",
+    "dirty_cop_cover_nodes": ["KNT-102-1", "KNT-102-4"],
+    "headline_success": "DOĞU EKSPRESİ SIRRI ÇÖZÜLDÜ: KONDÜKTÖR UFUK YILDIZ TUTUKLANDI!",
+    "headline_failure": "TREN KARS'A VARDI AMA KATİL KAR FIRTINASINDA KAYBOLDU!",
+    "story_summary": "Babasının hapse girmesinden sorumlu tuttuğu emekli müfettiş Coşkun Erdem tarafından tanındığını anlayan kondüktör Ufuk Yıldız, saat 02:40'ta servis anahtarıyla Kompartıman 9'a girdi. Cinayetin ardından kapıyı dışarıdan tel aparatıyla zincirleyerek kilitli oda süsü verdi."
+  }
+}

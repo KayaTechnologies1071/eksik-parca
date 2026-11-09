@@ -1,0 +1,24 @@
+# Dependencies & Builds
+node_modules/
+dist/
+.vite/
+release/
+
+# Local Database & Environment Secrets
+database/db.json
+.env
+.env.local
+.env.production
+
+# Android Gradle Build Caches (Keep android/ project tracked, ignore generated build caches)
+android/.gradle/
+android/app/build/
+android/build/
+android/local.properties
+android/captures/
+*.iml
+
+# Logs & OS
+*.log
+.DS_Store
+Thumbs.db

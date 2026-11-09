@@ -1,0 +1,200 @@
+{
+  "case_id": "CASE-409",
+  "pack_id": "pack_criminal",
+  "version": 1,
+  "meta": {
+    "title": "24. Sokak Cinayeti",
+    "subtitle": "Yağmurlu Arka Sokakta Susturuculu Gece",
+    "difficulty": 3,
+    "duration_seconds": 1200,
+    "solo_token_limit": 4,
+    "min_players": 1,
+    "max_players": 6,
+    "is_tutorial": false,
+    "is_new_release": true,
+    "supported_modes": ["SOLO", "DUO", "GROUP"]
+  },
+  "briefing": {
+    "victim": "Cevdet Karaca (46, Araştırmacı Gazeteci)",
+    "location": "Beyoğlu 24. Sokak — Çıkmaz Geçit",
+    "time_of_discovery": "01:20",
+    "summary": "Araştırmacı gazeteci Cevdet Karaca, gece 01:20'de 24. Sokak çıkmazında aracının yanında susturuculu tabancayla vurulmuş halde bulundu. Elindeki sarı basın zarfı alınmış, ceketinin altında ise yanmış bir otel kibriti bulunmuştur."
+  },
+  "suspects": [
+    {
+      "id": "susp_vefa",
+      "name": "Vefa Demir",
+      "age": 52,
+      "role": "Gümrük Müşaviri",
+      "relation": "Haber Kaynağı / Hedefi",
+      "alibi": "Gece 23:30'dan itibaren Pera Palas lobisinde iş yemekli toplantıdaydım, 24. Sokak'a hiç gitmedim."
+    },
+    {
+      "id": "susp_rana",
+      "name": "Rana Soylu",
+      "age": 38,
+      "role": "Baş Editör",
+      "relation": "Yayın Yönetmeni",
+      "alibi": "Cevdet ile 00:15'te telefonda konuştuk ama ben bütün gece matbaa baskı nöbetindeydim."
+    },
+    {
+      "id": "susp_korhan",
+      "name": "Korhan Ateş",
+      "age": 34,
+      "role": "Eski Polis / Özel Güvenlik",
+      "relation": "Vefa'nın Koruması",
+      "alibi": "Saat 00:00'da mesaim bitti, şirket aracını otoparka bırakıp evime gittim."
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": "KNT-409-1",
+      "template": "OFFICIAL_REPORT",
+      "category": "ADLİ TIP",
+      "title": "Balistik ve Otopsi Raporu",
+      "file_no": "BALİSTİK #409-A",
+      "date": "09.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Ölüm saati 00:40 - 00:50 aralığıdır. Maktul 9mm özel yapım yivli susturuculu tabancayla vurulmuştur. Boş kovanda 'ÖZEL GÜVENLİK SERİ: K-19' tırnak izi saptanmıştır.",
+      "highlights": ["00:40 - 00:50", "9mm özel yapım", "SERİ: K-19"]
+    },
+    {
+      "node_id": "KNT-409-2",
+      "template": "RECEIPT",
+      "category": "GÜVENLİK",
+      "title": "24. Sokak EDS ve GPS Takip Logu",
+      "file_no": "EDS #409-B",
+      "date": "09.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "24. Sokak Giriş Kamerası: Saat 00:38'de [ARAÇ-KOD: VIP-KORUMA-07] çipli siyah cip sokağa girmiş ve 00:52'de hızla uzaklaşmıştır.",
+      "highlights": ["00:38", "VIP-KORUMA-07", "00:52"]
+    },
+    {
+      "node_id": "KNT-409-3",
+      "template": "DIGITAL_COMM",
+      "category": "DİJİTAL",
+      "title": "Cevdet Karaca Bulut Yedekleme Kaydı",
+      "file_no": "BULUT #409-C",
+      "date": "09.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 0,
+      "is_red_herring": false,
+      "content": "00:10 Sesli Not: 'Korhan Ateş'in emniyetten atılmadan önce limandaki kaçak silah konteynerlerini sızdırdığını kanıtlayan fotoğraflar sarı zarfta. Yarın manşetteyiz.'",
+      "highlights": ["Korhan Ateş", "kaçak silah", "sarı zarfta"]
+    },
+    {
+      "node_id": "KNT-409-4",
+      "template": "RECEIPT",
+      "category": "BELGE",
+      "title": "Pera Otel Vale ve Kamera Kaydı",
+      "file_no": "OTEL #409-D",
+      "date": "09.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": true,
+      "content": "Vefa Demir saat 23:30 - 01:30 arasında otel restoranından hiç ayrılmamıştır; ancak koruması Korhan Ateş'e 23:55'te şirket cipi anahtarını vermiştir.",
+      "highlights": ["Vefa Demir", "23:30 - 01:30", "Korhan Ateş"]
+    },
+    {
+      "node_id": "KNT-409-5",
+      "template": "OFFICIAL_REPORT",
+      "category": "OLAY YERİ",
+      "title": "Korhan Ateş'in Ev ve Silah Arama Tutanağı",
+      "file_no": "ARAMA #409-E",
+      "date": "09.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Korhan Ateş'in dolabında 'ÖZEL GÜVENLİK SERİ: K-19' ruhsatlı 9mm tabanca ve yeni temizlenmiş susturucu aparatı bulundu. Şöminede yarı yanmış sarı basın zarfı külleri vardır.",
+      "highlights": ["Korhan Ateş", "SERİ: K-19", "sarı basın zarfı"]
+    },
+    {
+      "node_id": "KNT-409-6",
+      "template": "OFFICIAL_REPORT",
+      "category": "BELGE",
+      "title": "Filo Araç Zimmet ve GPS Raporu",
+      "file_no": "FİLO #409-F",
+      "date": "09.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "[ARAÇ-KOD: VIP-KORUMA-07] çipli zırhlı cip, gece 00:00 - 01:15 saatleri arasında Korhan Ateş'in parmak izi doğrulamasıyla çalıştırılmıştır.",
+      "highlights": ["VIP-KORUMA-07", "00:00 - 01:15", "Korhan Ateş"]
+    },
+    {
+      "node_id": "KNT-409-7",
+      "template": "DIGITAL_COMM",
+      "category": "DİJİTAL",
+      "title": "Baş Editör Rana'nın Mesajı",
+      "file_no": "MESAJ #409-G",
+      "date": "09.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": true,
+      "content": "00:15 [Rana -> Cevdet]: 'Cevdet, avukatlar haberi basmamamız için baskı yapıyor ama matbaadayım, zarfı getirirsen basacağım.' (Matbaa turnike logu Rana'yı doğruladı).",
+      "highlights": ["00:15", "matbaadayım", "doğruladı"]
+    },
+    {
+      "node_id": "KNT-409-8",
+      "template": "RECEIPT",
+      "category": "FİNANS",
+      "title": "Otopark Yıkama Fişi",
+      "file_no": "FİŞ #409-H",
+      "date": "09.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 0,
+      "is_red_herring": true,
+      "content": "Korhan Ateş saat 01:05'te 24 saat açık oto yıkamacıda cipin çamurlu lastiklerini yıkatmıştır.",
+      "highlights": ["Korhan Ateş", "01:05", "lastiklerini yıkatmıştır"]
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "EDGE-409-1",
+      "source_node": "KNT-409-1",
+      "target_node": "KNT-409-5",
+      "unlocked_node": {
+        "node_id": "CKR-409-1",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "SERİ: K-19 Balistik Eşleşmesi",
+        "content": "24. Sokak'taki boş kovanda bulunan SERİ: K-19 tırnak izi, Korhan Ateş'in evindeki susturuculu tabancayla ve şöminedeki sarı zarf külleriyle eşleşti.",
+        "highlights": ["SERİ: K-19", "Korhan Ateş", "sarı zarf"]
+      }
+    },
+    {
+      "edge_id": "EDGE-409-2",
+      "source_node": "KNT-409-2",
+      "target_node": "KNT-409-6",
+      "unlocked_node": {
+        "node_id": "CKR-409-2",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "00:38 VIP-KORUMA-07 Sürücü Kanıtı",
+        "content": "Cinayet saatinde (00:38 - 00:52) 24. Sokak'a giren VIP-KORUMA-07 kodlu cip, Korhan Ateş'in parmak iziyle kullanılmıştır.",
+        "highlights": ["00:38 - 00:52", "VIP-KORUMA-07", "Korhan Ateş"]
+      }
+    }
+  ],
+  "solution": {
+    "killer_id": "susp_korhan",
+    "required_nodes": ["KNT-409-3", "CKR-409-2", "CKR-409-1"],
+    "dirty_cop_frame_target": "susp_vefa",
+    "dirty_cop_cover_nodes": ["KNT-409-1", "KNT-409-5"],
+    "headline_success": "24. SOKAK CİNAYETİ AYDINLANDI: KORHAN ATEŞ TUTUKLANDI!",
+    "headline_failure": "MANŞET SUSTURULDU: 24. SOKAK KATİLİ KARANLIĞA KARIŞTI!",
+    "story_summary": "Eski polis Korhan Ateş, limandaki kaçak silah sevkiyatındaki rolünü ortaya çıkaran gazeteci Cevdet Karaca'yı susturmak için VIP-KORUMA-07 cipiyle saat 00:38'de 24. Sokak'a gitti. SERİ: K-19 tabancasıyla gazeteciyi vurup sarı basın zarfını şöminesinde yaktı."
+  }
+}

@@ -1,0 +1,221 @@
+{
+  "case_id": "CASE-209",
+  "pack_id": "pack_starter",
+  "version": 1,
+  "meta": {
+    "title": "Gece İhalesi: 14. Katta Cinayet",
+    "subtitle": "Gökdelen Makam Odasında Karanlık Sabotaj",
+    "difficulty": 3,
+    "duration_seconds": 1200,
+    "solo_token_limit": 5,
+    "min_players": 1,
+    "max_players": 6,
+    "is_tutorial": false,
+    "supported_modes": ["SOLO", "DUO", "GROUP"]
+  },
+  "briefing": {
+    "victim": "Tamer Soylu (55, İnşaat Konsorsiyumu Başkanı)",
+    "location": "Soylu Plaza 14. Kat — Makam Odası",
+    "time_of_discovery": "23:50",
+    "summary": "Büyük kamu ihalesine saatler kala konsorsiyum başkanı Tamer Soylu, genel merkezin 14. katındaki makam odasında saat 23:50'de başına bronz ödül heykelciğiyle vurularak öldürülmüş halde bulundu. Masadaki kapalı ihale teklif zarfı çalınmıştır."
+  },
+  "suspects": [
+    {
+      "id": "susp_sinan",
+      "name": "Sinan Kılıç",
+      "age": 42,
+      "role": "Baş Mimar",
+      "relation": "Proje Mimarı",
+      "alibi": "Saat 23:00'ten beri 8. kattaki çizim ofisimde maket üzerinde çalışıyordum, 14. kata hiç çıkmadım."
+    },
+    {
+      "id": "susp_deniz",
+      "name": "Deniz Arslan",
+      "age": 39,
+      "role": "Finans Müdürü",
+      "relation": "Finans Direktörü",
+      "alibi": "Tamer Bey ile gündüz 16:00'da bütçe yüzünden tartıştık. Gece 23:08'de özür dilemeye çıktım ama kapı kilitliydi, hemen indim."
+    },
+    {
+      "id": "susp_beste",
+      "name": "Beste Kaya",
+      "age": 33,
+      "role": "Hukuk Müşaviri",
+      "relation": "Şirket Avukatı",
+      "alibi": "Saat 22:45'te ihale şartnamesini teslim edip binadan ayrıldım."
+    },
+    {
+      "id": "susp_faruk",
+      "name": "Faruk Çelik",
+      "age": 49,
+      "role": "Güvenlik Şefi",
+      "relation": "Bina Güvenlik Amiri",
+      "alibi": "23:25'te 14. katta sigorta attı, 23:50'de kontrol için çıktığımda Tamer Bey'in cansız bedenini buldum."
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": "KNT-10",
+      "template": "RECEIPT",
+      "category": "GÜVENLİK",
+      "title": "VIP Asansör Dijital Logları",
+      "file_no": "LOG #209-A",
+      "date": "29.10.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "14. Kat Makam Asansörü Erişim Kayıtları: Saat 22:40 [Kart: K-03], Saat 23:08 [Kart: K-02], Saat 23:28 [Kart: K-01]. Saat 23:34'te asansör 8. kata inmiştir.",
+      "highlights": ["23:08", "K-02", "23:28", "K-01", "8. kata"]
+    },
+    {
+      "node_id": "KNT-11",
+      "template": "DIGITAL_COMM",
+      "category": "DİJİTAL",
+      "title": "Tamer'in Sesli Not Kaydı",
+      "file_no": "SES #209-B",
+      "date": "29.10.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 0,
+      "is_red_herring": true,
+      "content": "Saat 16:15 Ses Kaydı: 'Deniz Arslan şirket fonlarından 200 bin TL'yi kişisel hesabına aktarmış. Bu gece saat 23:00'te istifasını vermezse sabah savcılığa gideceğim.'",
+      "highlights": ["16:15", "Deniz Arslan", "200 bin TL"]
+    },
+    {
+      "node_id": "KNT-12",
+      "template": "OFFICIAL_REPORT",
+      "category": "ADLİ TIP",
+      "title": "Adli Tıp ve Darbe Analiz Raporu",
+      "file_no": "OTOPSİ #209-C",
+      "date": "29.10.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Maktul başına aldığı tek ve şiddetli darbeyle hayatını kaybetmiştir. Kesin ölüm saati 23:30'dur. Kafatası kırık açısı, saldırganın SOLAK olduğunu ve darbeyi sol elle indirdiğini kanıtlamaktadır.",
+      "highlights": ["23:30", "SOLAK", "sol elle"]
+    },
+    {
+      "node_id": "KNT-15",
+      "template": "RECEIPT",
+      "category": "FİNANS",
+      "title": "Offshore Banka Transfer Dekontu",
+      "file_no": "DEKONT #209-D",
+      "date": "29.10.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "29.10.2026 Saat 19:00 — Gönderen: Rakip Vektör İnşaat A.Ş. — Alıcı: Sinan Kılıç — Tutar: 5.000.000 TL. Açıklama: 'İhale teklif rakamının teslimatı karşılığı ön ödeme.'",
+      "highlights": ["Rakip Vektör İnşaat", "Sinan Kılıç", "5.000.000 TL", "İhale teklif"]
+    },
+    {
+      "node_id": "KNT-13",
+      "template": "OFFICIAL_REPORT",
+      "category": "OLAY YERİ",
+      "title": "8. Kat Çöp Kutusu ve Silah Tutanağı",
+      "file_no": "TUTANAK #209-E",
+      "date": "29.10.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Cinayet silahı olan kanlı bronz ödül heykelciği, 8. kattaki mimari çizim ofisinin yangın merdiveni çöpünde, kanları Mimarlık Ofisi mikrofiber beziyle silinmiş halde bulundu.",
+      "highlights": ["bronz ödül heykelciği", "8. kattaki mimari çizim", "mikrofiber beziyle"]
+    },
+    {
+      "node_id": "KNT-14",
+      "template": "OFFICIAL_REPORT",
+      "category": "BELGE",
+      "title": "Personel Kart ve Özlük Dosyası",
+      "file_no": "İK #209-F",
+      "date": "29.10.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 0,
+      "is_red_herring": false,
+      "content": "Manyetik Kart Tanımları ve Fiziksel Özellikler: K-01: Sinan Kılıç (Baş Mimar - Solak, Ofis: 8. Kat). K-02: Deniz Arslan (Finans Müdürü - Sağlak, Ofis: 11. Kat). K-03: Beste Kaya (Avukat - Sağlak).",
+      "highlights": ["K-01: Sinan Kılıç", "Solak", "8. Kat", "K-02: Deniz Arslan"]
+    },
+    {
+      "node_id": "KNT-16",
+      "template": "RECEIPT",
+      "category": "GÜVENLİK",
+      "title": "Bina Otomasyon ve Şalter Logu",
+      "file_no": "OTOMASYON #209-G",
+      "date": "29.10.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Saat 23:25'te 14. kat kamera sigortası, 8. kattaki Baş Mimar Sinan Kılıç'ın bilgisayarından uzaktan bakım komutuyla kapatılmış ve ihale zarfındaki barkod 23:32'de aynı telefona taranmıştır.",
+      "highlights": ["23:25", "Sinan Kılıç", "ihale zarfındaki barkod", "23:32"]
+    },
+    {
+      "node_id": "KNT-17",
+      "template": "OFFICIAL_REPORT",
+      "category": "ADLİ TIP",
+      "title": "Heykelcik Parmak İzi Raporu",
+      "file_no": "KRİMİNAL #209-H",
+      "date": "29.10.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 0,
+      "is_red_herring": true,
+      "content": "Bronz heykelciğin alt kaidesinde Finans Müdürü Deniz Arslan'a ait eski parmak izi saptanmıştır (Gündüz 16:00'daki toplantıdan kalma). Ancak silahın tutma sapı bezle tutulduğu için temizdir.",
+      "highlights": ["Deniz Arslan", "16:00", "bezle tutulduğu"]
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "EDGE-209-1",
+      "source_node": "KNT-10",
+      "target_node": "KNT-14",
+      "unlocked_node": {
+        "node_id": "CKR-209-1",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "23:28 Asansör ve Katil Eşleşmesi",
+        "content": "K-01 kartının sahibi Baş Mimar Sinan Kılıç, saat 23:28'de 14. kata çıkmış ve cinayetin hemen ardından 23:34'te kendi ofisinin bulunduğu 8. kata inmiştir.",
+        "highlights": ["K-01", "Sinan Kılıç", "23:28", "8. kata"]
+      }
+    },
+    {
+      "edge_id": "EDGE-209-2",
+      "source_node": "KNT-12",
+      "target_node": "KNT-13",
+      "unlocked_node": {
+        "node_id": "CKR-209-2",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "Solak Darbe ve 8. Kat Silah Bağı",
+        "content": "Saat 23:30'da sol elle indirilen bronz heykelcik darbesi, solak olan Sinan Kılıç'ın 8. kattaki mimarlık ofisi çöpünde mikrofiber bezle silinmiş olarak bulunmuştur.",
+        "highlights": ["23:30", "sol elle", "Sinan Kılıç", "8. kattaki"]
+      }
+    },
+    {
+      "edge_id": "EDGE-209-3",
+      "source_node": "KNT-15",
+      "target_node": "KNT-16",
+      "unlocked_node": {
+        "node_id": "CKR-209-3",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "5 Milyonluk İhale Casusluğu",
+        "content": "Rakip firmadan 5 Milyon TL rüşvet alan Sinan Kılıç, saat 23:25'te 14. kat kameralarını kendi bilgisayarından kapatıp 23:32'de çaldığı ihale zarfını fotoğraflamıştır.",
+        "highlights": ["5 Milyon TL", "Sinan Kılıç", "23:25", "23:32"]
+      }
+    }
+  ],
+  "solution": {
+    "killer_id": "susp_sinan",
+    "required_nodes": ["CKR-209-3", "CKR-209-1", "CKR-209-2"],
+    "alternative_required_nodes": ["KNT-15", "CKR-209-1", "CKR-209-2"],
+    "dirty_cop_frame_target": "susp_deniz",
+    "dirty_cop_cover_nodes": ["KNT-12", "KNT-14"],
+    "headline_success": "14. KAT KOMPLOSU ÇÖKTÜ: BAŞ MİMAR SİNAN KILIÇ TUTUKLANDI!",
+    "headline_failure": "İHALE CASUSU KAÇTI: MASUM FİNANS MÜDÜRÜ DENİZ ARSLAN SUÇLANDI!",
+    "story_summary": "Baş Mimar Sinan Kılıç, rakip firmadan aldığı 5 milyon TL karşılığında gizli ihale zarfını çalmak için saat 23:25'te kameraları devre dışı bıraktı. 23:28'de 14. kata çıktığında Tamer Soylu'ya yakalanınca bronz ödül heykelciğiyle sol elini kullanarak ölümcül darbeyi indirdi ve silahı 8. kattaki ofisinin çöpüne sakladı."
+  }
+}

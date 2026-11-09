@@ -1,0 +1,67 @@
+# EKSİK PARÇA (The Missing Piece) - Temel Tasarım ve Mantık Şartnamesi
+
+**Eksik Parça**, gücünü grafiklerden değil, insan psikolojisinden, iletişimden ve "bilgi asimetrisi" kavramından alan bir siber dedektiflik simülasyonudur. Oyunun temel felsefesi şudur: **Kimse gerçeğin tamamına sahip değildir.** İster yapay zekaya karşı tek başınıza, ister partnerinizle karşılıklı, ister masadaki kalabalık bir arkadaş grubuyla oynayın; elinizdeki kanıtlar tek başına hiçbir anlam ifade etmez.
+
+Bir cinayet işlenmiştir. Sisteme giriş yaptığınızda elinizdeki raporda kurbanın son mesajı vardır. Ancak mesajın kime gönderildiği sizde değil, partnerinizin (veya sistemin kilitli arşivinin) ekranındadır. Oyuncular, ekranlarını birbirlerine göstermeden, ellerindeki eksik ve kopuk veri parçalarını sözlü iletişimle, mantık yürütmeyle ve tümdengelimle birleştirerek büyük resmi görmek zorundadır. Oyun telefonda değil, oyuncuların zihninde ve aralarındaki diyalogda oynanır.
+
+---
+
+## TEK OYUNCULU MOD (SOLO): "SOĞUK VAKA / ARŞİV"
+
+Çok oyunculu moddaki "iletişim" zorunluluğunu tek kişilik bir deneyime dönüştürmek için sistemle oyuncu arasında bir bilgi asimetrisi kurulur. Bu modda partneriniz diğer bir insan değil, kısıtlı erişiminiz olan **Merkez Arşiv Veritabanı'dır.**
+
+* **Mantık (Sınırlı Yetki Mekaniği):** Vaka açıldığında olay yeri raporu, kurbanın kimliği ve 4 şüphelinin isimleri ekrana düşer. Ancak detaylı dosyalar (banka dökümleri, telefon logları, adli tıp raporları, güvenlik kamerası kayıtları) kilitlidir.
+* **Oynanış Döngüsü:** Oyuncunun elinde sadece **3 Adet "Arşiv Talep İzni" (Token)** vardır. Oysa kilitli dosya sayısı 12'dir. Oyuncu, elindeki kısıtlı açık bilgilere bakarak en kritik veriyi tahmin etmek zorundadır.
+* **Örnek Senaryo:** Kurbanın elinde bir otel anahtarı bulunmuştur. Oyuncu 1. Token'ını kullanarak "Otel Kamera Kayıtlarını" açar. Kayıtlarda kurbanın Şüpheli A ile tartıştığı yazar. Oyuncu 2. Token'ını rastgele bir şeye harcamak yerine, spesifik olarak "Şüpheli A'nın Telefon Logları" için harcamalıdır. Bütün dosyaları açamayacağı için, göremediği eksik parçaları (The Missing Piece) mantığıyla doldurmak ve süresi dolmadan katili tutuklamak zorundadır.
+
+---
+
+## MANTIK VE SİSTEM ŞARTNAMESİ (LOGIC SPECIFICATION)
+
+### 1. Veri ve Vaka Mimarisi (JSON Obje Yapısı)
+
+Hiçbir vaka statik bir metin bloğu değildir. Her vaka, arka planda bir JSON veri ağı (Graf) olarak kurgulanır. Bu sayede uygulama boyutu şişmez, vakalar Supabase sunucusundan anlık olarak çekilir.
+
+Her vakanın zorunlu bileşenleri şunlardır:
+
+* `Case_ID`: Vakanın benzersiz kimliği (Örn: Vaka-404).
+* `Nodes (Düğümler)`: Oyuncuların göreceği veri parçaları (Kişiler, Mekanlar, Nesneler, Belgeler).
+* `Edges (Bağlantılar)`: Düğümler arasındaki görünmez mantık bağları (Örn: Şüpheli B -> Kurbanın Eski Eşi).
+* `Truth_Matrix (Doğruluk Matrisi)`: Hangi şüphelinin ifadelerinin doğru, hangilerinin yalan olduğunu belirleyen kontrol listesi.
+* `Distribution_Rule (Dağıtım Kuralı)`: Hangi bilginin hangi oyuncuya gideceğini belirleyen etiketler (`tag: player_1_only`, `tag: player_2_only`, `tag: locked_archive`).
+
+### 2. Çok Oyunculu Modların İşleyiş Mantığı
+
+**Mod: DUO (Çiftler - 2 Kişi)**
+
+* **Oda Kurulumu:** Oyuncu 1 "Oda Kur" butonuna basar. Supabase üzerinde anlık bir `Room_ID` (Örn: 5824) oluşur. Oyuncu 2 bu kodu girer.
+* **Veri Parçalanması:** Sunucu, vaka JSON dosyasını ortadan ikiye böler. Olay yeri raporu ortaktır. Ancak kanıtlar rastgele veya kurgusal olarak dağıtılır. (Örn: Kurbanın telefonu Oyuncu 1'e, Adli Tıp Raporu Oyuncu 2'ye gider).
+* **Kural:** Ekranı göstermek (yazılımsal olarak engellenemese de oyunun kuralı gereği) yasaktır. Çiftler konuşarak verileri çaprazlar. Çözüm için ortak bir tutuklama ekranına aynı anda onay vermeleri gerekir.
+
+**Mod: GRUP (3-6 Kişi) - "Kirli Polis / Hain" Dinamiği**
+
+* **Asimetrik Dağılım:** Veriler masadaki kişi sayısına bölünür. Herkeste çok kısıtlı bir bilgi vardır.
+* **Gizli Rol Ataması (Hidden Role):** Oyun başlarken sunucu rastgele bir oyuncunun ekranına 5 saniyeliğine "KİRLİ POLİS SENSİN" yazısı düşürür ve ona **katilin kim olduğunu baştan söyler.**
+* **Kirli Polis Mekaniği:** Bu oyuncunun amacı süreyi boşa harcatmak, elindeki ipuçlarını diğer oyunculara yanlış okumak (yalan söylemek) veya masanın şüphesini masum birine çekmektir. Süre bittiğinde oylama yapılır. Çoğunluk doğru katili seçerse polisler, yanlış kişiyi tutuklarsa Kirli Polis (ve Katil) kazanır.
+
+### 3. Kullanıcı Arayüzü (UI) ve Etkileşim Kuralları
+
+Antigravity IDE'nin gücü kullanılarak performanslı, akıcı ve tipografi odaklı bir sistem kurulur.
+
+* **Tasarım Dili:** Simsiyah arka plan (`#0A0A0A`), beyaz ve gri metinler (`#FFFFFF`, `#B3B3B3`) ve etkileşimli ögeler için tek bir neon kırmızı (`#FF3333`).
+* **Dosya İnceleme:** Kanıtlar ekranda ufak kartlar halinde durur. Tıklandığında tam ekran açılır (bir polis dosyasını açmak gibi). İçindeki önemli anahtar kelimelerin altı çizilebilir.
+* **Ping / Haptic Feedback Mekaniği (Çok Oyunculu için):** Ortada bir "Kanıt Tahtası" vardır. Oyuncu 1, kendi ekranında Şüpheli A ile Silah arasındaki bağı kurduğunda, Oyuncu 2'nin telefonu titrer ve ekranında sessizce "Partnerin bir bağlantı buldu..." bildirimi belirir. Bu, masadaki heyecanı anlık olarak tetikler.
+
+### 4. Teknik Altyapı ve Veri Akışı
+
+* **State Management (Durum Yönetimi):** Tüm oyun oturumu (Session), oyuncuların cihazlarında değil, sunucuda (Supabase Realtime) yaşar. Bir oyuncu uygulamayı alta alıp geri dönse bile WebSockets üzerinden anında odadaki güncel duruma (kalan süre, açılan kanıtlar) senkronize olur.
+* **Zaman Senkronizasyonu:** Oyun içi sayaçlar (Örn: 15 Dakika) sunucu tabanlıdır (Server-authoritative). Telefonların saat farklılıkları veya hile (cheat) girişimleri oyunu bozamaz.
+* **Modüler Vaka Enjeksiyonu:** Yeni bir vaka eklemek için uygulamaya güncelleme çıkmaya gerek yoktur. Geliştirici, hazırladığı yeni JSON vaka dosyasını veritabanına yüklediği an, dünyadaki tüm oyuncuların ana menüsünde "YENİ VAKA: 24. SOKAK CİNAYETİ" etiketi belirir.
+
+### 5. Karar ve Bitiriş Aşaması (Endgame Loop)
+
+Süre dolduğunda veya oyuncular "Çözdük" butonuna bastığında oyun "Tutuklama Formu" ekranına geçer.
+
+1. **Suçlama:** Ana şüpheli seçilir.
+2. **Gerekçe:** Oyuncular, suçlamayı destekleyen 3 adet kanıt kartını (veya Solo modda arşivden çektikleri doğru belgeleri) boş yuvalara sürükler.
+3. **Sonuç Ekranı:** Sunucu seçilen kombinasyonu doğrular. Doğruysa kurgusal bir gazete manşetiyle kutlama ekranı gelir, yanlışsa "Dava Düştü - Gerçek Katil Yurtdışına Kaçtı" yazısı ile kurgunun aslında nasıl gerçekleştiğini anlatan özet bir hikaye gösterilir.

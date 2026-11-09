@@ -1,0 +1,171 @@
+{
+  "case_id": "CASE-000",
+  "pack_id": "pack_starter",
+  "version": 1,
+  "meta": {
+    "title": "Eğitim Vakası: Kilitli Kasa",
+    "subtitle": "90 Saniyelik Akademi Simülasyonu",
+    "difficulty": 1,
+    "duration_seconds": 600,
+    "solo_token_limit": 5,
+    "min_players": 1,
+    "max_players": 6,
+    "is_tutorial": true,
+    "supported_modes": ["SOLO", "DUO", "GROUP"]
+  },
+  "briefing": {
+    "victim": "Cihan Vural (62, Emekli Hakim)",
+    "location": "Çalışma Odası — Moda Köşkü",
+    "time_of_discovery": "22:00",
+    "summary": "Emekli hakim Cihan Vural çalışma odasında saat 22:00'de kahve fincanının yanında ölü bulundu. Duvar kasası şifreyle açılmış ve içindeki gizli vasiyetname çalınmıştır."
+  },
+  "suspects": [
+    {
+      "id": "susp_mert",
+      "name": "Mert Vural",
+      "age": 31,
+      "role": "Yeğeni / Mirasçı",
+      "relation": "Yeğeni",
+      "alibi": "Saat 21:00'de köşkten ayrıldım, çalışma odasına hiç girmedim ve kasa şifresini bilmem."
+    },
+    {
+      "id": "susp_necla",
+      "name": "Necla Kaya",
+      "age": 48,
+      "role": "Özel Kalem Müdürü",
+      "relation": "Sekreteri",
+      "alibi": "Saat 20:30'da dosyaları bırakıp evime gittim. Kasa şifresi sadece hakimde vardı."
+    },
+    {
+      "id": "susp_orhan",
+      "name": "Orhan Teke",
+      "age": 54,
+      "role": "Bahçıvan",
+      "relation": "Çalışanı",
+      "alibi": "Bütün akşam bahçe kulübesindeydim, yağmur başladığında saat 21:40'ta kapıları kilitledim."
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": "TUT-01",
+      "template": "OFFICIAL_REPORT",
+      "category": "ADLİ TIP",
+      "title": "Adli Tıp Ön Raporu",
+      "file_no": "DOSYA #001-A",
+      "date": "09.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Maktulün kahvesinde yüksek dozda Siyanür saptanmıştır. Ölüm saati 21:20 - 21:30 aralığıdır. Fincan sapında nikotin lekesi ve Mentollü sigara külü bulunmuştur.",
+      "highlights": ["Siyanür", "21:20 - 21:30", "Mentollü sigara"]
+    },
+    {
+      "node_id": "TUT-02",
+      "template": "DIGITAL_COMM",
+      "category": "DİJİTAL",
+      "title": "Kurbanın Telefon Mesajları",
+      "file_no": "DOSYA #001-B",
+      "date": "09.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "20:45 [Giden - Mert Vural]: 'Kumar borçların yüzünden seni mirastan çıkardım Mert. Yeni vasiyetnameyi bu gece kasaya kilitliyorum.' [KURTARILMIŞ VERİ]",
+      "highlights": ["Kumar borçların", "mirastan çıkardım", "Mert Vural"]
+    },
+    {
+      "node_id": "TUT-03",
+      "template": "RECEIPT",
+      "category": "GÜVENLİK",
+      "title": "Akıllı Kasa Dijital Logu",
+      "file_no": "KAYIT #001-C",
+      "date": "09.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Çelik Kasa Erişim Kaydı: Saat 21:25 — Giriş Kodu: [PIN-7741] — Durum: Başarılı Açılış. Kasa kapağı 2 dakika açık kaldı.",
+      "highlights": ["21:25", "PIN-7741"]
+    },
+    {
+      "node_id": "TUT-04",
+      "template": "OFFICIAL_REPORT",
+      "category": "OLAY YERİ",
+      "title": "Üst Arama ve Eşya Tutanağı",
+      "file_no": "DOSYA #002-A",
+      "date": "09.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Şüphelilerin üst aramasında: Mert Vural'ın ceket cebinde Mentollü sigara paketi ve kimya deposu fatura koçanı (Siyanür tuzu alımı) bulunmuştur.",
+      "highlights": ["Mert Vural", "Mentollü sigara", "Siyanür tuzu"]
+    },
+    {
+      "node_id": "TUT-05",
+      "template": "DIGITAL_COMM",
+      "category": "BELGE",
+      "title": "Şifre Hatırlatma Notu",
+      "file_no": "DOSYA #002-B",
+      "date": "09.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Mert Vural'ın telefonundaki Notlar uygulaması: 'Amcamın çalışma odası kasa kodu: PIN-7741. Saat 21:20'de kahvesini içtiğinde içeri gir.'",
+      "highlights": ["Mert Vural", "PIN-7741", "21:20"]
+    },
+    {
+      "node_id": "TUT-06",
+      "template": "RECEIPT",
+      "category": "FİNANS",
+      "title": "Bahçe Kulübesi Fişi",
+      "file_no": "FİŞ #002-C",
+      "date": "09.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 0,
+      "is_red_herring": true,
+      "content": "Bahçıvan Orhan Teke saat 20:15'te köşkün mazot bidonunu gizlice kendi aracına aktarmıştır. Cinayet saati olan 21:25'te kulübe kamerasında uyurken görülmektedir.",
+      "highlights": ["20:15", "21:25", "uyurken"]
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "TUT-EDGE-01",
+      "source_node": "TUT-01",
+      "target_node": "TUT-04",
+      "unlocked_node": {
+        "node_id": "TUT-CKR-01",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "Zehir ve Sigara Eşleşmesi",
+        "content": "Kahvedeki Siyanür ve fincandaki Mentollü sigara külü, Mert Vural'ın cebindeki sigara paketi ve kimya faturasıyla birebir eşleşti.",
+        "highlights": ["Mert Vural", "Siyanür", "birebir eşleşti"]
+      }
+    },
+    {
+      "edge_id": "TUT-EDGE-02",
+      "source_node": "TUT-03",
+      "target_node": "TUT-05",
+      "unlocked_node": {
+        "node_id": "TUT-CKR-02",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "Kasa Açılış Kanıtı",
+        "content": "Saat 21:25'te kasayı açan PIN-7741 şifresi Mert Vural'ın telefonunda kayıtlıdır. Mert, 21:00'de ayrıldığı konusunda yalan söylemiştir.",
+        "highlights": ["21:25", "PIN-7741", "Mert Vural"]
+      }
+    }
+  ],
+  "solution": {
+    "killer_id": "susp_mert",
+    "required_nodes": ["TUT-02", "TUT-CKR-02", "TUT-CKR-01"],
+    "dirty_cop_frame_target": "susp_orhan",
+    "dirty_cop_cover_nodes": ["TUT-01", "TUT-04"],
+    "headline_success": "MODA KÖŞKÜ CİNAYETİ ÇÖZÜLDÜ: MİRASYEDİ YEĞEN MERT VURAL TUTUKLANDI!",
+    "headline_failure": "DELİL YETERSİZLİĞİ: VASİYETNAME KÜL OLDU, GERÇEK KATİL SERBEST!",
+    "story_summary": "Mert Vural, kumar borçları yüzünden mirastan çıkarılacağını öğrenince saat 21:20'de amcası Cihan Vural'ın kahvesine siyanür kattı. Ardından telefonuna kaydettiği PIN-7741 şifresiyle saat 21:25'te kasayı açıp yeni vasiyetnameyi çaldı."
+  }
+}

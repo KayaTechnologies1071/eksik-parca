@@ -1,0 +1,229 @@
+{
+  "case_id": "CASE-408",
+  "pack_id": "pack_criminal",
+  "version": 1,
+  "meta": {
+    "title": "Borsa Kulesi: Kapanış Gongu",
+    "subtitle": "5 Şüpheli ve Zincirleme Algoritmik Cinayet",
+    "difficulty": 3,
+    "duration_seconds": 1200,
+    "solo_token_limit": 5,
+    "min_players": 1,
+    "max_players": 6,
+    "is_tutorial": false,
+    "supported_modes": ["SOLO", "DUO", "GROUP"]
+  },
+  "briefing": {
+    "victim": "Barlas Tekin (42, Yatırım Fonu Kurucusu)",
+    "location": "Levent Finans Kulesi 38. Kat — VIP İşlem Odası",
+    "time_of_discovery": "18:20",
+    "summary": "Ünlü fon yöneticisi Barlas Tekin, borsa kapanış gongundan hemen sonra saat 18:20'de ses yalıtımlı VIP işlem odasında yer fıstığı alerjisine bağlı anafilaktik şoktan ölü bulundu. Acil durum EpiPen oto-enjektörü boşaltılmıştır."
+  },
+  "suspects": [
+    {
+      "id": "susp_ilgaz",
+      "name": "Ilgaz Soylu",
+      "age": 37,
+      "role": "Baş Algoritma Yazılımcısı",
+      "relation": "Teknik Ortak",
+      "alibi": "17:45 - 18:15 arasında 36. katta sunucu gecikme testlerini izliyordum."
+    },
+    {
+      "id": "susp_beril",
+      "name": "Beril Akın",
+      "age": 34,
+      "role": "Portföy Direktörü",
+      "relation": "Fon Yöneticisi",
+      "alibi": "Kapanış seansı boyunca camlı ana işlem salonunda 20 broker ile birlikteydim."
+    },
+    {
+      "id": "susp_cagan",
+      "name": "Çağan Demir",
+      "age": 45,
+      "role": "Risk Denetçisi",
+      "relation": "İç Denetim Şefi",
+      "alibi": "Saat 17:30'da SPK binasına evrak teslim etmeye gitmiştim."
+    },
+    {
+      "id": "susp_simge",
+      "name": "Simge Kaya",
+      "age": 29,
+      "role": "Yönetici Asistanı",
+      "relation": "Özel Kalemi",
+      "alibi": "17:50'de Barlas Bey'in şekersiz filtre kahvesini bıraktım, çıktığımda gayet iyiydi."
+    },
+    {
+      "id": "susp_kuzey",
+      "name": "Kuzey Vural",
+      "age": 40,
+      "role": "Büyük Yatırımcı",
+      "relation": "Müşterisi",
+      "alibi": "17:15'te lobide tartıştık ama güvenlik beni yukarı çıkarmadı."
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": "KNT-408-1",
+      "template": "OFFICIAL_REPORT",
+      "category": "ADLİ TIP",
+      "title": "Toksikoloji ve EpiPen İncelemesi",
+      "file_no": "OTOPSİ #408-A",
+      "date": "10.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Ölüm saati 18:02 - 18:10 aralığıdır. Maktulün kahve termosuna saf yer fıstığı yağı damlatılmıştır. Çekmecedeki hayat kurtaran EpiPen enjektörünün içindeki adrenalin önceden lavaboya boşaltılıp yerine saf su doldurulmuştur.",
+      "highlights": ["18:02 - 18:10", "yer fıstığı yağı", "EpiPen"]
+    },
+    {
+      "node_id": "KNT-408-2",
+      "template": "RECEIPT",
+      "category": "GÜVENLİK",
+      "title": "38. Kat VIP Oda Kart ve Parmak İzi Logu",
+      "file_no": "KULE #408-B",
+      "date": "10.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "VIP İşlem Odası Girişleri: Saat 17:50 [Asistan Simge - Çıkış: 17:51], Saat 17:56 [Yetki Kodu: DEV-ROOT-09 Giriş - Çıkış: 18:01].",
+      "highlights": ["17:56", "DEV-ROOT-09", "18:01"]
+    },
+    {
+      "node_id": "KNT-408-3",
+      "template": "DIGITAL_COMM",
+      "category": "DİJİTAL",
+      "title": "Algoritma Denetim Uyarı Logu",
+      "file_no": "DENETİM #408-C",
+      "date": "10.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 0,
+      "is_red_herring": false,
+      "content": "17:40 Sistem Uyarısı: 'Baş Yazılımcı Ilgaz Soylu'nun borsa algoritmasına gizli kod ekleyerek her işlemden kuruşları kendi alt hesabına (85 Milyon TL) aktardığı Barlas Tekin tarafından donduruldu.'",
+      "highlights": ["Ilgaz Soylu", "85 Milyon TL", "Barlas Tekin"]
+    },
+    {
+      "node_id": "KNT-408-4",
+      "template": "RECEIPT",
+      "category": "BELGE",
+      "title": "SPK Evrak Kayıt ve Ziyaretçi Fişi",
+      "file_no": "SPK #408-D",
+      "date": "10.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": true,
+      "content": "Risk Denetçisi Çağan Demir saat 17:40 - 18:30 arasında Ataşehir SPK binasında resmi toplantıda bulunmuştur.",
+      "highlights": ["Çağan Demir", "17:40 - 18:30", "SPK binasında"]
+    },
+    {
+      "node_id": "KNT-408-5",
+      "template": "OFFICIAL_REPORT",
+      "category": "OLAY YERİ",
+      "title": "36. Kat Yazılım Ofisi Arama Tutanağı",
+      "file_no": "ARAMA #408-E",
+      "date": "10.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Ilgaz Soylu'nun sırt çantasında soğuk sıkım yer fıstığı yağı damlalığı, steril şırınga ucu ve lavabo giderinde adrenalin kalıntısı saptandı.",
+      "highlights": ["Ilgaz Soylu", "yer fıstığı yağı damlalığı", "adrenalin kalıntısı"]
+    },
+    {
+      "node_id": "KNT-408-6",
+      "template": "OFFICIAL_REPORT",
+      "category": "BELGE",
+      "title": "Bina Sistem Erişim Yetki Matrisi",
+      "file_no": "YETKİ #408-F",
+      "date": "10.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "[DEV-ROOT-09] kodlu acil geçiş kartı Baş Yazılımcı Ilgaz Soylu'ya aittir. 36. kat kamerası Ilgaz'ın 17:54'te merdivenlerden 38. kata çıktığını kaydetmiştir.",
+      "highlights": ["DEV-ROOT-09", "Ilgaz Soylu", "17:54'te"]
+    },
+    {
+      "node_id": "KNT-408-7",
+      "template": "RECEIPT",
+      "category": "FİNANS",
+      "title": "18:00 Açığa Satış Emir Kaydı",
+      "file_no": "EMİR #408-G",
+      "date": "10.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Saat 18:00'de VIP odadaki Barlas Tekin terminalinden 85 Milyon TL'lik dondurma blokesi Ilgaz Soylu'nun şifresiyle kaldırılmıştır.",
+      "highlights": ["18:00'de", "85 Milyon TL'lik", "Ilgaz Soylu'nun"]
+    },
+    {
+      "node_id": "KNT-408-8",
+      "template": "DIGITAL_COMM",
+      "category": "DİJİTAL",
+      "title": "Asistan Simge'nin Kafe Fişi ve Mesajı",
+      "file_no": "KAFE #408-H",
+      "date": "10.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 0,
+      "is_red_herring": true,
+      "content": "Asistan Simge kahveyi 17:48'de alerjensiz kapsül makinesinden hazırlamış ve Barlas ilk yudumu Simge yanındayken sorunsuz içmiştir.",
+      "highlights": ["17:48'de", "alerjensiz", "sorunsuz içmiştir"]
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "EDGE-408-1",
+      "source_node": "KNT-408-1",
+      "target_node": "KNT-408-5",
+      "unlocked_node": {
+        "node_id": "CKR-408-1",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "Fıstık Yağı ve Sabote Edilmiş EpiPen",
+        "content": "Kahveye damlatılan yer fıstığı yağı ve içi boşaltılan EpiPen adrenalini, Ilgaz Soylu'nun çantasındaki damlalık ve ofis lavabosuyla eşleşti.",
+        "highlights": ["yer fıstığı yağı", "EpiPen", "Ilgaz Soylu"]
+      }
+    },
+    {
+      "edge_id": "EDGE-408-2",
+      "source_node": "KNT-408-2",
+      "target_node": "KNT-408-6",
+      "unlocked_node": {
+        "node_id": "CKR-408-2",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "17:56 DEV-ROOT-09 VIP Oda Girişi",
+        "content": "Asistan çıktıktan hemen sonra 17:56'da DEV-ROOT-09 kartıyla VIP odaya giren kişi Baş Yazılımcı Ilgaz Soylu'dur.",
+        "highlights": ["17:56'da", "DEV-ROOT-09", "Ilgaz Soylu"]
+      }
+    },
+    {
+      "edge_id": "EDGE-408-3",
+      "source_node": "CKR-408-2",
+      "target_node": "KNT-408-7",
+      "unlocked_node": {
+        "node_id": "CKR-408-3",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "Zincirleme Kanıt: 18:00 Terminal Sabotajı",
+        "content": "17:56'da VIP odaya girdiği kanıtlanan Ilgaz Soylu, içeride kaldığı sürede saat 18:00'de Barlas'ın terminalinden 85 Milyon TL'lik blokeyi bizzat kaldırmıştır.",
+        "highlights": ["17:56'da", "Ilgaz Soylu", "18:00'de", "85 Milyon TL'lik"]
+      }
+    }
+  ],
+  "solution": {
+    "killer_id": "susp_ilgaz",
+    "required_nodes": ["KNT-408-3", "CKR-408-3", "CKR-408-1"],
+    "alternative_required_nodes": ["KNT-408-3", "CKR-408-2", "CKR-408-1"],
+    "dirty_cop_frame_target": "susp_simge",
+    "dirty_cop_cover_nodes": ["KNT-408-5", "KNT-408-6"],
+    "headline_success": "KAPANIŞ GONGU CİNAYETİ ÇÖZÜLDÜ: ILGAZ SOYLU TUTUKLANDI!",
+    "headline_failure": "85 MİLYONLUK VURGUN: BORSA KULESİ KATİLİ İZİNİ SİLDİ!",
+    "story_summary": "Algoritma üzerinden gizlice 85 milyon TL hortumladığı Barlas Tekin tarafından fark edilip hesabı dondurulan Baş Yazılımcı Ilgaz Soylu, önceden Barlas'ın EpiPen enjektörünü saf suyla değiştirdi ve 17:56'da VIP odaya girip kahve termosuna yer fıstığı yağı damlatarak blokeyi kaldırdı."
+  }
+}

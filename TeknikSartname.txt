@@ -1,0 +1,235 @@
+# EKSİK PARÇA (THE MISSING PIECE) — SİSTEM MİMARİSİ VE TEKNİK ŞARTNAMESİ
+
+**Doküman Sürümü:** 2.0 (Üretim Mimarisi)
+**Uygulama Türü:** Çapraz Platform (iOS / Android) Gerçek Zamanlı Asimetrik Çok Oyunculu ve Tek Oyunculu Mobil Uygulama
+
+## 1. Sistem Mimarisi ve Teknoloji Yığını
+
+Sistem; istemci tarafında yüksek arayüz performansı sağlayan deklaratif bir UI çatısı, sunucu tarafında ise durumlu (stateful) WebSocket bağlantılarını ve durumsuz (stateless) REST isteklerini yöneten hibrit bir arka uç mimarisi üzerine kuruludur.
+
+| Katman | Teknoloji | Mimari Rolü |
+| --- | --- | --- |
+| İstemci Çatısı | Flutter veya React Native | Çapraz platform 60/120 FPS arayüz çizimi |
+| Grafik Çizim Katmanı | Skia / Impeller (Custom Canvas) | Kanıt tahtası düğüm ve vektörel çizgi (ip) çizimi |
+| Durum Yönetimi | BLoC / Riverpod veya Zustand | Reaktif yerel durum ve WebSocket akış yönetimi |
+| API ve Soket Sunucusu | Go (Fiber) veya Node.js (Fastify) | REST uç noktaları ve WebSocket bağlantı havuzu |
+| Bellek İçi Veri ve Pub/Sub | Redis Cluster | Aktif oda durumu, sayaçlar ve sunucular arası mesajlaşma |
+| Kalıcı Veritabanı | PostgreSQL | Kullanıcılar, satın alımlar, vaka tanımları ve maç geçmişi |
+| İçerik Dağıtım Ağı | Cloudflare CDN (Object Storage) | Vaka JSON paketleri ve ses/görsel varlıkların önbelleklemesi |
+| Ödeme Doğrulama | RevenueCat / Native IAP API | App Store ve Google Play makbuz doğrulaması ve yetkilendirme |
+
+Anlık oyun oturumları (oda durumu, kalan süre, açılan ipuçları, oylamalar) disk tabanlı veritabanını yormamak için tamamen Redis üzerinde tutulur. Kalıcı veritabanı (PostgreSQL) yalnızca oturum başında (yetki kontrolü ve vaka yükleme) ve oturum sonunda (istatistik ve maç sonucu yazımı) devreye girer.
+
+## 2. İstemci (Client) Mimarisi
+
+İstemci uygulaması **Clean Architecture** (Sunum, İş Mantığı ve Veri katmanları) prensiplerine göre yapılandırılır ve harici bir 2D/3D oyun motoru barındırmaz.
+
+### 2.1. Arayüz ve Vektörel Kanıt Tahtası (Canvas) Motoru
+
+* **Dosya ve Kart Görünümü:** Standart yerel (native) kaydırılabilir bileşenler, alt pencereler (bottom sheet) ve sekme yapıları kullanılır.
+* **İnteraktif Kanıt Tahtası:** Oyuncuların kanıtları birbirine bağladığı ekran, donanım hızlandırmalı 2D Canvas API'si üzerinde çalışır. Her kanıt kartı bir koordinat çifti $(x, y)$ ile temsil edilir. İki düğüm arasına çekilen bağlantılar, uç noktaları kart merkezlerine kilitlenmiş ikinci dereceden Bezier eğrileri olarak çizilir.
+* **Dokunmatik Algılama (Hit-Testing):** Kullanıcının ekrana dokunduğu $(x_t, y_t)$ noktası, sahnedeki düğümlerin sınırlayıcı kutuları (bounding box) ile çarpışma testine sokulur; sürükle-bırak işlemi başka bir düğümün alanı içinde bırakıldığında bağlantı doğrulama olayı tetiklenir.
+
+### 2.2. Ağ Kesintisi ve Yeniden Bağlanma (Reconnection) Yönetimi
+
+Mobil cihazlarda uygulamanın arka plana atılması veya hücresel ağ kopmaları için istemci tarafında sonlu durum makinesi (Finite State Machine) uygulanır:
+
+1. Soket bağlantısı koptuğunda istemci arayüzü kilitlemez; üst bantta bağlantı durumunu gösterir ve üstel geri çekilme (exponential backoff: 1sn, 2sn, 4sn, 8sn) algoritmasıyla yeniden bağlanmayı dener.
+2. Bağlantı yeniden kurulduğunda istemci, son bildiği olay kimliğini (Sequence ID) sunucuya iletir.
+3. Sunucu, Redis üzerindeki güncel oda durumunun tam anlık görüntüsünü (State Snapshot) istemciye göndererek ekranı milisaniyeler içinde senkronize eder.
+
+## 3. Oyun Modları ve Dağıtım Algoritmaları
+
+### 3.1. Tek Oyunculu (Solo) Mod — "Kısıtlı Arşiv" Mekaniği
+
+Solo modda çok oyunculu iletişim asimetrisinin yerini **kaynak kısıtlaması** alır.
+
+1. Başlangıçta sunucu, vakanın yalnızca başlangıç düğümlerini (Olay Yeri Raporu, Kurban Özeti, Şüpheli Listesi) açık metin olarak, kilitli arşiv belgelerini ise yalnızca başlık ve meta veri (içeriksiz) olarak istemciye gönderir.
+2. Oyuncuya vaka zorluğuna göre sabit sayıda **Arşiv Sorgu Hakkı** (ör. 4 hak) tanımlanır.
+3. Oyuncu kilitli bir dosyayı talep ettiğinde istemci sunucuya istek atar. Sunucu oyuncunun kalan hakkını düşer ve yalnızca o dosyanın içeriğini döner. Bu sayede istemci paketi parçalanarak (decompile edilerek) diğer kilitli kanıtların okunması engellenir.
+
+### 3.2. Çok Oyunculu (Co-Op ve Kirli Polis) Dağıtım Algoritması
+
+Oda sahibi oyunu başlattığında sunucu üzerinde çalışan **Asimetrik Dağıtıcı (Partitioning Engine)** şu adımları işletir:
+
+1. **Rol Ataması:**
+* **2 Kişilik (Duo) Mod:** Her iki oyuncuya *Dedektif* rolü atanır.
+* **3–6 Kişilik (Grup) Mod:** Sunucu, kriptografik olarak güvenli rastgele sayı üreteci (CSPRNG) kullanarak odadaki oyunculardan birini *Kirli Polis* (Hain), diğerlerini *Dedektif* olarak işaretler.
+
+
+2. **Kanıt Kümesi Bölünmesi (Graph Partitioning):**
+* Vaka içindeki toplam $N$ adet kanıt düğümü, ortak düğümler ($C_{shared}$) ve özel düğümler ($C_{private}$) olarak ayrılır.
+* Özel düğümler, çözüme giden mantıksal zincirin (DAG) iki ardışık halkası aynı oyuncuya düşmeyecek şekilde (renklendirme algoritması ile) $P$ sayıda oyuncuya eşit ağırlıklı olarak dağıtılır.
+* Kural: $Düğüm_A \rightarrow Düğüm_B$ bağlantısı kritik bir çıkarım gerektiriyorsa, $Düğüm_A \in Oyuncu_1$ iken $Düğüm_B \in Oyuncu_2$ kümesine atanır.
+
+
+3. **Veri İzolasyonu (Sis Perdesi / Fog of War):** Her oyuncunun WebSocket kanalına yalnızca kendi kümesindeki ($C_{shared} \cup C_{player\_i}$) kanıt metinleri gönderilir. *Kirli Polis* rolündeki oyuncuya ek olarak gerçek katilin kimliği ve örtbas etmesi gereken 2 kritik kanıtın kimliği gönderilir.
+
+## 4. Veri Modellemesi ve Vaka Şeması
+
+Vakalar uygulama içine gömülmez; standartlaştırılmış JSON şeması ile tanımlanır. Bir vaka, Yönlü Asiklik Graf (DAG) yapısındadır.
+
+```json
+{
+  "case_id": "case_bodrum_01",
+  "version": 3,
+  "meta": {
+    "title": "Lüks Yatta Son Gece",
+    "difficulty": 2,
+    "duration_seconds": 900,
+    "solo_token_limit": 4,
+    "min_players": 1,
+    "max_players": 6
+  },
+  "suspects": [
+    {"id": "susp_1", "name": "Kerem Soylu", "relation": "İş Ortağı"},
+    {"id": "susp_2", "name": "Selin Aksoy", "relation": "Eski Eş"}
+  ],
+  "nodes": [
+    {
+      "node_id": "ev_autopsy",
+      "type": "DOCUMENT",
+      "category": "ADLİ TIP",
+      "title": "Otopsi Ön Raporu",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "content": "Ölüm saati 23:15 - 23:45 arası. Midede yüksek dozda potasyum saptanmıştır.",
+      "keywords": ["23:15", "potasyum"]
+    },
+    {
+      "node_id": "ev_pharmacy",
+      "type": "RECEIPT",
+      "category": "FİNANS",
+      "title": "Nöbetçi Eczane Kaydı",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "content": "22:10'da 34 KRM 88 plakalı araç sahibi tarafından potasyum takviyesi satın alındı.",
+      "keywords": ["34 KRM 88", "potasyum"]
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "link_poison_source",
+      "source_node": "ev_autopsy",
+      "target_node": "ev_pharmacy",
+      "unlocks_node": "ev_car_registry",
+      "description": "Kurbanın kanındaki madde ile eczane satışı eşleşti."
+    }
+  ],
+  "solution": {
+    "killer_id": "susp_1",
+    "required_evidence_ids": ["ev_autopsy", "ev_pharmacy", "ev_car_registry"],
+    "motive_id": "motive_insurance"
+  }
+}
+
+```
+
+## 5. Veritabanı ve Bellek İçi (Redis) Veri Yapısı
+
+### 5.1. PostgreSQL İlişkisel Şeması
+
+Kalıcı veriler için kullanılacak temel tablo yapıları:
+
+```sql
+CREATE TABLE users (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    device_id VARCHAR(128) UNIQUE NOT NULL,
+    display_name VARCHAR(50),
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE case_packs (
+    pack_id VARCHAR(64) PRIMARY KEY,
+    title VARCHAR(120) NOT NULL,
+    price_tier INT NOT NULL,
+    is_active BOOLEAN DEFAULT TRUE
+);
+
+CREATE TABLE user_entitlements (
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    pack_id VARCHAR(64) REFERENCES case_packs(pack_id),
+    transaction_id VARCHAR(128) UNIQUE NOT NULL,
+    purchased_at TIMESTAMPTZ DEFAULT NOW(),
+    PRIMARY KEY (user_id, pack_id)
+);
+
+CREATE TABLE cases (
+    case_id VARCHAR(64) PRIMARY KEY,
+    pack_id VARCHAR(64) REFERENCES case_packs(pack_id),
+    version INT NOT NULL DEFAULT 1,
+    content_hash VARCHAR(64) NOT NULL,
+    payload JSONB NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE match_history (
+    match_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    case_id VARCHAR(64) REFERENCES cases(case_id),
+    mode VARCHAR(16) NOT NULL,
+    player_count INT NOT NULL,
+    is_solved BOOLEAN NOT NULL,
+    duration_sec INT NOT NULL,
+    played_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+```
+
+### 5.2. Redis Oda Durumu (In-Memory State)
+
+Her aktif oda, Redis üzerinde 2 saatlik yaşam süresi (TTL) olan bir Hash ve Set kümesi olarak tutulur:
+
+* **Oda Meta Verisi (Hash):** Oda kodu, durum (`LOBBY`, `ACTIVE`, `VOTING`, `ENDED`), oda sahibi kimliği, vaka kimliği, bitiş zaman damgası (Unix Timestamp).
+* **Oyuncu Listesi ve Rolleri (Hash):** Oyuncu kimliği $\rightarrow$ Oyuncu adı, bağlantı durumu, atanan rol, elindeki düğüm kimlikleri listesi.
+* **Açılan Bağlantılar (Set):** Oyuncuların tahtada doğruladığı `edge_id` değerleri.
+
+## 6. Gerçek Zamanlı Ağ ve WebSocket Protokolü
+
+İstemci ve sunucu arasındaki tüm gerçek zamanlı iletişim JSON formatında çift yönlü WebSocket çerçeveleri ile gerçekleşir.
+
+### 6.1. İstemciden Sunucuya Giden Olaylar (Client-to-Server)
+
+* **Odaya Katılma:** Oda kodunu ve oyuncu profil bilgisini iletir.
+* **Kanıt Bağlantısı Denemesi:** İki kanıtın (`source_node`, `target_node`) birleştirildiğini bildirir. İki kanıt farklı oyuncuların ekranında olduğu için, Oyuncu A kendi ekranındaki kanıtı "Ortaya Sun" (Share Pin) butonuna basarak ortak havuza pinler; Oyuncu B kendi kanıtını bu pin ile birleştirir.
+* **Şüpheli Vurgulama (Ping):** Masadaki diğer oyuncuların dikkatini çekmek için bir kanıt veya şüpheli kartına sinyal gönderir.
+* **Suçlama Oyu (Vote):** Tutuklanacak şüpheliyi ve seçilen 3 kanıt kimliğini sunucuya iletir.
+
+### 6.2. Sunucudan İstemciye Giden Olaylar (Server-to-Client)
+
+```json
+{
+  "event": "EDGE_VERIFIED",
+  "seq": 42,
+  "server_time": 1762638000,
+  "data": {
+    "edge_id": "link_poison_source",
+    "initiated_by": "user_991",
+    "newly_unlocked_node": {
+      "node_id": "ev_car_registry",
+      "title": "Plaka Sorgu Kaydı",
+      "content": "34 KRM 88 plakalı araç Kerem Soylu adına kayıtlıdır."
+    }
+  }
+}
+
+```
+
+### 6.3. Zaman Senkronizasyonu
+
+İstemci cihazların yerel saatlerine güvenilmez. Oyun başladığında sunucu `match_end_timestamp` (Unix epoch) ve `server_current_timestamp` değerlerini gönderir. İstemci iki değer arasındaki farkı (`offset`) hesaplayarak yerel geri sayım sayacını çalıştırır. Süre dolduğunda sunucu oylama aşamasını zorunlu olarak tetikler.
+
+## 7. Güvenlik, Doğrulama ve Hile Koruması (Anti-Cheat)
+
+1. **Veri Sızıntısı Önleme:** Vaka JSON verisindeki `solution` (katil kimliği) ve `edges` (bağlantı haritası) blokları hiçbir zaman istemciye gönderilmez; yalnızca sunucu belleğinde kalır.
+2. **Bağlantı Spam Koruması (Cooldown):** Oyuncuların kanıt tahtasında rastgele her şeyi birbirine bağlayarak (brute-force) doğru kombinasyonu bulmasını engellemek için sunucu tarafında **Hata Cezası** uygulanır. Yanlış birleştirilen her kanıt çifti, oyun süresinden 30 saniye düşer ve ilgili oyuncunun tahtasını 5 saniye boyunca kilitler.
+3. **Oda Kodu Brute-Force Koruması:** Oda kodları 6 karakterli alfanümerik (karışıklığı önlemek için 0, O, 1, I, L karakterleri çıkarılmış 31 karakterlik alfabeden, $31^6 \approx 887\text{ milyon}$ kombinasyon) olarak üretilir. IP başına dakikada en fazla 5 başarısız oda katılma denemesine izin verilir (Rate Limiting).
+4. **Sahiplik (Host Entitlement) Doğrulaması:** Çok oyunculu bir odada ücretli bir vaka başlatılırken yalnızca odayı kuran (`host_user_id`) kullanıcının `user_entitlements` tablosunda ilgili pakete sahip olup olmadığı kontrol edilir. Odadaki diğer oyuncular için satın alma şartı aranmaz.
+
+## 8. Performans ve Operasyonel Kabul Kriterleri (SLA)
+
+* **Uçtan Uca Soket Gecikmesi:** Aynı odadaki bir oyuncunun yaptığı hamlenin diğer oyuncuların ekranına yansıma süresi (P95) `< 100 ms` olmalıdır.
+* **İstemci Bellek Tüketimi:** Uygulamanın çalışma zamanı RAM kullanımı eski nesil cihazlarda dahi `120 MB` sınırını aşmamalıdır.
+* **Uygulama Boyutu:** Kurulum paketi (APK / IPA) boyutu, vaka içeriklerinin buluttan çekilmesi sayesinde `25 MB` altında tutulmalıdır.
+* **Ölçeklenebilirlik:** Tek bir arka uç sunucu düğümü (4 vCPU, 8 GB RAM) en az `10.000` eşzamanlı açık WebSocket bağlantısını (yaklaşık 2.500 aktif oyun masası) darboğaz olmadan yönetebilmelidir.

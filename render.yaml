@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: eksik-parca-server
+    runtime: docker
+    plan: starter
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: eksik-parca-db
+          property: connectionString
+
+databases:
+  - name: eksik-parca-db
+    plan: free
+    databaseName: eksikparca

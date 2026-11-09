@@ -1,0 +1,220 @@
+{
+  "case_id": "CASE-304",
+  "pack_id": "pack_couples",
+  "version": 1,
+  "meta": {
+    "title": "Antika Saatçi: Durmuş Zaman",
+    "subtitle": "Çukurcuma Atölyesinde Zincirleme Komplo",
+    "difficulty": 3,
+    "duration_seconds": 1200,
+    "solo_token_limit": 5,
+    "min_players": 1,
+    "max_players": 6,
+    "is_tutorial": false,
+    "supported_modes": ["SOLO", "DUO", "GROUP"]
+  },
+  "briefing": {
+    "victim": "Agah Saatçi (67, Usta Horolog ve Koleksiyoner)",
+    "location": "Çukurcuma Pasajı — Antika Saat Atölyesi",
+    "time_of_discovery": "22:30",
+    "summary": "Ünlü saat ustası Agah Saatçi saat 22:30'da atölyesinde ölü bulundu. Dünyada tek örnek olan 18. yüzyıl Osmanlı cep saati kasadan alınmış, Agah Usta'nın merceğine ise gizli bir kasa kodu kazınmıştır."
+  },
+  "suspects": [
+    {
+      "id": "susp_timur",
+      "name": "Timur Soylu",
+      "age": 34,
+      "role": "Baş Kalfa",
+      "relation": "Çırağı",
+      "alibi": "21:00'de dükkanı kapatıp Karaköy vapuruna bindim, atölyeye geri dönmedim."
+    },
+    {
+      "id": "susp_ferda",
+      "name": "Ferda Akın",
+      "age": 45,
+      "role": "Müzayede Eksperi",
+      "relation": "Ekspertiz Ortağı",
+      "alibi": "Agah Usta ile saat 20:30'da telefonla görüştük, bütün akşam Cihangir'de galerideydim."
+    },
+    {
+      "id": "susp_nedim",
+      "name": "Nedim Vural",
+      "age": 52,
+      "role": "Antika Tüccarı",
+      "relation": "Komşu Esnaf",
+      "alibi": "21:15'te kepenkleri indirdim, pasaj koridorunda kimseyi görmedim."
+    },
+    {
+      "id": "susp_ceyda",
+      "name": "Ceyda Saatçi",
+      "age": 29,
+      "role": "Torunu",
+      "relation": "Mirasçısı",
+      "alibi": "Dedemin yanına saat 19:30'da uğradım ama 20:00'de konservatuvar konserine gittim."
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": "KNT-304-1",
+      "template": "OFFICIAL_REPORT",
+      "category": "ADLİ TIP",
+      "title": "Otopsi ve Kimyasal Buhar Raporu",
+      "file_no": "OTOPSİ #304-A",
+      "date": "06.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Ölüm saati 21:35 - 21:45 aralığıdır. Maktul saat mekanizması temizliğinde kullanılan saf Trikloroetilen kloroform buharıyla bayıltılıp boğulmuştur. Yerde kırık 'NUMARA: 7' büyüteç camı bulundu.",
+      "highlights": ["21:35 - 21:45", "Trikloroetilen", "NUMARA: 7"]
+    },
+    {
+      "node_id": "KNT-304-2",
+      "template": "RECEIPT",
+      "category": "GÜVENLİK",
+      "title": "Pasaj Gece Bekçisi Devriye Defteri",
+      "file_no": "BEKÇİ #304-B",
+      "date": "06.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Çukurcuma Pasajı Giriş Kaydı: Saat 21:32'de arka demir kapı [ANAHTAR-NO: PSJ-12] ile açıldı. Çıkışta pasaj merdivenine nadir İsviçre saat yağı damlamıştır.",
+      "highlights": ["21:32", "PSJ-12", "İsviçre saat yağı"]
+    },
+    {
+      "node_id": "KNT-304-3",
+      "template": "DIGITAL_COMM",
+      "category": "DİJİTAL",
+      "title": "Kaçak Koleksiyoner Kripto Mesajı",
+      "file_no": "ŞİFRELİ #304-C",
+      "date": "06.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 0,
+      "is_red_herring": false,
+      "content": "20:50 [Cenevre Alıcısı -> Gizli Satıcı 'KRONOS']: '18. yüzyıl Osmanlı saatini bu gece 22:00'ye kadar kuryeye verirsen 12 Milyon TL'yi hesabına geçeceğim.'",
+      "highlights": ["KRONOS", "22:00'ye kadar", "12 Milyon TL'yi"]
+    },
+    {
+      "node_id": "KNT-304-4",
+      "template": "RECEIPT",
+      "category": "BELGE",
+      "title": "Konservatuvar Bilet ve Kamera Kaydı",
+      "file_no": "KONSER #304-D",
+      "date": "06.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": true,
+      "content": "Ceyda Saatçi saat 20:15 - 22:30 arasında Harbiye Konser Salonu'nda sahnede çello çalmıştır.",
+      "highlights": ["Ceyda Saatçi", "20:15 - 22:30", "sahnede çello"]
+    },
+    {
+      "node_id": "KNT-304-5",
+      "template": "OFFICIAL_REPORT",
+      "category": "OLAY YERİ",
+      "title": "Galeri Arka Odası Arama Tutanağı",
+      "file_no": "ARAMA #304-E",
+      "date": "06.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Ferda Akın'ın Cihangir'deki galerisinde yapılan aramada camı düşmüş 'NUMARA: 7' ekspertiz büyüteci ve yeni açılmış Trikloroetilen çözücü tenekesi bulundu.",
+      "highlights": ["Ferda Akın", "NUMARA: 7", "Trikloroetilen"]
+    },
+    {
+      "node_id": "KNT-304-6",
+      "template": "OFFICIAL_REPORT",
+      "category": "BELGE",
+      "title": "Pasaj Yönetimi Anahtar ve Kurye Kaydı",
+      "file_no": "YÖNETİM #304-F",
+      "date": "06.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "[ANAHTAR-NO: PSJ-12] yedek pasaj anahtarı Eksper Ferda Akın'da bulunmaktadır. Ayrıca Ferda'nın ayakkabı tabanında İsviçre saat yağı saptanmıştır.",
+      "highlights": ["PSJ-12", "Ferda Akın", "İsviçre saat yağı"]
+    },
+    {
+      "node_id": "KNT-304-7",
+      "template": "RECEIPT",
+      "category": "FİNANS",
+      "title": "Kurye Gönderi ve Mahlas Faturası",
+      "file_no": "KURYE #304-G",
+      "date": "06.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Saat 21:55 Özel Kurye Teslimatı — Gönderici Kodu: 'KRONOS' (Müşteri Kartı: Ferda Akın Galeri Ltd.) — Paket İçeriği: Antika Osmanlı Cep Saati.",
+      "highlights": ["21:55", "KRONOS", "Ferda Akın"]
+    },
+    {
+      "node_id": "KNT-304-8",
+      "template": "RECEIPT",
+      "category": "GÜVENLİK",
+      "title": "Şehir Hatları İstanbulkart Geçişi",
+      "file_no": "VAPUR #304-H",
+      "date": "06.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 0,
+      "is_red_herring": true,
+      "content": "Baş Kalfa Timur Soylu saat 21:15'te Karaköy-Kadıköy vapuruna binmiş ve 21:40'ta Kadıköy iskelesinden çıkış yapmıştır.",
+      "highlights": ["Timur Soylu", "21:15", "21:40'ta Kadıköy"]
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "EDGE-304-1",
+      "source_node": "KNT-304-1",
+      "target_node": "KNT-304-5",
+      "unlocked_node": {
+        "node_id": "CKR-304-1",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "Kırık Büyüteç ve Kloroform Eşleşmesi",
+        "content": "Olay yerindeki kırık NUMARA: 7 büyüteç camı ve Trikloroetilen kimyasalı, Ferda Akın'ın galerisindeki eksik camlı büyüteçle eşleşti.",
+        "highlights": ["NUMARA: 7", "Trikloroetilen", "Ferda Akın"]
+      }
+    },
+    {
+      "edge_id": "EDGE-304-2",
+      "source_node": "KNT-304-2",
+      "target_node": "KNT-304-6",
+      "unlocked_node": {
+        "node_id": "CKR-304-2",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "21:32 Pasaj Anahtarı ve Yağ İzi",
+        "content": "Saat 21:32'de atölye pasajını açan PSJ-12 anahtarı ve merdivendeki saat yağı Ferda Akın'ın ayakkabısıyla doğrulandı.",
+        "highlights": ["21:32", "PSJ-12", "Ferda Akın"]
+      }
+    },
+    {
+      "edge_id": "EDGE-304-3",
+      "source_node": "KNT-304-3",
+      "target_node": "KNT-304-7",
+      "unlocked_node": {
+        "node_id": "CKR-304-3",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "KRONOS Mahlaslı 12 Milyonluk Satış",
+        "content": "Cenevre'ye 12 Milyon TL karşılığında çalıntı Osmanlı saatini 21:55'te kuryeyle gönderen 'KRONOS' mahlaslı kişi Ferda Akın'dır.",
+        "highlights": ["12 Milyon TL", "KRONOS", "Ferda Akın"]
+      }
+    }
+  ],
+  "solution": {
+    "killer_id": "susp_ferda",
+    "required_nodes": ["CKR-304-3", "CKR-304-2", "CKR-304-1"],
+    "dirty_cop_frame_target": "susp_timur",
+    "dirty_cop_cover_nodes": ["KNT-304-5", "KNT-304-7"],
+    "headline_success": "DURMUŞ ZAMAN ÇÖZÜLDÜ: EKSPER FERDA AKIN TUTUKLANDI!",
+    "headline_failure": "OSMANLI SAATİ YURTDIŞINA KAÇIRILDI: KATİL İZ BIRAKMADI!",
+    "story_summary": "Müzayede eksperi Ferda Akın, Cenevre'deki gizli alıcıdan 12 milyon TL almak için saat 21:32'de yedek pasaj anahtarıyla atölyeye girdi. Agah Usta'yı saat temizleme kimyasalıyla boğup Osmanlı cep saatini kuryeyle kaçırmaya çalışırken düşürdüğü büyüteç camı onu ele verdi."
+  }
+}

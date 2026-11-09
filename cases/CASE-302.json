@@ -1,0 +1,171 @@
+{
+  "case_id": "CASE-302",
+  "pack_id": "pack_couples",
+  "version": 1,
+  "meta": {
+    "title": "Çatı Katı: Yılbaşı Kadehi",
+    "subtitle": "Nişantaşı Terasında Geri Sayım Cinayeti",
+    "difficulty": 1,
+    "duration_seconds": 900,
+    "solo_token_limit": 5,
+    "min_players": 1,
+    "max_players": 6,
+    "is_tutorial": false,
+    "supported_modes": ["SOLO", "DUO", "GROUP"]
+  },
+  "briefing": {
+    "victim": "Sarp Soylu (39, Moda Dergisi Yayın Yönetmeni)",
+    "location": "Nişantaşı Penthouse — Kış Bahçesi Terası",
+    "time_of_discovery": "00:05",
+    "summary": "Yılbaşı havai fişekleri patlarken ünlü editör Sarp Soylu saat 00:05'te çatı katının kış bahçesinde şampanya kadehi elinde zehirlenmiş halde ölü bulundu."
+  },
+  "suspects": [
+    {
+      "id": "susp_lara",
+      "name": "Lara Çetin",
+      "age": 31,
+      "role": "Baş Tasarımcı",
+      "relation": "Eski Nişanlısı",
+      "alibi": "23:45'ten gece yarısına kadar salonda DJ kabininin yanındaydım, kış bahçesine çıkmadım."
+    },
+    {
+      "id": "susp_pamir",
+      "name": "Pamir Kaya",
+      "age": 36,
+      "role": "Fotoğraf Editörü",
+      "relation": "Ortağı",
+      "alibi": "23:50'de balkonda havai fişek çekimi için tripodu kuruyordum, Sarp'ın yanına gitmedim."
+    },
+    {
+      "id": "susp_buse",
+      "name": "Buse Demir",
+      "age": 27,
+      "role": "Sosyal Medya Menajeri",
+      "relation": "Asistanı",
+      "alibi": "Bütün gece mutfakta ikram servisini organize ettim."
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": "KNT-302-1",
+      "template": "OFFICIAL_REPORT",
+      "category": "ADLİ TIP",
+      "title": "Toksikoloji ve Kadeh Analizi",
+      "file_no": "OTOPSİ #302-A",
+      "date": "01.01.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Ölüm saati 23:55 - 00:02 aralığıdır. Şampanya kadehinde fotoğraf banyo kimyasalı (Gümüş Nitrat bazlı toksik çözücü) saptandı. Kadeh tabanında siyah karanlık oda eldiveni lekesi vardır.",
+      "highlights": ["23:55 - 00:02", "Gümüş Nitrat", "karanlık oda eldiveni"]
+    },
+    {
+      "node_id": "KNT-302-2",
+      "template": "DIGITAL_COMM",
+      "category": "DİJİTAL",
+      "title": "Sarp Soylu'nun Avukat Mesajı",
+      "file_no": "MESAJ #302-B",
+      "date": "01.01.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 0,
+      "is_red_herring": false,
+      "content": "23:15 [Giden - Dergi Hukuk]: 'Ortağım Pamir Kaya'nın ünlülerin gizli çekim fotoğraflarıyla şantaj yaptığını öğrendim. Yılbaşı tatili biter bitmez ortaklığı feshedip savcılığa veriyorum.'",
+      "highlights": ["Pamir Kaya", "şantaj yaptığını", "savcılığa veriyorum"]
+    },
+    {
+      "node_id": "KNT-302-3",
+      "template": "RECEIPT",
+      "category": "GÜVENLİK",
+      "title": "Akıllı Ev Kış Bahçesi Kapı Logu",
+      "file_no": "TERAS #302-C",
+      "date": "01.01.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Kış Bahçesi Cam Kapı Kaydı: Saat 23:53'te içeriden açıldı. Kapı yanındaki otomatik parti fotoğraf kabini saat 23:54'te [YAKA-ROZETİ: VİP-ALTIN-04] taşıyan kişinin çıkışını çekti.",
+      "highlights": ["23:53", "23:54", "VİP-ALTIN-04"]
+    },
+    {
+      "node_id": "KNT-302-4",
+      "template": "OFFICIAL_REPORT",
+      "category": "OLAY YERİ",
+      "title": "Fotoğraf Çantası Arama Tutanağı",
+      "file_no": "ARAMA #302-D",
+      "date": "01.01.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Pamir Kaya'nın objektif çantasında yarı dolu Gümüş Nitrat şişesi ve şampanya kokan siyah karanlık oda eldiveni bulundu.",
+      "highlights": ["Pamir Kaya", "Gümüş Nitrat", "karanlık oda eldiveni"]
+    },
+    {
+      "node_id": "KNT-302-5",
+      "template": "OFFICIAL_REPORT",
+      "category": "BELGE",
+      "title": "Davetli Yaka Rozeti Listesi",
+      "file_no": "DAVET #302-E",
+      "date": "01.01.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Yılbaşı Partisi Rozet Dağılımı: VİP-ALTIN-01: Lara Çetin. VİP-ALTIN-04: Pamir Kaya. VİP-ALTIN-09: Buse Demir.",
+      "highlights": ["VİP-ALTIN-04: Pamir Kaya"]
+    },
+    {
+      "node_id": "KNT-302-6",
+      "template": "DIGITAL_COMM",
+      "category": "DİJİTAL",
+      "title": "Lara Çetin Instagram Canlı Yayını",
+      "file_no": "SOSYAL #302-F",
+      "date": "01.01.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": true,
+      "content": "Lara Çetin saat 23:48 - 00:04 arasında kesintisiz canlı yayın açmış ve DJ kabininde olduğu 4 bin izleyici tarafından doğrulanmıştır.",
+      "highlights": ["Lara Çetin", "23:48 - 00:04", "DJ kabininde"]
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "EDGE-302-1",
+      "source_node": "KNT-302-1",
+      "target_node": "KNT-302-4",
+      "unlocked_node": {
+        "node_id": "CKR-302-1",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "Gümüş Nitrat ve Eldiven Eşleşmesi",
+        "content": "Şampanyadaki Gümüş Nitrat zehri ve siyah eldiven lekesi, Pamir Kaya'nın fotoğraf çantasındaki kimyasal şişesi ve eldivenle eşleşti.",
+        "highlights": ["Gümüş Nitrat", "Pamir Kaya", "fotoğraf çantasındaki"]
+      }
+    },
+    {
+      "edge_id": "EDGE-302-2",
+      "source_node": "KNT-302-3",
+      "target_node": "KNT-302-5",
+      "unlocked_node": {
+        "node_id": "CKR-302-2",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "23:54 Kış Bahçesi Çıkış Kaydı",
+        "content": "Saat 23:54'te kış bahçesinden çıkarken fotoğraflanan VİP-ALTIN-04 rozetli kişi Pamir Kaya'dır.",
+        "highlights": ["23:54", "VİP-ALTIN-04", "Pamir Kaya"]
+      }
+    }
+  ],
+  "solution": {
+    "killer_id": "susp_pamir",
+    "required_nodes": ["KNT-302-2", "CKR-302-2", "CKR-302-1"],
+    "dirty_cop_frame_target": "susp_lara",
+    "dirty_cop_cover_nodes": ["KNT-302-1", "KNT-302-4"],
+    "headline_success": "YILBAŞI CİNAYETİ ÇÖZÜLDÜ: FOTOĞRAF EDİTÖRÜ PAMİR KAYA TUTUKLANDI!",
+    "headline_failure": "HAVAİ FİŞEKLER İZLERİ SİLDİ: ÇATI KATI KATİLİ SERBEST KALDI!",
+    "story_summary": "Ünlülere şantaj yaptığı ortaya çıkan Fotoğraf Editörü Pamir Kaya, geri sayımdan hemen önce saat 23:53'te kış bahçesine girerek karanlık oda kimyasalı olan Gümüş Nitrat'ı ortağı Sarp Soylu'nun şampanya kadehine karıştırdı."
+  }
+}

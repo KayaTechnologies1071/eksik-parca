@@ -1,0 +1,20 @@
+{
+  "appId": "com.eksikparca.detective",
+  "appName": "Eksik Parça",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "backgroundColor": "#090A0F",
+  "plugins": {
+    "StatusBar": {
+      "style": "DARK",
+      "backgroundColor": "#090A0F"
+    },
+    "Keyboard": {
+      "resize": "body",
+      "style": "DARK"
+    }
+  },
+  "server": {
+    "androidScheme": "https"
+  }
+}

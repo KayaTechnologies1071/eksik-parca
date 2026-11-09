@@ -1,0 +1,115 @@
+# EKSİK PARÇA (THE MISSING PIECE) — PROJE GENEL ŞARTNAMESİ
+
+**Doküman Türü:** İdari, Fonksiyonel ve Tasarım Genel Şartnamesi
+**Sürüm:** 1.0
+**Kapsam:** Mobil Uygulama (iOS ve Android) Ürün Yaşam Döngüsü, Kullanıcı Deneyimi, İçerik, Ticari Model ve Kabul Standartları
+
+## 1. Projenin Amacı ve Kapsamı
+
+Bu şartname; **Eksik Parça (The Missing Piece)** adlı, bilgi asimetrisine dayalı tek ve çok oyunculu mobil dedektiflik oyununun işlevsel gereksinimlerini, kullanıcı deneyimi (UX) standartlarını, görsel tasarım sınırlarını, içerik üretim kurallarını, gelir modelini ve yayına hazırlık (kabul) kriterlerini belirler.
+
+Projenin temel amacı; karakter modellemesi, illüstrasyon veya karmaşık 2D/3D grafik varlıklarına ihtiyaç duymadan, tamamen tipografi, mikro etkileşimler, ses efektleri ve modern kullanıcı arayüzü bileşenleriyle çalışan, sosyal ortamlarda (kafe, buluşma, ev içi etkinlikler) veya bireysel olarak oynanabilen ticari bir mobil oyun sunmaktır.
+
+## 2. Hedef Kitle ve Kullanım Senaryoları
+
+| Segment | Oyuncu Sayısı | Temel Motivasyon | Ortalama Oturum Süresi |
+| --- | --- | --- | --- |
+| Bireysel Oyuncular | 1 Kişi (Solo) | Analitik bulmaca çözme ve hikaye takibi | 10 - 15 Dakika |
+| Çiftler (Duo) | 2 Kişi | Ortak hedef etrafında sohbet ve işbirliği | 15 - 20 Dakika |
+| Arkadaş Grupları | 3 - 6 Kişi | Sosyal çıkarım, tartışma ve blöf | 20 - 30 Dakika |
+
+Uygulama, yukarıdaki üç farklı senaryoyu tek bir çatı altında sunar. Çok oyunculu modlar, oyuncuların aynı fiziksel mekanda yan yana bulunduğu (yerel sosyal etkileşim) senaryolar için optimize edilir; uygulama içi sesli veya yazılı sohbet modülü içermez, oyuncuları doğrudan yüz yüze konuşmaya teşvik eder.
+
+## 3. Fonksiyonel Gereksinimler ve Kullanıcı Akışı
+
+### 3.1. Karşılama ve Kimlik Doğrulama (Onboarding)
+
+1. **Sürtünmesiz Giriş (Zero-Friction Login):** Uygulamayı ilk kez açan kullanıcıdan e-posta veya şifre istenmez. Cihaz kimliği üzerinden otomatik bir misafir profili oluşturulur ve kullanıcı yalnızca bir "Takma Ad" (Dedektif Adı) belirleyerek doğrudan ana ekrana geçer.
+2. **Hesap Bağlama:** Satın alımların ve istatistiklerin cihaz değişiminde kaybolmaması için Ayarlar menüsü altında "Apple ile Giriş Yap" ve "Google ile Giriş Yap" seçenekleri sunulur.
+3. **Etkileşimli Öğretici (Tutorial):** İlk açılışta oyuncuya oyun mekaniğini metin yığınlarıyla anlatmak yerine, 90 saniyede tamamlanan mini bir "Eğitim Vakası" oynatılır. Bu vakada kanıt okuma, ortak havuza kanıt bırakma ve iki kanıtı birleştirme adımları uygulamalı olarak gösterilir.
+
+### 3.2. Ana Menü ve Lobi Yönetimi
+
+* **Ana Ekran Bileşenleri:** Ekranın merkezinde üç temel aksiyon yer alır: "Tek Başına Çöz (Arşiv Modu)", "Oda Kur" ve "Odaya Katıl". Alt barda ise "Vaka Mağazası", "Geçmiş Vakalarım" ve "Ayarlar" sekmeleri bulunur.
+* **Oda Kurulumu ve Katılım:** Oda kuran oyuncunun ekranında 6 haneli büyük punto bir Oda Kodu ve bir QR Kod belirir. Masadaki diğer oyuncular kamerayla QR kodu okutarak veya kodu tuşlayarak saniyeler içinde lobiye düşer.
+* **Hazır Kontrolü:** Lobi ekranında katılan oyuncuların isimleri listelenir. Her oyuncu kendi ekranında "Hazırım" butonuna bastığında, oda sahibinin "Vakayı Başlat" butonu aktifleşir.
+
+### 3.3. Oyun İçi Ekranlar (Core Gameplay UI)
+
+Oyun ekranı, kullanıcının tek elle rahatça yönetebileceği 4 ana sekmeden oluşur:
+
+1. **Vaka Özeti ve Şüpheliler:** Olay yeri tutanağının, kurban bilgilerinin ve şüphelilerin temel profil kartlarının (İsim, Yaş, Meslek, Kurbanla İlişkisi) yer aldığı ortak ekran.
+2. **Gizli Dosyam (Asimetrik Veri Alanı):** Yalnızca o oyuncunun telefonuna gönderilmiş özel belgelerin (Adli tıp raporu, banka dekontu, baz istasyonu kaydı, mesaj dökümü) bulunduğu liste. Belgeler tıklandığında tam ekran dosya görünümünde açılır; oyuncu önemli gördüğü satırların üzerini parmağıyla çizerek vurgulayabilir (fosforlu kalem efekti).
+3. **Ortak Kanıt Tahtası (Board):** Masadaki tüm oyuncuların gerçek zamanlı olarak gördüğü ortak çalışma alanıdır. Bir oyuncu kendi "Gizli Dosyam" sekmesindeki kritik bir bulguyu "Tahtaya İğnele" dediğinde, o kanıtın başlık kartı herkesin tahtasında belirir. Oyuncular tahtadaki iki kartı sürükleyip birbirine bağlayarak yeni çıkarımların kilidini açar.
+4. **Suçlama ve Oylama Ekranı:** Üst bardaki geri sayım sayacı sıfırlandığında veya oyuncular "Suçlamaya Geç" butonuna bastığında açılır. Oyuncular katil olduğunu düşündükleri şüpheliyi ve bunu kanıtlayan 3 temel delili seçerek oylarını kilitler.
+
+### 3.4. Oyun Sonu ve Çözüm Özeti
+
+Oylama tamamlandığında sonuç ekranı kurgusal bir **Gazete Manşeti** formatında sunulur:
+
+* **Başarılı Çözüm:** "Zehirli Miras Çözüldü: Kerem Soylu Tutuklandı!" manşetiyle birlikte oyuncuların vakayı çözme süresi, doğruluk oranı ve en çok bağlantı kuran oyuncunun (Baş Dedektif) adı gösterilir.
+* **Başarısız Çözüm:** "Delil Yetersizliğinden Serbest: Gerçek Katil İzini Kaybettirdi!" manşeti gösterilir. Oyuncular isterse "Vakayı Tekrar Dene" diyebilir, isterse "Gerçeği Gör" butonuna basarak cinayetin nasıl işlendiğini adım adım anlatan çözüm hikayesini okuyabilir.
+
+## 4. Görsel Tasarım ve Kullanıcı Deneyimi (UI/UX) Standartları
+
+### 4.1. Görsel Kimlik ve Estetik Kurallar
+
+Projede karakter çizimi, fotoğraf veya illüstrasyon kullanılmayacaktır. Görsel kalite aşağıdaki tasarım kurallarıyla sağlanır:
+
+| Bileşen | Standart / Değer | Uygulama Alanı |
+| --- | --- | --- |
+| Arka Plan Rengi | Koyu Karbon (#0D0D0F) | Ana zemin (OLED ekranlarda pil tasarrufu ve kontrast) |
+| Kart Yüzey Rengi | Mat Antrasit (#18181C) | Dosya kartları, alt pencereler ve şüpheli kutuları |
+| Birincil Vurgu Rengi | Kriminal Kırmızı (#E63946) | Bağlantı ipleri, kritik uyarılar, sayaç ve ana butonlar |
+| İkincil Vurgu Rengi | Kehribar Sarısı (#F4A261) | Solo mod arşiv jetonları, ipucu vurguları |
+| Tipografi | Sans-Serif + Monospace | Arayüzde okunaklı Sans-Serif, resmi raporlarda daktilo/kod fontu |
+
+### 4.2. Mikro Etkileşimler, Ses ve Dokunsal Geri Bildirim (Haptics)
+
+Görsel varlıkların olmadığı bir oyunda "oyun hissi" (game feel) ses ve titreşimle verilir:
+
+* **Belge Etkileşimleri:** Dosya açılırken gerçekçi kağıt hışırtısı, klasör sekmesi değiştirilirken mekanik geçiş sesi, önemli bir satır çizildiğinde kalem sesi çalınır.
+* **Tahta ve Bağlantı Hissi:** İki kanıt birbirine bağlandığında ekrandaki kırmızı çizgi gerilerek yerine oturur ve cihazda keskin bir dokunsal titreşim (Haptic Impact) tetiklenir.
+* **Atmosfer:** Arka planda oyuncunun odaklanmasını bozmayan, gerilimi ve merakı destekleyen minimal, karanlık ambiyans (Dark Ambient) ses döngüsü yer alır. Kafede oynanacağı düşünülerek tüm ses efektleri tek tuşla kapatılabilir (Sessiz Mod) ve görsel uyarılarla (ekran kenarının kırmızı yanıp sönmesi) desteklenir.
+
+## 5. İçerik ve Senaryo Üretim Standartları
+
+Oyunun ticari ömrünü belirleyen ana unsur vakaların kalitesidir. Sisteme eklenecek her vaka aşağıdaki standartlara uymak zorundadır:
+
+1. **Okuma Yükü Sınırı:** Kafede veya arkadaş ortamında kimse uzun sayfalarca metin okumak istemez. Hiçbir kanıt belgesi 60 kelimeyi aşmamalıdır. Bilgiler; banka dekontu, kısa mesaj ekranı, nöbetçi eczane fişi veya 3-4 maddelik otopsi özeti gibi hızlı taranabilir (scannable) formatlarda yazılmalıdır.
+2. **Mantıksal Tutarlılık (Sıfır Tahmin Kuralı):** Hiçbir vaka şansa veya tahmine dayalı olmamalıdır. Katilin kimliği; **Neden (Motive)**, **Fırsat (Alibi çürütme)** ve **Fiziksel Kanıt (Forensic)** üçgeninin birleşimiyle kesin olarak kanıtlanabilir olmalıdır.
+3. **Yanıltıcı İpuçları (Red Herrings):** Her vakada oyuncuları tartışmaya yönlendirecek en az 2 adet "masum şüphelinin sakladığı başka bir sır" (örneğin cinayetle ilgisi olmayan bir vergi kaçırma veya gizli ilişki) bulunmalıdır.
+4. **Kirli Polis Dengesi (3-6 Kişilik Mod):** Vaka metinleri, içlerinden sadece tek bir rakam veya saat değiştirilerek sözlü olarak yanlış aktarıldığında tüm grubu başka bir şüpheliye yönlendirebilecek esneklikte kurgulanmalıdır.
+
+## 6. Ticari Model ve Gelir Yönetimi (Monetization)
+
+Uygulama **Ücretsiz İndirilebilir (Free-to-Play)** olarak sunulur ve üç ana gelir kalemine dayanır:
+
+| Gelir Kalemi | Hedef Mod | Fiyatlandırma Modeli | Açıklama |
+| --- | --- | --- | --- |
+| Vaka Paketleri (DLC) | Tüm Modlar | Tek Seferlik Satın Alma | 5 veya 10 vakalık tematik hikaye paketleri |
+| Tam Erişim Aboneliği | Tüm Modlar | Aylık / Yıllık Abonelik | Tüm mevcut ve haftalık yeni vakalara sınırsız erişim |
+| Ekstra Sorgu Jetonu | Solo Mod | Ödüllü Reklam veya Mikro Ödeme | Kilitli arşiv dosyası açma hakkı bittiğinde +1 hak |
+
+### 6.1. "Oda Sahibi Öder" (Host Entitlement) Kuralı
+
+Çok oyunculu modda viral büyümeyi sağlamak için masadaki oyunculardan yalnızca **Odayı Kuran (Host)** kişinin ilgili ücretli vaka paketine sahip olması yeterlidir. Diğer 1 ila 5 oyuncu, uygulamayı ücretsiz indirip oda kodunu girerek o vakayı hiçbir ücret ödemeden ve reklam görmeden oynayabilir.
+
+### 6.2. Reklam Politikası
+
+Oyun içi atmosferi ve sosyal akışı bozmamak adına uygulama içinde **Banner reklam veya oyun ortasında çıkan zorunlu geçiş reklamı (Interstitial) kesinlikle kullanılmaz.** Reklamlar yalnızca Solo modda sorgu hakkı biten oyuncunun kendi isteğiyle tıkladığı "Reklam İzle ve +1 Arşiv Hakkı Kazan" (Rewarded Video) formatında yer alır.
+
+## 7. İdari, Hukuki ve Mağaza Uyumluluk Kriterleri
+
+* **Yaş Derecelendirmesi:** Oyun içinde cinayet, zehirlenme, adli tıp gibi temalar metin tabanlı işlendiği için App Store ve Google Play üzerinde **12+ / PEGI 12** (Kurgusal Şiddet Referansları) olarak sınıflandırılır. Görsel kan, vahşet veya rahatsız edici fotoğraf kesinlikle kullanılmaz.
+* **KVKK ve GDPR Uyumluluğu:** Uygulama; konum, rehber, fotoğraf galerisi veya mikrofon izni talep etmez. Yalnızca QR kod okutma aşamasında isteğe bağlı kamera izni istenir. Kullanıcı, Ayarlar menüsünden tek tuşla hesabını ve sunucudaki tüm geçmiş verilerini kalıcı olarak silebilir.
+* **Fikri Mülkiyet:** Vakalarda geçen tüm kişi, kurum, mekan, plaka ve marka isimleri tamamen kurgusaldır; gerçek kişi veya kurumlarla benzerlik taşımaması için içerik kontrolünden geçirilir.
+
+## 8. Proje Fazları ve Kabul (Teslimat) Kriterleri
+
+Proje geliştirme süreci 4 ana fazda tamamlanır ve her faz sonunda aşağıdaki kabul kriterleri aranır:
+
+1. **Faz 1 — Çekirdek Prototip (Alfa):** Temel arayüzün, Kanıt Tahtası (sürükle-bırak ve çizgi çekme) mekaniğinin ve 1 adet örnek vaka üzerinden yerel/bulut oda senkronizasyonunun çalışır durumda teslim edilmesi.
+2. **Faz 2 — İçerik ve Ekonomi Entegrasyonu (Kapalı Beta):** Solo modun, Kirli Polis (3-6 kişi) rol dağıtımının, uygulama içi satın alma (IAP) altyapısının ve başlangıç paketi olan **15 adet tam vakanın** (5 Ücretsiz Başlangıç, 5 Çiftlere Özel Paket, 5 Zorlu Kriminal Paket) sisteme yüklenmesi.
+3. **Faz 3 — Oynanabilirlik Testi (Playtest ve Dengeleme):** En az 20 farklı oyuncu grubuyla gerçek kafe/masa ortamında test yapılması; vakaların ortalama çözülme sürelerinin ve "Kirli Polis" kazanma oranlarının (hedef: yüzde 40 - 60 aralığı) dengelenmesi.
+4. **Faz 4 — Mağaza Yayını (Global Launch):** iOS (App Store) ve Android (Google Play) mağaza görsellerinin, tanıtım videolarının ve inceleme süreçlerinin tamamlanarak uygulamanın çökmesiz çalışma oranının (Crash-Free Rate) yüzde 99,5 üzerinde doğrulanması.

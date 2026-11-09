@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Eksik Parça</string>
+    <string name="title_activity_main">Eksik Parça</string>
+    <string name="package_name">com.eksikparca.detective</string>
+    <string name="custom_url_scheme">com.eksikparca.detective</string>
+</resources>

@@ -1,0 +1,207 @@
+{
+  "case_id": "CASE-303",
+  "pack_id": "pack_couples",
+  "version": 1,
+  "meta": {
+    "title": "Kapadokya: Balon Sepetinde Sır",
+    "subtitle": "Gün Doğumu Uçuşundan Önce Ölümcül Sabotaj",
+    "difficulty": 2,
+    "duration_seconds": 900,
+    "solo_token_limit": 4,
+    "min_players": 1,
+    "max_players": 6,
+    "is_tutorial": false,
+    "supported_modes": ["SOLO", "DUO", "GROUP"]
+  },
+  "briefing": {
+    "victim": "Mete Soylu (44, Balon Filosu İşletmecisi)",
+    "location": "Göreme Kalkış Vadisi — Hangar B",
+    "time_of_discovery": "05:45",
+    "summary": "Kapadokya'nın en büyük sıcak hava balonu işletmecisi Mete Soylu, gün doğumu uçuşundan hemen önce saat 05:45'te Hangar B'deki balon sepetinin içinde propan anahtarıyla başına vurularak öldürülmüş halde bulundu."
+  },
+  "suspects": [
+    {
+      "id": "susp_ozan",
+      "name": "Ozan Demir",
+      "age": 38,
+      "role": "Baş Pilot",
+      "relation": "Uçuş Kaptanı",
+      "alibi": "05:00 - 05:40 arasında dış pistte rüzgar ölçümü yapıyordum, Hangar B'ye hiç girmedim."
+    },
+    {
+      "id": "susp_hande",
+      "name": "Hande Soylu",
+      "age": 35,
+      "role": "Ortak / Kız Kardeşi",
+      "relation": "Kız Kardeşi",
+      "alibi": "Sabah 05:15'te turist kafilesini karşılamak için otel lobisindeydim."
+    },
+    {
+      "id": "susp_serhat",
+      "name": "Serhat Akın",
+      "age": 47,
+      "role": "Rakip Acente Sahibi",
+      "relation": "Rakibi",
+      "alibi": "Mete ile dün tartıştık ama bu sabah kendi sahamız olan Çavuşin pistindeydim."
+    },
+    {
+      "id": "susp_yeliz",
+      "name": "Yeliz Kaya",
+      "age": 30,
+      "role": "Yer Ekibi Şefi",
+      "relation": "Teknisyen",
+      "alibi": "05:20'de propan tüplerini kamyonete yükledim, Hangar B'nin kapısı kapalıydı."
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": "KNT-303-1",
+      "template": "OFFICIAL_REPORT",
+      "category": "ADLİ TIP",
+      "title": "Adli Tıp ve İz Analizi",
+      "file_no": "OTOPSİ #303-A",
+      "date": "05.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Ölüm saati 05:20 - 05:30 aralığıdır. Cinayet silahı olan ağır propan somun anahtarının sapında yanmaz mavi Nomex pilot eldiveni lifleri ve mavi boya izi saptanmıştır.",
+      "highlights": ["05:20 - 05:30", "propan somun anahtarının", "mavi Nomex pilot eldiveni"]
+    },
+    {
+      "node_id": "KNT-303-2",
+      "template": "DIGITAL_COMM",
+      "category": "DİJİTAL",
+      "title": "Mete Soylu'nun Sivil Havacılık Şikayeti",
+      "file_no": "SHGM #303-B",
+      "date": "05.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 0,
+      "is_red_herring": false,
+      "content": "04:50 Taslak Bildirim: 'Baş Pilot Ozan Demir'in geçen ayki sert inişte alkollü olduğunu ve sağlık raporunda sahtecilik yaptığını öğrendim. Saat 06:00'da uçuş lisansını iptal ettiriyorum.'",
+      "highlights": ["Ozan Demir", "sahtecilik yaptığını", "uçuş lisansını iptal"]
+    },
+    {
+      "node_id": "KNT-303-3",
+      "template": "RECEIPT",
+      "category": "GÜVENLİK",
+      "title": "Hangar B RFID Turnike Kaydı",
+      "file_no": "HANGAR #303-C",
+      "date": "05.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Hangar B Sabah Girişleri: Saat 05:05 [Kart: YER-04 Çıkış], Saat 05:21 [Telsiz Çipi: PİLOT-ALPHA Giriş], Saat 05:29 [Telsiz Çipi: PİLOT-ALPHA Çıkış].",
+      "highlights": ["05:21", "PİLOT-ALPHA", "05:29"]
+    },
+    {
+      "node_id": "KNT-303-4",
+      "template": "RECEIPT",
+      "category": "FİNANS",
+      "title": "Hande Soylu Otel Resepsiyon Kamerası",
+      "file_no": "OTEL #303-D",
+      "date": "05.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": true,
+      "content": "Hande Soylu saat 05:05 - 05:45 arasında Göreme Kaya Otel lobisinde Japon turist grubuna uçuş sigortası imzalatmıştır.",
+      "highlights": ["Hande Soylu", "05:05 - 05:45", "Kaya Otel"]
+    },
+    {
+      "node_id": "KNT-303-5",
+      "template": "OFFICIAL_REPORT",
+      "category": "OLAY YERİ",
+      "title": "Pilot Dolabı Arama Tutanağı",
+      "file_no": "ARAMA #303-E",
+      "date": "05.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Baş Pilot Ozan Demir'in kilitli dolabında avuç içi kan lekeli mavi Nomex uçuş eldiveni bulundu. Rüzgar ölçüm cihazının ise 05:00'ten beri hiç açılmadığı tespit edildi.",
+      "highlights": ["Ozan Demir", "mavi Nomex uçuş eldiveni", "hiç açılmadığı"]
+    },
+    {
+      "node_id": "KNT-303-6",
+      "template": "OFFICIAL_REPORT",
+      "category": "BELGE",
+      "title": "Uçuş Ekibi Telsiz Zimmet Listesi",
+      "file_no": "TELSİZ #303-F",
+      "date": "05.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Vadi Telsiz Çipleri: [PİLOT-ALPHA] çipli kask telsizi Baş Pilot Ozan Demir'e, [YER-04] kartı ise Yeliz Kaya'ya zimmetlidir.",
+      "highlights": ["PİLOT-ALPHA", "Ozan Demir", "YER-04"]
+    },
+    {
+      "node_id": "KNT-303-7",
+      "template": "DIGITAL_COMM",
+      "category": "DİJİTAL",
+      "title": "Serhat Akın'ın Mesaj Kaydı",
+      "file_no": "SMS #303-G",
+      "date": "05.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": true,
+      "content": "05:10 [Serhat -> Rehber]: 'Mete'nin otellerine gizlice %20 komisyon teklif ettim, müşterilerini çalacağız.' (Jandarma kontrol noktası Serhat'ın 05:25'te Çavuşin'de olduğunu doğruladı).",
+      "highlights": ["05:10", "müşterilerini çalacağız", "05:25'te Çavuşin'de"]
+    },
+    {
+      "node_id": "KNT-303-8",
+      "template": "RECEIPT",
+      "category": "GÜVENLİK",
+      "title": "Akaryakıt İstasyonu Kamera Fişi",
+      "file_no": "FİŞ #303-H",
+      "date": "05.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 0,
+      "is_red_herring": true,
+      "content": "Teknisyen Yeliz Kaya saat 05:12 - 05:38 arasında kamyonetle Ürgüp LPG dolum tesisinde sıra beklemiştir.",
+      "highlights": ["Yeliz Kaya", "05:12 - 05:38", "LPG dolum"]
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "EDGE-303-1",
+      "source_node": "KNT-303-1",
+      "target_node": "KNT-303-5",
+      "unlocked_node": {
+        "node_id": "CKR-303-1",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "Nomex Pilot Eldiveni ve Silah Bağı",
+        "content": "Propan anahtarındaki mavi Nomex lifleri, Baş Pilot Ozan Demir'in dolabındaki kanlı uçuş eldiveniyle eşleşti.",
+        "highlights": ["Nomex", "Ozan Demir", "kanlı uçuş eldiveniyle"]
+      }
+    },
+    {
+      "edge_id": "EDGE-303-2",
+      "source_node": "KNT-303-3",
+      "target_node": "KNT-303-6",
+      "unlocked_node": {
+        "node_id": "CKR-303-2",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "05:21 Hangar B Telsiz Girişi",
+        "content": "Ölüm saatinde (05:21 - 05:29) Hangar B'ye giren PİLOT-ALPHA çipli kişi Baş Pilot Ozan Demir'dir.",
+        "highlights": ["05:21 - 05:29", "PİLOT-ALPHA", "Ozan Demir"]
+      }
+    }
+  ],
+  "solution": {
+    "killer_id": "susp_ozan",
+    "required_nodes": ["KNT-303-2", "CKR-303-2", "CKR-303-1"],
+    "dirty_cop_frame_target": "susp_serhat",
+    "dirty_cop_cover_nodes": ["KNT-303-1", "KNT-303-5"],
+    "headline_success": "KAPADOKYA CİNAYETİ ÇÖZÜLDÜ: BAŞ PİLOT OZAN DEMİR TUTUKLANDI!",
+    "headline_failure": "BALONLAR HAVALANDI AMA KATİL VADİDE İZİNİ KAYBETTİRDİ!",
+    "story_summary": "Sahte sağlık raporu ve alkollü uçuş skandalı nedeniyle pilotluk lisansının iptal edileceğini öğrenen Ozan Demir, saat 05:21'de Hangar B'ye girerek mavi Nomex uçuş eldivenleriyle propan somun anahtarını kullandı."
+  }
+}

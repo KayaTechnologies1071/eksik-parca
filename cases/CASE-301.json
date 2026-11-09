@@ -1,0 +1,199 @@
+{
+  "case_id": "CASE-301",
+  "pack_id": "pack_couples",
+  "version": 1,
+  "meta": {
+    "title": "Kulis 7: Gala Gecesi Son Perde",
+    "subtitle": "Opera Sahnesinin Arkasında Sessiz İntikam",
+    "difficulty": 2,
+    "duration_seconds": 900,
+    "solo_token_limit": 4,
+    "min_players": 1,
+    "max_players": 6,
+    "is_tutorial": false,
+    "supported_modes": ["SOLO", "DUO", "GROUP"]
+  },
+  "briefing": {
+    "victim": "Derya Soyer (35, Baş Soprano)",
+    "location": "Devlet Operası — Kulis Odası No: 7",
+    "time_of_discovery": "21:55",
+    "summary": "Ünlü soprano Derya Soyer, gala temsilinin devre arasında saat 21:55'te Kulis 7'de makyaj masasının önünde boğularak öldürülmüş halde bulundu. Boğazında ipek bir fular izi ve kırık bir parfüm şişesi vardır."
+  },
+  "suspects": [
+    {
+      "id": "susp_ilker",
+      "name": "İlker Koray",
+      "age": 45,
+      "role": "Orkestra Şefi",
+      "relation": "Sanat Yönetmeni",
+      "alibi": "21:30 - 21:50 arasındaki devre arasında orkestra çukurunda notaları kontrol ediyordum."
+    },
+    {
+      "id": "susp_asli",
+      "name": "Aslı Yurt",
+      "age": 29,
+      "role": "Yedek Soprano",
+      "relation": "Rakibi",
+      "alibi": "Devre arasında kendi kulisimde kostüm provası yapıyordum, Kulis 7 koridoruna hiç geçmedim."
+    },
+    {
+      "id": "susp_kadir",
+      "name": "Kadir Yaman",
+      "age": 50,
+      "role": "Sahne Amiri",
+      "relation": "Teknik Müdür",
+      "alibi": "Saat 21:35'te Derya Hanım'ın kapısını çaldım ama içeriden ses gelmeyince ışık odasına döndüm."
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": "KNT-301-1",
+      "template": "OFFICIAL_REPORT",
+      "category": "ADLİ TIP",
+      "title": "Adli Tıp ve Lif Analizi",
+      "file_no": "KRİMİNAL #301-A",
+      "date": "02.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Ölüm saati 21:38 - 21:44 aralığıdır. Maktulün tırnak arasında saldırganın bileğinden kopan altın kaplama 'İ.K. 2019' işlemeli kol düğmesi parçası ve bordo ipek lifler bulunmuştur.",
+      "highlights": ["21:38 - 21:44", "İ.K. 2019", "kol düğmesi"]
+    },
+    {
+      "node_id": "KNT-301-2",
+      "template": "DIGITAL_COMM",
+      "category": "DİJİTAL",
+      "title": "Derya Soyer Ses Kayıt Cihazı",
+      "file_no": "SES #301-B",
+      "date": "02.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 0,
+      "is_red_herring": false,
+      "content": "21:10 Ses Notu: 'Şef İlker Koray'ın vakıf bağışlarını sahte konser faturalarıyla zimmetine geçirdiğini kanıtlayan belgeleri çantama koydum. Temsil sonu bakanlık müfettişine teslim edeceğim.'",
+      "highlights": ["İlker Koray", "vakıf bağışlarını", "bakanlık müfettişine"]
+    },
+    {
+      "node_id": "KNT-301-3",
+      "template": "RECEIPT",
+      "category": "GÜVENLİK",
+      "title": "Kulis Koridoru Ses Sensörü Logu",
+      "file_no": "SENSÖR #301-C",
+      "date": "02.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Kulis 7 Kapı Kilidi: Saat 21:37'de [MASTER-ŞEF] anahtar kartıyla dışarıdan açıldı. Saat 21:41'de içeride cam kırılma sesi (88 dB) kaydedildi.",
+      "highlights": ["21:37", "MASTER-ŞEF", "21:41"]
+    },
+    {
+      "node_id": "KNT-301-4",
+      "template": "DIGITAL_COMM",
+      "category": "DİJİTAL",
+      "title": "Aslı Yurt'un Mesaj Kaydı",
+      "file_no": "SMS #301-D",
+      "date": "02.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 0,
+      "is_red_herring": true,
+      "content": "20:15 [Giden - Menajer]: 'Derya'nın suyuna ses kısıklığı yapan bitki damlası damlattım, ikinci perdede sahneye ben çıkacağım.' (Adli tıpta bitki damlasının zararsız olduğu doğrulandı).",
+      "highlights": ["20:15", "bitki damlası", "zararsız"]
+    },
+    {
+      "node_id": "KNT-301-5",
+      "template": "OFFICIAL_REPORT",
+      "category": "OLAY YERİ",
+      "title": "Orkestra Şefi Soyunma Odası Arama Tutanağı",
+      "file_no": "ARAMA #301-E",
+      "date": "02.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "İlker Koray'ın frak gömleğinin sağ manşetindeki 'İ.K. 2019' işlemeli altın kol düğmesi kopuktur. Çöp sepetinde Derya'nın kırılan parfümünün kokusunu taşıyan bordo ipek fular bulundu.",
+      "highlights": ["İlker Koray", "İ.K. 2019", "bordo ipek fular"]
+    },
+    {
+      "node_id": "KNT-301-6",
+      "template": "OFFICIAL_REPORT",
+      "category": "BELGE",
+      "title": "Opera Yönetimi Anahtar Zimmet Listesi",
+      "file_no": "ZİMMET #301-F",
+      "date": "02.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Bina Elektronik Kart Zimmeti: [MASTER-ŞEF] kodlu tam yetkili kulis kartı yalnızca Orkestra Şefi İlker Koray'a zimmetlidir. Orkestra çukuru kamerasında İlker'in 21:35 - 21:46 arası çukurda olmadığı görülmüştür.",
+      "highlights": ["MASTER-ŞEF", "İlker Koray", "21:35 - 21:46"]
+    },
+    {
+      "node_id": "KNT-301-7",
+      "template": "RECEIPT",
+      "category": "FİNANS",
+      "title": "Sahne Amiri Kadir'in Bahis Kuponu",
+      "file_no": "KUPON #301-G",
+      "date": "02.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": true,
+      "content": "Kadir Yaman saat 21:36 - 21:48 arasında ışık odası bilgisayarından canlı maç yayını izlemiş ve bahis oynamıştır.",
+      "highlights": ["Kadir Yaman", "21:36 - 21:48", "ışık odası"]
+    },
+    {
+      "node_id": "KNT-301-8",
+      "template": "RECEIPT",
+      "category": "GÜVENLİK",
+      "title": "Kostüm Deposu Giriş Fişi",
+      "file_no": "DEPO #301-H",
+      "date": "02.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 0,
+      "is_red_herring": true,
+      "content": "Yedek soprano Aslı Yurt saat 21:32 - 21:50 arasında terzi gözetiminde kostüm dikim odasında kalmıştır.",
+      "highlights": ["Aslı Yurt", "21:32 - 21:50", "terzi gözetiminde"]
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "EDGE-301-1",
+      "source_node": "KNT-301-1",
+      "target_node": "KNT-301-5",
+      "unlocked_node": {
+        "node_id": "CKR-301-1",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "Kol Düğmesi ve Bordo Fular Kanıtı",
+        "content": "Maktulün tırnak arasındaki 'İ.K. 2019' kol düğmesi ve bordo ipek lifler, İlker Koray'ın kopuk manşeti ve odasındaki parfüm kokulu bordo fularla eşleşmiştir.",
+        "highlights": ["İ.K. 2019", "İlker Koray", "bordo fular"]
+      }
+    },
+    {
+      "edge_id": "EDGE-301-2",
+      "source_node": "KNT-301-3",
+      "target_node": "KNT-301-6",
+      "unlocked_node": {
+        "node_id": "CKR-301-2",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "Master Kart ile Kulis Girişi",
+        "content": "Saat 21:37'de Kulis 7 kapısını açan MASTER-ŞEF kartı İlker Koray'a aittir ve İlker'in orkestra çukurunda olduğu yönündeki ifadesi kamera kaydıyla çürütülmüştür.",
+        "highlights": ["21:37", "MASTER-ŞEF", "İlker Koray"]
+      }
+    }
+  ],
+  "solution": {
+    "killer_id": "susp_ilker",
+    "required_nodes": ["KNT-301-2", "CKR-301-2", "CKR-301-1"],
+    "dirty_cop_frame_target": "susp_asli",
+    "dirty_cop_cover_nodes": ["KNT-301-1", "KNT-301-5"],
+    "headline_success": "SON PERDE KAPANDI: ORKESTRA ŞEFİ İLKER KORAY TUTUKLANDI!",
+    "headline_failure": "OPERADA KARANLIK FİNAL: GERÇEK KATİL ALKIŞLAR ARASINDA KAÇTI!",
+    "story_summary": "Vakıf bağışlarını zimmetine geçirdiği ortaya çıkan Orkestra Şefi İlker Koray, devre arasında MASTER-ŞEF kartıyla saat 21:37'de Kulis 7'ye girdi. Belgeleri almak isterken çıkan boğuşmada bordo ipek fularıyla Derya Soyer'i boğdu; ancak kopan 'İ.K. 2019' kol düğmesi onu ele verdi."
+  }
+}

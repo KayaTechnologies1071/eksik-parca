@@ -1,0 +1,171 @@
+{
+  "case_id": "CASE-103",
+  "pack_id": "pack_starter",
+  "version": 1,
+  "meta": {
+    "title": "Nöbetçi Eczane: Gece Mesaisi",
+    "subtitle": "Kepenkler İndikten Sonra Ölümcül Doz",
+    "difficulty": 1,
+    "duration_seconds": 900,
+    "solo_token_limit": 5,
+    "min_players": 1,
+    "max_players": 6,
+    "is_tutorial": false,
+    "supported_modes": ["SOLO", "DUO", "GROUP"]
+  },
+  "briefing": {
+    "victim": "Nazan Şen (49, Baş Eczacı ve Denetçi)",
+    "location": "Moda Şifa Eczanesi — Arka İlaç Laboratuvarı",
+    "time_of_discovery": "02:15",
+    "summary": "Eczacılar Odası denetçisi Nazan Şen, nöbetçi kaldığı eczanesinin arka laboratuvarında saat 02:15'te aşırı doz insülin enjeksiyonu nedeniyle hayatını kaybetmiş halde bulundu. Kırmızı reçete kasa defteri yırtılmıştır."
+  },
+  "suspects": [
+    {
+      "id": "susp_tolga",
+      "name": "Tolga Arı",
+      "age": 32,
+      "role": "Eczane Kalfası",
+      "relation": "Yardımcısı",
+      "alibi": "Saat 01:00'de nöbeti Nazan Hanım'a devredip evime gittim, arka laboratuvara hiç girmedim."
+    },
+    {
+      "id": "susp_ecem",
+      "name": "Ecem Soylu",
+      "age": 37,
+      "role": "İlaç Mümessili",
+      "relation": "Tedarikçi Temsilcisi",
+      "alibi": "Gece 00:45'te numune kutularını ön bankoya bırakıp hemen çıktım."
+    },
+    {
+      "id": "susp_mahir",
+      "name": "Mahir Koç",
+      "age": 55,
+      "role": "Dükkan Sahibi",
+      "relation": "Mülk Sahibi",
+      "alibi": "Üst kattaki dairemde uyuyordum, kira tartışmamız geçen haftaydı."
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": "KNT-103-1",
+      "template": "OFFICIAL_REPORT",
+      "category": "ADLİ TIP",
+      "title": "Adli Tıp ve Enjeksiyon Raporu",
+      "file_no": "OTOPSİ #103-A",
+      "date": "22.10.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Ölüm saati 01:30 - 01:45 aralığıdır. Boyun bölgesine 'SERİ: INS-882' kodlu hızlı etkili insülin kalemi saplanmıştır. Kalem üzerinde nane aromalı elektronik sigara likiti kalıntısı saptandı.",
+      "highlights": ["01:30 - 01:45", "SERİ: INS-882", "nane aromalı elektronik sigara"]
+    },
+    {
+      "node_id": "KNT-103-2",
+      "template": "DIGITAL_COMM",
+      "category": "DİJİTAL",
+      "title": "Nazan Şen'in Denetim E-Postası",
+      "file_no": "DENETİM #103-B",
+      "date": "22.10.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 0,
+      "is_red_herring": false,
+      "content": "00:55 Taslak Rapor: 'Kalfa Tolga Arı'nın sahte hasta TC kimlikleriyle kırmızı reçeteli ilaçları karaborsaya sattığını tespit ettim. Sabah 08:00'de İl Sağlık Müdürlüğü'ne teslim edeceğim.'",
+      "highlights": ["Tolga Arı", "kırmızı reçeteli ilaçları", "karaborsaya sattığını"]
+    },
+    {
+      "node_id": "KNT-103-3",
+      "template": "RECEIPT",
+      "category": "GÜVENLİK",
+      "title": "Eczane Kepenk ve Alarm Logu",
+      "file_no": "ALARM #103-C",
+      "date": "22.10.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Arka Personel Kapısı: Saat 01:32'de [ŞİFRE: 4419] ile sessiz modda açıldı, saat 01:44'te tekrar kilitlendi.",
+      "highlights": ["01:32", "ŞİFRE: 4419", "01:44"]
+    },
+    {
+      "node_id": "KNT-103-4",
+      "template": "OFFICIAL_REPORT",
+      "category": "OLAY YERİ",
+      "title": "Şüpheli Ev ve Kıyafet Arama Tutanağı",
+      "file_no": "ARAMA #103-D",
+      "date": "22.10.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Tolga Arı'nın mont cebinde akıtan nane aromalı elektronik sigara, 'SERİ: INS-882' kutusunun yırtık kapağı ve yırtılan kırmızı reçete defteri sayfaları bulundu.",
+      "highlights": ["Tolga Arı", "nane aromalı elektronik sigara", "SERİ: INS-882"]
+    },
+    {
+      "node_id": "KNT-103-5",
+      "template": "OFFICIAL_REPORT",
+      "category": "BELGE",
+      "title": "Güvenlik Şirketi Şifre Kullanıcı Listesi",
+      "file_no": " GÜVENLİK #103-E",
+      "date": "22.10.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Eczane Alarm Paneli Kaydı: [ŞİFRE: 4419] yalnızca Kalfa Tolga Arı adına tanımlı bireysel personel kodudur.",
+      "highlights": ["ŞİFRE: 4419", "Tolga Arı"]
+    },
+    {
+      "node_id": "KNT-103-6",
+      "template": "RECEIPT",
+      "category": "FİNANS",
+      "title": "Mümessil Ecem'in Otoyol HGS Kaydı",
+      "file_no": "HGS #103-F",
+      "date": "22.10.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": true,
+      "content": "Ecem Soylu'nun aracı saat 01:12'de Avrasya Tüneli'nden karşı yakaya geçmiş ve 01:35'te Bakırköy'deki evinin otoparkına girmiştir.",
+      "highlights": ["Ecem Soylu", "01:12", "01:35'te Bakırköy"]
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "EDGE-103-1",
+      "source_node": "KNT-103-1",
+      "target_node": "KNT-103-4",
+      "unlocked_node": {
+        "node_id": "CKR-103-1",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "INS-882 İnsülin Kalemi ve Likit İzi",
+        "content": "Cinayette kullanılan INS-882 insülin kalemi üzerindeki nane likiti, Tolga Arı'nın cebindeki elektronik sigara ve yırtık ilaç kutusuyla eşleşti.",
+        "highlights": ["INS-882", "nane likiti", "Tolga Arı"]
+      }
+    },
+    {
+      "edge_id": "EDGE-103-2",
+      "source_node": "KNT-103-3",
+      "target_node": "KNT-103-5",
+      "unlocked_node": {
+        "node_id": "CKR-103-2",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "01:32 Arka Kapı Şifre Girişi",
+        "content": "Ölüm saatinde (01:32 - 01:44) arka kapıyı sessiz modda açan 4419 şifresi Kalfa Tolga Arı'ya aittir.",
+        "highlights": ["01:32 - 01:44", "4419", "Tolga Arı"]
+      }
+    }
+  ],
+  "solution": {
+    "killer_id": "susp_tolga",
+    "required_nodes": ["KNT-103-2", "CKR-103-2", "CKR-103-1"],
+    "dirty_cop_frame_target": "susp_ecem",
+    "dirty_cop_cover_nodes": ["KNT-103-1", "KNT-103-4"],
+    "headline_success": "NÖBETÇİ ECZANE CİNAYETİ ÇÖZÜLDÜ: KALFA TOLGA ARI TUTUKLANDI!",
+    "headline_failure": "REÇETE VURGUNU KARANLIKTA KALDI: GERÇEK KATİL SERBEST!",
+    "story_summary": "Kırmızı reçeteli ilaçları karaborsada sattığı Baş Eczacı Nazan Şen tarafından yakalanan kalfa Tolga Arı, saat 01:32'de kendi alarm şifresiyle arka kapıdan girerek Nazan Şen'e yüksek doz insülin enjekte etti ve reçete defterini çaldı."
+  }
+}

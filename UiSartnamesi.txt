@@ -1,0 +1,176 @@
+# EKSİK PARÇA (THE MISSING PIECE) — KULLANICI ARAYÜZÜ (UI) VE DENEYİMİ (UX) TEKNİK ŞARTNAMESİ
+
+**Doküman Sürümü:** 1.0 (Tasarım Sistemi ve Arayüz Mimarisi)
+**Tasarım Paradigması:** Sıfır Görsel Varlık (Zero-Asset), Kod Tabanlı (Procedural/Declarative UI), Yüksek Kontrastlı Koyu Tema (Tactical Dark UI)
+
+---
+
+## 1. Tasarım Sistemi ve Atomik Kurallar (Design Tokens)
+
+Uygulama içinde hiçbir harici illüstrasyon, fotoğraf veya 3D model kullanılmayacaktır. Tüm görsel derinlik; renk kontrastları, kenarlık kalınlıkları, tipografik hiyerarşi ve kodla çizilen geometrik şekiller üzerinden sağlanır.
+
+### 1.1. Renk Paleti ve Anlamsal (Semantic) Kodlar
+
+| Token Adı | HEX Kodu | Opaklık | Kullanım Alanı |
+| --- | --- | --- | --- |
+| `bg-primary` | `#090A0F` | %100 | Ana uygulama zemini (OLED tam siyah uyumlu) |
+| `bg-surface` | `#12141C` | %100 | Standart kart, klasör ve alt pencere zemini |
+| `bg-elevated` | `#1C1F2B` | %100 | Seçili kart, açık dosya ve modal pencere zemini |
+| `text-primary` | `#F1F5F9` | %100 | Ana başlıklar ve birincil okuma metinleri |
+| `text-secondary` | `#94A3B8` | %100 | Alt başlıklar, tarih/saat damgaları ve açıklamalar |
+| `text-muted` | `#475569` | %100 | Devre dışı elemanlar ve filigran (watermark) yazılar |
+| `accent-crimson` | `#E11D48` | %100 | Kanıt bağlama ipleri, birincil aksiyon ve uyarılar |
+| `accent-amber` | `#F59E0B` | %100 | Solo mod jetonları, fosforlu kalem vurgusu ve pinler |
+| `accent-emerald` | `#10B981` | %100 | Doğrulanmış bağlantı, hazır durumu ve onaylar |
+| `border-subtle` | `#FFFFFF` | %8 | Kart ve liste ayırıcı ince kenarlıklar (1 px) |
+
+### 1.2. Tipografi Ölçeği ve Font Aileleri
+
+Görsel çizim olmadığı için tipografi, oyunun ana grafik unsurudur. Uygulamada üç farklı font karakteri bir arada kullanılır:
+
+* **Arayüz Fontu (`font-sans` — Inter veya Plus Jakarta Sans):** Menü, buton ve genel yönlendirmeler.
+* **Veri ve Rapor Fontu (`font-mono` — JetBrains Mono veya Courier Prime):** Otopsi raporları, plaka kayıtları, banka dekontları, sayaçlar ve oda kodları.
+* **Manşet Fontu (`font-serif` — Playfair Display):** Sadece oyun sonundaki gazete manşeti ekranı ve vaka kapak başlıkları.
+
+| Stil Adı | Font Ailesi | Boyut / Satır Yüksekliği | Ağırlık | Kullanım Yeri |
+| --- | --- | --- | --- | --- |
+| `Display-XL` | `font-mono` | 32 sp / 40 sp | Bold (700) | 6 haneli oda kodu ve ana geri sayım sayacı |
+| `Heading-1` | `font-serif` | 24 sp / 32 sp | Bold (700) | Vaka başlıkları ve oyun sonu gazete manşeti |
+| `Heading-2` | `font-sans` | 18 sp / 24 sp | SemiBold (600) | Sekme başlıkları ve şüpheli isimleri |
+| `Body-Doc` | `font-mono` | 14 sp / 22 sp | Regular (400) | Kanıt belgelerinin iç metinleri |
+| `Caption-Tag` | `font-mono` | 11 sp / 14 sp | Medium (500) | Dosya numaraları, kategori etiketleri (`[ADLİ TIP]`) |
+
+### 1.3. Izgara (Grid), Boşluk (Spacing) ve Boyutlandırma
+
+* **Temel Birim:** 8 noktalı (8-pt grid) sistem kullanılır. Tüm iç (padding) ve dış (margin) boşluklar 4, 8, 12, 16, 24 ve 32 dp katları olmalıdır.
+* **Köşe Yuvarlatma (Border Radius):** Keskin ve ciddi bir kriminal dosya hissi vermek için yuvarlatmalar minimumda tutulur: Kartlarda `6 dp`, butonlarda `4 dp`, etiketlerde `2 dp`.
+* **Dokunma Hedefleri:** Kafede tek elle kullanım ergonomisi için tıklanabilir her eleman en az `48x48 dp` boyutunda olmalıdır.
+
+---
+
+## 2. Kod Tabanlı Belge ve Kart Şablonları (Procedural Templates)
+
+Grafik tasarımcıya ihtiyaç duymadan oyuncuya "gerçek bir belge inceliyor" hissi vermek için, kanıt türlerine göre sadece kod (Container, Border, Font) ile çizilen 4 standart görünüm şablonu uygulanır:
+
+```
++-------------------------------------------------------+
+| [ADLİ TIP KURUMU]                        DOSYA #884-A |
+| ----------------------------------------------------- |
+| KONU: Otopsi Ön Raporu               TARİH: 14.10.2026|
+|                                                       |
+| Maktulün kan örneğinde yüksek dozda [potasyum]        |
+| saptanmıştır. Ölüm saati [23:15 - 23:45] aralığıdır.  |
+|                                                       |
+|                              +----------------------+ |
+|                              | [ GİZLİ / ÖZEL ]     | |
+|                              +----------------------+ |
++-------------------------------------------------------+
+
+```
+
+1. **Resmi Rapor Şablonu (Otopsi, Balistik, Polis Tutanağı):**
+* Arka plan `#161922`, üst kısımda 2 px kalınlığında `#E11D48` şerit.
+* Sağ alt köşede `-12` derece eğimli, kırmızı çerçeveli, içi yarı saydam `GİZLİ` veya `ADLİ DELİL` CSS/Canvas damgası.
+
+
+2. **Finans ve Fiş Şablonu (Banka Dekontu, Eczane Fişi, Otel Faturası):**
+* Üst ve alt kenarları kesik çizgili (`dashed border`) dikdörtgen kart.
+* Tamamen `font-mono` yazı tipi, sola dayalı kalem adı, sağa dayalı tutar ve en altta barkod görünümü veren dikey çizgi dizisi (`||| | |||| || |`).
+
+
+3. **Dijital İletişim Şablonu (SMS, WhatsApp, E-Posta Kaydı):**
+* Sohbet balonları formatı. Gelen mesajlar sola dayalı (`#1C1F2B`), giden mesajlar sağa dayalı (`#262B3D`).
+* Her balonun sağ altında saat damgası (`22:41`) ve silinmiş/kurtarılmış mesajlar için etrafı kırmızı kesik çizgili, üzerinde `[KURTARILMIŞ VERİ]` etiketi bulunan özel balon stili.
+
+
+4. **Şüpheli Kimlik Kartı (Fotoğrafsız):**
+* Fotoğraf alanı yerine, şüphelinin baş harflerinden oluşan geometrik bir monogram veya vektörel silüet ikonu yer alır.
+* Yanında 3 satırlık yapılandırılmış veri: `YAŞ / MESLEK`, `KURBANLA İLİŞKİSİ`, `İLK İFADE ÖZETİ`.
+
+
+
+---
+
+## 3. Ekran Bazlı Yerleşim ve Arayüz Kuralları
+
+### 3.1. Karşılama ve Lobi Ekranı
+
+* **Ana Ekran:** Üstte oyunun tipografik logosu ve altında dikey olarak dizilmiş 3 büyük kart-buton yer alır:
+1. `ODAYA KATIL` (Vurgulu birincil buton — Tıklandığında 6 haneli numaratör/klavye ve kamera QR okuyucu açılır).
+2. `ODA KUR (ÇOK OYUNCULU)` (İkincil buton — Vaka seçim ekranına yönlendirir).
+3. `ARŞİV MODU (TEK KİŞİLİK)` (İkincil buton — Solo vaka listesini açar).
+
+
+* **Lobi (Bekleme) Ekranı:**
+* Ekranın üst üçte birlik kısmında devasa boyutta `ODA KODU: 489-K2M` ve yanında tek tuşla paylaşılabilir QR kod yer alır.
+* Orta alanda 6 adet oyuncu yuvası (Slot) bulunur. Odaya giren her oyuncunun kartı yeşil bir kenarlıkla aydınlanır.
+* **Kafe Ergonomisi (Gizli Rol Perdesi):** 3 ve üzeri kişilik "Kirli Polis" modunda oyun başladığında, rol ekranı doğrudan açılmaz. Masadaki diğer kişilerin yan gözle ekranı görmesini engellemek için ekranda **"ROLÜNÜ GÖRMEK İÇİN PARMAĞINI BASILI TUT"** butonu çıkar. Oyuncu yalnızca parmağını basılı tuttuğu sürece ekranın ortasında `DEDEKTİF` (Mavi) veya `KİRLİ POLİS - KATİL: KEREM SOYLU` (Kırmızı) bilgisini görür; parmağını çektiği an ekran normal vaka ekranına döner.
+
+
+
+### 3.2. Oyun İçi Ana Çerçeve (HUD)
+
+Oyun başladıktan sonra ekranın üst ve alt barları sabit kalır, sadece orta içerik alanı değişir:
+
+* **Üst Durum Çubuğu (Top Bar — Yükseklik: 56 dp):**
+* Sol: Vaka numarası ve aktif oyuncu sayısı ikonu.
+* Orta: Canlı Geri Sayım Sayacı (`14:59`). Süre son 2 dakikaya girdiğinde sayaç rengi `#F1F5F9` yerine `#E11D48` (Kırmızı) olur ve saniyede bir hafifçe büyüyüp küçülür (pulse). Solo modda bu alanda kalan **Arşiv Sorgu Jetonu** (`[♦ ♦ ♦ ◊]`) gösterilir.
+* Sağ: Ses Aç/Kapat ikonu ve hızlı `SUÇLA` butonu.
+
+
+* **Alt Navigasyon Çubuğu (Bottom Bar — Yükseklik: 64 dp):**
+* 4 eşit genişlikte sekme: `1. VAKA ÖZETİ`, `2. GİZLİ DOSYAM`, `3. KANIT TAHTASI`, `4. TUTUKLA`.
+* Yeni bir kanıt açıldığında veya tahtaya bir kart eklendiğinde ilgili sekmenin üzerinde kırmızı bildirim noktası (Badge) belirir.
+
+
+
+### 3.3. Belge İnceleme ve Fosforlu Kalem (Highlight) Mekaniği
+
+Oyuncu "Gizli Dosyam" sekmesinden bir belgeye tıkladığında açılan tam ekran okuma penceresidir:
+
+* Belge metni içindeki kritik veriler (saatler, plakalar, ilaç isimleri, tutarlar) etkileşimli kelimeler (`span`) olarak tanımlıdır.
+* Oyuncu bu kelimelerden birine dokunduğunda kelimenin arka planı `#F59E0B` (Kehribar Sarısı, %30 opaklık) ile boyanır.
+* Ekranın en altında tam genişlikte sabit bir aksiyon butonu bulunur: **`[📌 BU KANITI ORTAK TAHTAYA İĞNELE]`**. Bu butona basıldığında kart, masadaki tüm oyuncuların Kanıt Tahtası ekranına düşer.
+
+### 3.4. İnteraktif Kanıt Tahtası (2D Canvas UI)
+
+Uygulamanın kalbi olan bu ekran, sonsuz kaydırılabilir bir noktalı ızgara (dot-matrix grid) zemini üzerinde çalışır:
+
+| Eleman / Etkileşim | Görsel Davranış |
+| --- | --- |
+| **Zemin (Canvas)** | `#090A0F` zemin üzerinde 24 dp aralıklarla dizilmiş `#1E293B` renginde 1 px noktalar |
+| **Tahta Kartı (Node)** | `140x80 dp` boyutunda kompakt kart. Üstünde kırmızı iğne noktası, kategori etiketi ve başlık |
+| **İp Çekme (Linking)** | Bir kartın altındaki bağlantı noktasından diğerine parmakla sürükleme yaparken çıkan `#E11D48` renginde, 3 px kalınlığında dinamik Bezier eğrisi |
+| **Başarılı Bağlantı** | İki doğru kanıt birleştiğinde ip rengi 1 saniyeliğine `#10B981` (Yeşil) parlar, ardından sabit kırmızı ipe dönüşür ve iki ipin ortasında yeni açılan çıkarım kartı belirir |
+| **Hatalı Bağlantı** | Yanlış iki kanıt birleştirildiğinde ip kopar, ekran 200 ms sağa-sola titrer (shake) ve üstteki sayaçtan `-00:30` kırmızı bir animasyonla düşer |
+
+* **Kamera Kontrolleri:** İki parmakla yakınlaştırma (Zoom sınırları: minimum `0.5x`, maksimum `2.0x`) ve tek parmakla boş zeminden tutarak kaydırma (Pan). Sağ alt köşede tahtayı merkeze toplayan `[Merkezle]` ikonu yer alır.
+
+### 3.5. Suçlama ve Oylama Ekranı
+
+* **Adım 1 — Şüpheli Seçimi:** Üst kısımda şüphelilerin kartları yatay kaydırılabilir listede durur. Seçilen şüphelinin etrafı kalın kırmızı çerçeveyle işaretlenir.
+* **Adım 2 — Kanıt Yuvaları:** Alt kısımda `KANIT 1`, `KANIT 2`, `KANIT 3` yazan, etrafı kesik çizgili 3 adet boş yuva (Dropzone) bulunur. Oyuncu, açılmış kanıt listesinden 3 kartı bu yuvalara seçerek yerleştirir.
+* **Adım 3 — Eşzamanlı Mühürleme:** Çok oyunculu modda ekranın altında odadaki tüm oyuncuların avatar/baş harf daireleri yer alır. Oyuncu `KARARI MÜHÜRLE` butonuna bastığında kendi dairesi yeşil yanar. Herkes onayladığında (veya süre bittiğinde) sonuç ekranı tetiklenir.
+
+---
+
+## 4. Mikro Etkileşimler, Animasyon ve Dokunsal (Haptic) Kurallar
+
+Arayüzün durağan bir form uygulaması gibi değil, yaşayan bir oyun gibi hissettirmesi için tüm geçişler aşağıdaki fizik ve geri bildirim kurallarına bağlanır:
+
+| Olay (Trigger) | Görsel Animasyon | Süre / Eğri | Dokunsal (Haptic) / Ses Tepkisi |
+| --- | --- | --- | --- |
+| Dosya Kartı Açılışı | Kartın aşağıdan yukarıya büyümesi (Scale `0.95 → 1.0`) | 220 ms / `easeOutCubic` | Hafif tık (`LightImpact`) + Kağıt sesi |
+| Tahtaya Kanıt İğneleme | Kartın yukarıdan tahtaya düşüp hafifçe sekmesi | 300 ms / `easeOutBack` | Orta vuruş (`MediumImpact`) + Zımba/İğne sesi |
+| Başka Oyuncu Pingi | İlgili kartın etrafında genişleyen kırmızı halka (Ripple) | 600 ms / `easeOutQuad` | Çift kısa titreşim + Düşük frekanslı sonar sesi |
+| Doğru Kanıt Bağlantısı | İpin gerilmesi ve yeni kartın ortada parlayarak açılması | 400 ms / `spring` | Başarı titreşimi (`NotificationSuccess`) |
+| Yanlış Bağlantı Cezası | Ekran kenarlarının kırmızı yanıp sönmesi + Yatay sarsıntı | 250 ms / `linear` | Hata titreşimi (`NotificationError`) |
+
+---
+
+## 5. Ergonomi, Erişilebilirlik ve Uç Durum (Edge-Case) Tasarımı
+
+1. **Tek El (Başparmak Bölgesi) Optimizasyonu:** Kafede bir elinde içecek tutan kullanıcının oyunu tek elle oynayabilmesi için; sekme geçişleri, "Tahtaya İğnele" butonu ve kanıt filtreleri ekranın alt yarısında (kolay erişilebilir başparmak yayında) konumlandırılır. Ekranın en üstünde sadece izleme verileri (sayaç, oda kodu) bulunur.
+2. **Ağ Kopması (Reconnecting) Katmanı:** Çok oyunculu modda oyunculardan birinin interneti koptuğunda oyun durmaz veya ekrana tam sayfa hata penceresi çıkmaz. Yalnızca üst durum çubuğunun altında `24 dp` yüksekliğinde sarı bir şerit kayarak açılır: `"Bağlantı yenileniyor... Masa senkronize ediliyor."`
+3. **Dinamik Metin Boyutu (Accessibility):** Karanlık ortamlarda (bar, akşam kafesi) veya görme hassasiyeti olan kullanıcılarda okuma zorluğunu önlemek için, belge okuma ekranının sağ üst köşesinde `[A- / A+]` metin büyütme düğmesi yer alır. Bu düğme arayüzü bozmadan yalnızca belge içindeki `Body-Doc` font boyutunu `14 sp` ile `20 sp` arasında ölçekler.
+4. **Düşük Pil ve Performans Modu:** Kanıt tahtasındaki 2D Canvas çizimi, ekranda herhangi bir kaydırma veya sürükleme hareketi yokken (`isIdle`) saniyedeki kare hızını (FPS) otomatik olarak düşürerek (Render-on-Demand) cihazın ısınmasını ve pil tüketimini engeller.

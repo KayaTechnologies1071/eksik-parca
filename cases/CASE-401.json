@@ -1,0 +1,207 @@
+{
+  "case_id": "CASE-401",
+  "pack_id": "pack_criminal",
+  "version": 1,
+  "meta": {
+    "title": "Ameliyathane 3: Karanlık Anestezi",
+    "subtitle": "Gece Nöbetinde Cerrahi Kusur Cinayeti",
+    "difficulty": 2,
+    "duration_seconds": 1080,
+    "solo_token_limit": 4,
+    "min_players": 1,
+    "max_players": 6,
+    "is_tutorial": false,
+    "supported_modes": ["SOLO", "DUO", "GROUP"]
+  },
+  "briefing": {
+    "victim": "Prof. Dr. Halit Soylu (59, Başhekim ve Kalp Cerrahı)",
+    "location": "Özel Vadi Hastanesi — Ameliyathane 3 Dinlenme Odası",
+    "time_of_discovery": "02:50",
+    "summary": "Başhekim Prof. Dr. Halit Soylu gece 02:50'de steril koridordaki dinlenme odasında kas gevşetici (Roküronyum) aşırı dozu nedeniyle solunumu durmuş halde ölü bulundu."
+  },
+  "suspects": [
+    {
+      "id": "susp_doruk",
+      "name": "Dr. Doruk Kaya",
+      "age": 41,
+      "role": "Anestezi Uzmanı",
+      "relation": "Ameliyat Ekibi Üyesi",
+      "alibi": "01:45'te ameliyattan çıkıp yoğun bakım katına indim, steril koridora geri dönmedim."
+    },
+    {
+      "id": "susp_seda",
+      "name": "Seda Arslan",
+      "age": 34,
+      "role": "Başhemşire",
+      "relation": "Ameliyathane Sorumlusu",
+      "alibi": "02:00 - 02:45 arasında ilaç sayım odasında narkotik dolabını kilitliyordum."
+    },
+    {
+      "id": "susp_engin",
+      "name": "Engin Vural",
+      "age": 48,
+      "role": "Hastane İdari Müdürü",
+      "relation": "Yönetim Kurulu Üyesi",
+      "alibi": "Gece hastanede değildim, saat 23:00'te evime gitmiştim."
+    },
+    {
+      "id": "susp_nihal",
+      "name": "Dr. Nihal Çelik",
+      "age": 31,
+      "role": "Asistan Cerrah",
+      "relation": "Öğrencisi",
+      "alibi": "Acil serviste travma hastasına dikiş atıyordum."
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": "KNT-401-1",
+      "template": "OFFICIAL_REPORT",
+      "category": "ADLİ TIP",
+      "title": "Toksikoloji ve Enjektör Raporu",
+      "file_no": "OTOPSİ #401-A",
+      "date": "07.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Ölüm saati 02:15 - 02:25 aralığıdır. Maktule 100 mg Roküronyum enjekte edilmiştir. Tıbbi atık kutusundaki 'LOT: AN-509' flakonunda iyotlu cerrahi fırça izi bulundu.",
+      "highlights": ["02:15 - 02:25", "Roküronyum", "LOT: AN-509"]
+    },
+    {
+      "node_id": "KNT-401-2",
+      "template": "DIGITAL_COMM",
+      "category": "DİJİTAL",
+      "title": "Etik Kurul Soruşturma Dosyası",
+      "file_no": "ETİK #401-B",
+      "date": "07.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 0,
+      "is_red_herring": false,
+      "content": "01:30 Başhekim Notu: 'Anestezi Uzmanı Dr. Doruk Kaya'nın geçen haftaki ameliyatta yanlış doz verip hasta ölümünü gizlemek için monitör kayıtlarını sildiğini kanıtladım. Sabah meslekten men edilecek.'",
+      "highlights": ["Dr. Doruk Kaya", "monitör kayıtlarını sildiğini", "meslekten men"]
+    },
+    {
+      "node_id": "KNT-401-3",
+      "template": "RECEIPT",
+      "category": "GÜVENLİK",
+      "title": "Steril Koridor Biyometrik Geçiş Logu",
+      "file_no": "STERİL #401-C",
+      "date": "07.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Ameliyathane 3 Koridoru: Saat 02:14'te [YAKA-ÇİPİ: MED-108] giriş yaptı ve 02:23'te yangın çıkışından ayrıldı.",
+      "highlights": ["02:14", "MED-108", "02:23"]
+    },
+    {
+      "node_id": "KNT-401-4",
+      "template": "RECEIPT",
+      "category": "BELGE",
+      "title": "Acil Servis Kamera ve Hasta Kaydı",
+      "file_no": "ACİL #401-D",
+      "date": "07.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": true,
+      "content": "Dr. Nihal Çelik saat 01:50 - 03:00 arasında 4 hemşire eşliğinde acil müdahale odasında kalmıştır.",
+      "highlights": ["Dr. Nihal Çelik", "01:50 - 03:00", "acil müdahale"]
+    },
+    {
+      "node_id": "KNT-401-5",
+      "template": "OFFICIAL_REPORT",
+      "category": "OLAY YERİ",
+      "title": "Narkotik Dolabı Elektronik Çekmece Kaydı",
+      "file_no": "ECZA #401-E",
+      "date": "07.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "'LOT: AN-509' seri numaralı Roküronyum flakonu saat 02:05'te yalnızca Anestezi Uzmanı Dr. Doruk Kaya'nın parmak iziyle açılan özel anestezi arabasından alınmıştır.",
+      "highlights": ["LOT: AN-509", "02:05", "Dr. Doruk Kaya"]
+    },
+    {
+      "node_id": "KNT-401-6",
+      "template": "OFFICIAL_REPORT",
+      "category": "BELGE",
+      "title": "Hastane Personel Çip Zimmet Listesi",
+      "file_no": "İK #401-F",
+      "date": "07.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Steril Alan Yaka Çipleri: [MED-108] Dr. Doruk Kaya adına kayıtlıdır. Yoğun bakım hemşireleri Doruk'un 02:00 - 02:30 arası serviste olmadığını ifade etmiştir.",
+      "highlights": ["MED-108", "Dr. Doruk Kaya", "02:00 - 02:30"]
+    },
+    {
+      "node_id": "KNT-401-7",
+      "template": "DIGITAL_COMM",
+      "category": "DİJİTAL",
+      "title": "İdari Müdür Engin'in Mesajı",
+      "file_no": "SMS #401-G",
+      "date": "07.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": true,
+      "content": "22:30 [Engin -> Tedarikçi]: 'Halit Hoca tıbbi cihaz ihalesini iptal ederse komisyonumuz yanar.' (Ev alarm sistemi Engin'in 23:20'den sabaha kadar evden çıkmadığını doğruladı).",
+      "highlights": ["22:30", "komisyonumuz yanar", "23:20'den sabaha"]
+    },
+    {
+      "node_id": "KNT-401-8",
+      "template": "RECEIPT",
+      "category": "GÜVENLİK",
+      "title": "Eczane Sayım Odası Kamera Özeti",
+      "file_no": "SAYIM #401-H",
+      "date": "07.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 0,
+      "is_red_herring": true,
+      "content": "Başhemşire Seda Arslan saat 02:00 - 02:45 arasında alt kattaki ana depoda barkod okuyucuyla envanter sayımı yapmıştır.",
+      "highlights": ["Seda Arslan", "02:00 - 02:45", "envanter sayımı"]
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "EDGE-401-1",
+      "source_node": "KNT-401-1",
+      "target_node": "KNT-401-5",
+      "unlocked_node": {
+        "node_id": "CKR-401-1",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "LOT: AN-509 Roküronyum Zimmeti",
+        "content": "Maktulü öldüren LOT: AN-509 kodlu kas gevşetici flakon, saat 02:05'te Dr. Doruk Kaya'nın parmak izli anestezi arabasından alınmıştır.",
+        "highlights": ["LOT: AN-509", "02:05", "Dr. Doruk Kaya"]
+      }
+    },
+    {
+      "edge_id": "EDGE-401-2",
+      "source_node": "KNT-401-3",
+      "target_node": "KNT-401-6",
+      "unlocked_node": {
+        "node_id": "CKR-401-2",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "02:14 Steril Koridor İhlali",
+        "content": "Dr. Doruk Kaya (MED-108), yoğun bakımda olduğu yalanının aksine ölüm saati olan 02:14'te Ameliyathane 3 koridoruna girmiştir.",
+        "highlights": ["Dr. Doruk Kaya", "MED-108", "02:14"]
+      }
+    }
+  ],
+  "solution": {
+    "killer_id": "susp_doruk",
+    "required_nodes": ["KNT-401-2", "CKR-401-2", "CKR-401-1"],
+    "dirty_cop_frame_target": "susp_engin",
+    "dirty_cop_cover_nodes": ["KNT-401-1", "KNT-401-5"],
+    "headline_success": "AMELİYATHANE CİNAYETİ ÇÖZÜLDÜ: DR. DORUK KAYA TUTUKLANDI!",
+    "headline_failure": "BEYAZ ÖNLÜKLÜ KATİL İZİNİ SİLDİ: SORUŞTURMA KAPANDI!",
+    "story_summary": "Önceki bir ameliyattaki tıbbi hatasını örtbas ettiği Başhekim Halit Soylu tarafından tespit edilen Anestezi Uzmanı Dr. Doruk Kaya, meslekten men edilmemek için saat 02:14'te dinlenme odasına girip kendi anestezi arabasından aldığı Roküronyum ile Başhekimi öldürdü."
+  }
+}

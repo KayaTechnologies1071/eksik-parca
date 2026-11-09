@@ -1,0 +1,213 @@
+{
+  "case_id": "CASE-104",
+  "pack_id": "pack_starter",
+  "version": 1,
+  "meta": {
+    "title": "Loca 402: Son Müzayede",
+    "subtitle": "VIP Dinlenme Odasında Kristal Kadeh",
+    "difficulty": 2,
+    "duration_seconds": 900,
+    "solo_token_limit": 4,
+    "min_players": 1,
+    "max_players": 6,
+    "is_tutorial": false,
+    "supported_modes": ["SOLO", "DUO", "GROUP"]
+  },
+  "briefing": {
+    "victim": "Bora Tekin (48, Müzayede Evi Sahibi)",
+    "location": "VIP Loca 402",
+    "time_of_discovery": "00:15",
+    "summary": "Ünlü sanat simsarı Bora Tekin, kendi müzayede evinin VIP dinlenme odası olan Loca 402'de gece 00:15'te güvenlik görevlisi tarafından koltuğunda ölü bulundu. Masada yarısı içilmiş bir kadeh viski ve kırık bir cep saati var. Müzayede saat 22:00'de başlamış, 23:45'te sona ermiştir."
+  },
+  "suspects": [
+    {
+      "id": "susp_cemre",
+      "name": "Cemre Tekin",
+      "age": 34,
+      "role": "Eşi (Boşanma Aşamasında)",
+      "relation": "Eşi",
+      "alibi": "Bütün gece alt kattaki kokteyl salonundaydım, Loca 402'ye hiç çıkmadım."
+    },
+    {
+      "id": "susp_hakan",
+      "name": "Hakan Demir",
+      "age": 41,
+      "role": "Baş Eksper",
+      "relation": "10 Yıllık Sağ Kolu",
+      "alibi": "Saat 23:00'te Bora'nın odasına uğradım, müzayede listesini bırakıp hemen çıktım. Çıktığımda gayet sağlıklıydı."
+    },
+    {
+      "id": "susp_leyla",
+      "name": "Leyla Sönmez",
+      "age": 52,
+      "role": "Koleksiyoner",
+      "relation": "En Büyük Alıcı",
+      "alibi": "Bora ile saat 22:30'da tablo fiyatı yüzünden tartıştık ama sonra salonu terk edip otelime döndüm."
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": "KNT-01",
+      "template": "OFFICIAL_REPORT",
+      "category": "ADLİ TIP",
+      "title": "Adli Tıp Ön Raporu",
+      "file_no": "DOSYA #104-A",
+      "date": "18.10.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Maktulün ölüm nedeni kalp durmasıdır. Kan örneğinde yüksek dozda Digoksin (kalp ilacı etken maddesi) tespit edilmiştir. Madde alkolle karıştırıldığında içildikten 15 ila 20 dakika sonra ölüme yol açar. Maktulün kırılan kol saati boğuşma esnasında 23:35'te durmuştur.",
+      "highlights": ["Digoksin", "15 ila 20 dakika", "23:35"]
+    },
+    {
+      "node_id": "KNT-02",
+      "template": "RECEIPT",
+      "category": "GÜVENLİK",
+      "title": "VIP Koridoru Kartlı Geçiş Kaydı",
+      "file_no": "TURNİKE #104-B",
+      "date": "18.10.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Loca 402'nin bulunduğu üst koridora sadece personel ve VIP kartlarla girilebilmektedir. Gece boyu turnikeden geçen kart kodları: Saat 22:40 [Kart No: VIP-09], Saat 23:00 [Kart No: PER-04], Saat 23:18 [Kart No: VIP-02].",
+      "highlights": ["22:40", "VIP-09", "23:00", "PER-04", "23:18", "VIP-02"]
+    },
+    {
+      "node_id": "KNT-03",
+      "template": "DIGITAL_COMM",
+      "category": "DİJİTAL",
+      "title": "Bora Tekin'in Gelen Kutusu",
+      "file_no": "E-POSTA #104-C",
+      "date": "18.10.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 0,
+      "is_red_herring": false,
+      "content": "Saat 21:45'te Eksper Hakan Demir'e gönderilen taslak e-posta: 'Hakan, kasadaki Rönesans tablosunun sahte olduğunu ve orijinalini gizlice sattığını öğrendim. Müzayede biter bitmez saat 00:00'da seni polise ihbar edeceğim.'",
+      "highlights": ["Hakan Demir", "Rönesans tablosunun sahte", "00:00'da seni polise ihbar"]
+    },
+    {
+      "node_id": "KNT-04",
+      "template": "RECEIPT",
+      "category": "GÜVENLİK",
+      "title": "Otopark Plaka Tanıma Kaydı",
+      "file_no": "OTOPARK #104-D",
+      "date": "18.10.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": true,
+      "content": "Müzayede evi otoparkından çıkış saatleri: 34 LYL 55 (Leyla Sönmez): Çıkış saati 22:45. 34 CMR 12 (Cemre Tekin): Çıkış saati 00:20.",
+      "highlights": ["34 LYL 55", "22:45", "34 CMR 12", "00:20"]
+    },
+    {
+      "node_id": "KNT-05",
+      "template": "OFFICIAL_REPORT",
+      "category": "OLAY YERİ",
+      "title": "Olay Yeri İnceleme Tutanağı",
+      "file_no": "DOSYA #104-E",
+      "date": "18.10.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Loca 402'deki viski şişesinde zehir bulunmamış, zehir sadece Bora'nın içtiği kristal kadehte ve eriyen buzda saptanmıştır. Kadehin dış yüzeyinde yalnızca Bora'ya ait parmak izi vardır; ancak buz kovasının maşasında lateks eldiven pudrası kalıntısı bulunmuştur.",
+      "highlights": ["kristal kadehte", "eriyen buzda", "lateks eldiven pudrası"]
+    },
+    {
+      "node_id": "KNT-06",
+      "template": "OFFICIAL_REPORT",
+      "category": "BELGE",
+      "title": "Güvenlik Bürosu Kart Dağıtım Listesi",
+      "file_no": "BELGE #104-F",
+      "date": "18.10.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Müzayede gecesi tanımlanan manyetik giriş kartları: VIP-02: Cemre Tekin. VIP-09: Leyla Sönmez. PER-04: Hakan Demir (Baş Eksper).",
+      "highlights": ["VIP-02: Cemre Tekin", "VIP-09: Leyla Sönmez", "PER-04: Hakan Demir"]
+    },
+    {
+      "node_id": "KNT-07",
+      "template": "RECEIPT",
+      "category": "LOJİSTİK",
+      "title": "Müzayede Evi Revir ve Depo Kaydı",
+      "file_no": "DEPO #104-G",
+      "date": "18.10.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 0,
+      "is_red_herring": false,
+      "content": "Tablo restorasyon atölyesinde kullanılan pudralı lateks eldiven kutusundan 1 çift eksiktir. Atölyeye sadece Hakan Demir şifresiyle girilebilmektedir. Ayrıca Cemre Tekin'in çantasında kendi adına reçeteli Ritmodan (Digoksin içeren kalp ilacı) bulunmuştur.",
+      "highlights": ["pudralı lateks eldiven", "Hakan Demir", "Ritmodan (Digoksin"]
+    },
+    {
+      "node_id": "KNT-08",
+      "template": "DIGITAL_COMM",
+      "category": "DİJİTAL",
+      "title": "Silinmiş WhatsApp Kaydı",
+      "file_no": "KURTARMA #104-H",
+      "date": "18.10.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": true,
+      "content": "Cemre Tekin'in telefonundan kurtarılan mesaj (Gönderilen: Avukat Selim, Saat 23:25): 'Loca 402'ye girdim, Bora içeride yoktu, kasadan evlilik sözleşmesini alıp hemen çıktım. Beni kimse görmedi.' [KURTARILMIŞ VERİ]",
+      "highlights": ["23:25", "evlilik sözleşmesini", "Bora içeride yoktu"]
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "EDGE-01",
+      "source_node": "KNT-01",
+      "target_node": "KNT-05",
+      "unlocked_node": {
+        "node_id": "CKR-01",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "Zehirlenme Saati Analizi",
+        "content": "Ölüm 23:35'te gerçekleştiğine ve Digoksin 15-20 dakikada etki ettiğine göre, zehir Bora'nın kadehindeki buza saat 23:00 - 23:15 arasında karıştırılmıştır.",
+        "highlights": ["23:35", "23:00 - 23:15"]
+      }
+    },
+    {
+      "edge_id": "EDGE-02",
+      "source_node": "KNT-02",
+      "target_node": "KNT-06",
+      "unlocked_node": {
+        "node_id": "CKR-02",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "Koridor Trafiği Eşleşmesi",
+        "content": "Leyla 22:40'ta, Baş Eksper Hakan Demir (PER-04) tam 23:00'te, Cemre ise 23:18'de koridora girmiştir. Cemre girdiğinde Bora zehri çoktan içmişti.",
+        "highlights": ["Hakan Demir", "PER-04", "23:00"]
+      }
+    },
+    {
+      "edge_id": "EDGE-03",
+      "source_node": "KNT-01",
+      "target_node": "KNT-07",
+      "unlocked_node": {
+        "node_id": "CKR-03",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "Atölye Eldiveni ve Komplo Analizi",
+        "content": "Hakan Demir, suçu Cemre'ye yıkmak için Cemre'nin çantasından Digoksin ilacını almış, şifreli atölyesinden pudralı lateks eldiveni takarak saat 23:00'te buz kovasına zehri bırakmıştır.",
+        "highlights": ["Hakan Demir", "pudralı lateks eldiveni", "Digoksin"]
+      }
+    }
+  ],
+  "solution": {
+    "killer_id": "susp_hakan",
+    "required_nodes": ["KNT-03", "CKR-02", "CKR-03"],
+    "alternative_required_nodes": ["KNT-03", "CKR-01", "CKR-02"],
+    "dirty_cop_frame_target": "susp_cemre",
+    "dirty_cop_cover_nodes": ["KNT-02", "KNT-07"],
+    "headline_success": "SON MÜZAYEDE ÇÖZÜLDÜ: BAŞ EKSPER HAKAN DEMİR TUTUKLANDI!",
+    "headline_failure": "DAVA DÜŞTÜ: SAHTE TABLO VURGUNU ÖRTBAS EDİLDİ, KATİL KAÇTI!",
+    "story_summary": "Baş Eksper Hakan Demir, kasadaki Rönesans tablosunun orijinalini gizlice satıp yerine sahtesini koymuştu. Bora Tekin bunu fark edip gece yarısı polise ihbar edeceğini bildirince, Hakan kokteyl alanında Cemre Tekin'in çantasından kalp ilacını çaldı ve atölyesindeki pudralı lateks eldivenle saat 23:00'te Loca 402'deki buz kovasına zehri bıraktı."
+  }
+}

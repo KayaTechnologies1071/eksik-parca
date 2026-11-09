@@ -1,0 +1,171 @@
+{
+  "case_id": "CASE-305",
+  "pack_id": "pack_couples",
+  "version": 1,
+  "meta": {
+    "title": "Şarap Mahzeni: Son Tadım",
+    "subtitle": "Urla Bağ Evinde Kilitli Mahzen",
+    "difficulty": 2,
+    "duration_seconds": 900,
+    "solo_token_limit": 4,
+    "min_players": 1,
+    "max_players": 6,
+    "is_tutorial": false,
+    "supported_modes": ["SOLO", "DUO", "GROUP"]
+  },
+  "briefing": {
+    "victim": "Haluk Bağcı (58, Bağ Evi Sahibi ve Sommelier)",
+    "location": "Urla Bağ Evi — Yeraltı Tadım Mahzeni",
+    "time_of_discovery": "23:40",
+    "summary": "Ünlü şarap üreticisi Haluk Bağcı, özel tadım gecesinde saat 23:40'ta yeraltı mahzeninde ölü bulundu. Nadir 1982 rezervi şişesi kırılmış ve mahzenin havalandırma ısıtıcısı kurcalanmıştır."
+  },
+  "suspects": [
+    {
+      "id": "susp_pelin",
+      "name": "Pelin Bağcı",
+      "age": 36,
+      "role": "İkinci Eşi",
+      "relation": "Eşi",
+      "alibi": "Saat 22:30'дан itibaren terasta misafirlerle ilgileniyordum, mahzene hiç inmedim."
+    },
+    {
+      "id": "susp_caner",
+      "name": "Caner Soylu",
+      "age": 40,
+      "role": "Baş Önolog (Şarap Uzmanı)",
+      "relation": "Üretim Müdürü",
+      "alibi": "Saat 22:45'te mahzene fıçı kontrolüne indim ama 5 dakika sonra çıkıp laboratuvara geçtim."
+    },
+    {
+      "id": "susp_melis",
+      "name": "Melis Vural",
+      "age": 44,
+      "role": "Fransız İthalatçı",
+      "relation": "Ticari Partneri",
+      "alibi": "Haluk ile kontrat yüzünden tartıştık fakat saat 22:35'te bağ evinden ayrıldım."
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": "KNT-305-1",
+      "template": "OFFICIAL_REPORT",
+      "category": "ADLİ TIP",
+      "title": "Adli Tıp ve Toksikoloji Raporu",
+      "file_no": "OTOPSİ #305-A",
+      "date": "04.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Ölüm saati 22:55 - 23:05 aralığıdır. Maktulün kanında tarım ilacı etken maddesi (Organofosfat) saptanmıştır. Madde tadım kadehindeki şaraba enjektörle mantarın içinden zerk edilmiştir.",
+      "highlights": ["22:55 - 23:05", "Organofosfat", "enjektörle mantarın"]
+    },
+    {
+      "node_id": "KNT-305-2",
+      "template": "DIGITAL_COMM",
+      "category": "DİJİTAL",
+      "title": "Haluk Bağcı'nın Laboratuvar E-Postası",
+      "file_no": "POSTA #305-B",
+      "date": "04.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 0,
+      "is_red_herring": false,
+      "content": "21:30 [Giden - Önolog Caner Soylu]: 'Caner, ödüllü rezervimizin formülünü Fransız şirkete sattığını ve fıçılara ucuz şarap karıştırdığını belgeledim. Yarın sabah lisansını iptal ettiriyorum.'",
+      "highlights": ["Caner Soylu", "formülünü Fransız şirkete", "lisansını iptal"]
+    },
+    {
+      "node_id": "KNT-305-3",
+      "template": "RECEIPT",
+      "category": "GÜVENLİK",
+      "title": "Mahzen İklimlendirme ve Kapı Logu",
+      "file_no": "MAHZEN #305-C",
+      "date": "04.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Yeraltı Mahzeni Girişleri: Saat 22:48 [Kart: LAB-01] giriş yaptı, çıkış saati 22:50 değil 23:08 olarak kaydedildi.",
+      "highlights": ["22:48", "LAB-01", "23:08"]
+    },
+    {
+      "node_id": "KNT-305-4",
+      "template": "RECEIPT",
+      "category": "FİNANS",
+      "title": "Pelin Bağcı Kuyumcu Faturası",
+      "file_no": "FATURA #305-D",
+      "date": "04.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": true,
+      "content": "Pelin Bağcı eşinin kredi kartından gizlice 850.000 TL harcamıştır ancak teras kamerasında 22:30 - 23:30 boyunca kesintisiz misafirlerin yanında olduğu doğrulanmıştır.",
+      "highlights": ["Pelin Bağcı", "850.000 TL", "teras kamerasında"]
+    },
+    {
+      "node_id": "KNT-305-5",
+      "template": "OFFICIAL_REPORT",
+      "category": "OLAY YERİ",
+      "title": "Şarap Laboratuvarı Arama Tutanağı",
+      "file_no": "ARAMA #305-E",
+      "date": "04.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Caner Soylu'nun kilitli laboratuvar çekmecesinde mantar delmeye yarayan ince uçlu şarap enjektörü ve ucunda Organofosfat kalıntısı bulunan zirai ilaç şişesi bulundu.",
+      "highlights": ["Caner Soylu", "şarap enjektörü", "Organofosfat"]
+    },
+    {
+      "node_id": "KNT-305-6",
+      "template": "OFFICIAL_REPORT",
+      "category": "BELGE",
+      "title": "Bağ Evi Personel Kart Listesi",
+      "file_no": "KART #305-F",
+      "date": "04.11.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Mahzen Manyetik Kartları: [LAB-01] kartı yalnızca Baş Önolog Caner Soylu adına tanımlıdır. Melis Vural'ın ziyaretçi kartı 22:35'te kapı güvenliğine teslim edilmiştir.",
+      "highlights": ["LAB-01", "Caner Soylu", "22:35"]
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "EDGE-305-1",
+      "source_node": "KNT-305-1",
+      "target_node": "KNT-305-5",
+      "unlocked_node": {
+        "node_id": "CKR-305-1",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "Şarap Enjektörü ve Organofosfat Bağı",
+        "content": "Şişe mantarından zerk edilen Organofosfat zehri, Caner Soylu'nun laboratuvar çekmecesindeki şarap enjektörüyle birebir eşleşmiştir.",
+        "highlights": ["Organofosfat", "Caner Soylu", "şarap enjektörü"]
+      }
+    },
+    {
+      "edge_id": "EDGE-305-2",
+      "source_node": "KNT-305-3",
+      "target_node": "KNT-305-6",
+      "unlocked_node": {
+        "node_id": "CKR-305-2",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "Mahzen Çıkış Saati Yalanı",
+        "content": "LAB-01 kart sahibi Caner Soylu, mahzenden 5 dakikada çıktığı yalanının aksine ölüm saati olan 22:48 - 23:08 aralığında içeride kalmıştır.",
+        "highlights": ["LAB-01", "Caner Soylu", "22:48 - 23:08"]
+      }
+    }
+  ],
+  "solution": {
+    "killer_id": "susp_caner",
+    "required_nodes": ["KNT-305-2", "CKR-305-2", "CKR-305-1"],
+    "dirty_cop_frame_target": "susp_pelin",
+    "dirty_cop_cover_nodes": ["KNT-305-3", "KNT-305-5"],
+    "headline_success": "MAHZENDEKİ ZEHİR ÇÖZÜLDÜ: BAŞ ÖNOLOG CANER SOYLU TUTUKLANDI!",
+    "headline_failure": "1982 REZERVİ SIR OLDU: KATİL KARANLIKTA İZİNİ KAYBETTİRDİ!",
+    "story_summary": "Özel şarap formülünü gizlice sattığı ve fıçılarda sahtecilik yaptığı ortaya çıkan Baş Önolog Caner Soylu, laboratuvarındaki şarap enjektörüyle 1982 rezerv şişesine mantardan tarım ilacı enjekte etti ve saat 22:48'de mahzende Haluk Bağcı'ya ikram etti."
+  }
+}

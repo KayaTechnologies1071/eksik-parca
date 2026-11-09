@@ -1,0 +1,212 @@
+{
+  "case_id": "CASE-101",
+  "pack_id": "pack_starter",
+  "version": 3,
+  "meta": {
+    "title": "Lüks Yatta Son Gece",
+    "subtitle": "Bodrum Açıklarında Sessiz Zehir",
+    "difficulty": 1,
+    "duration_seconds": 900,
+    "solo_token_limit": 4,
+    "min_players": 1,
+    "max_players": 6,
+    "is_tutorial": false,
+    "supported_modes": ["SOLO", "DUO", "GROUP"]
+  },
+  "briefing": {
+    "victim": "Alp Demirci (51, Denizcilik Holding Sahibi)",
+    "location": "M/Y Poseidon Yatı — Bodrum Marina",
+    "time_of_discovery": "00:30",
+    "summary": "Holding patronu Alp Demirci, Bodrum Marina'da demirli lüks yatının kaptan köşkünde gece 00:30'da ölü bulundu. Yatın güvenlik kamerası kayıt cihazı denize atılmıştır."
+  },
+  "suspects": [
+    {
+      "id": "susp_1",
+      "name": "Kerem Soylu",
+      "age": 44,
+      "role": "Holding İş Ortağı",
+      "relation": "İş Ortağı",
+      "alibi": "Saat 21:30'da yattan ayrılıp doğrudan otelime geçtim. Gece boyu dışarı çıkmadım."
+    },
+    {
+      "id": "susp_2",
+      "name": "Selin Aksoy",
+      "age": 38,
+      "role": "Maktulün Eski Eşi",
+      "relation": "Eski Eş",
+      "alibi": "Alp ile nafaka için saat 22:30'da güvertede görüştük ama 22:50'de marinası terk ettim."
+    },
+    {
+      "id": "susp_3",
+      "name": "Tarık Vural",
+      "age": 36,
+      "role": "Yat Kaptanı",
+      "relation": "Kaptan",
+      "alibi": "Saat 22:00'den itibaren alt kamarada uyuyordum, güverteye hiç çıkmadım."
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": "ev_autopsy",
+      "template": "OFFICIAL_REPORT",
+      "category": "ADLİ TIP",
+      "title": "Otopsi Ön Raporu",
+      "file_no": "DOSYA #884-A",
+      "date": "14.10.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Ölüm saati 23:15 - 23:45 arasıdır. Maktulün midesinde ve enerji içeceğinde yüksek dozda sıvı Potasyum Klorür saptanmıştır.",
+      "highlights": ["23:15 - 23:45", "Potasyum Klorür"]
+    },
+    {
+      "node_id": "ev_car_registry",
+      "template": "OFFICIAL_REPORT",
+      "category": "BELGE",
+      "title": "Emniyet Plaka Sorgu Kaydı",
+      "file_no": "SORGULAMA #884-B",
+      "date": "14.10.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 0,
+      "is_red_herring": false,
+      "content": "Marina çevresinde taranan araçlar: 34 KRM 88 plakalı siyah sedan araç Kerem Soylu adına, 34 SLN 19 plakalı araç Selin Aksoy adına kayıtlıdır.",
+      "highlights": ["34 KRM 88", "Kerem Soylu", "34 SLN 19"]
+    },
+    {
+      "node_id": "ev_insurance",
+      "template": "RECEIPT",
+      "category": "FİNANS",
+      "title": "Ortaklık Hayat Sigortası Poliçesi",
+      "file_no": "POLİÇE #9920",
+      "date": "14.10.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 0,
+      "is_red_herring": false,
+      "content": "Poliçe Özeti: Alp Demirci'nin vefatı halinde şirket hisselerinin tamamı ve 40.000.000 TL sigorta tazminatı ortağı Kerem Soylu'ya devredilecektir. Son ödeme günü: 15.10.2026.",
+      "highlights": ["40.000.000 TL", "Kerem Soylu", "15.10.2026"]
+    },
+    {
+      "node_id": "ev_captain_log",
+      "template": "DIGITAL_COMM",
+      "category": "DİJİTAL",
+      "title": "Kaptan Tarık'ın WhatsApp Kaydı",
+      "file_no": "MESAJ #884-D",
+      "date": "14.10.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 1,
+      "solo_cost": 0,
+      "is_red_herring": true,
+      "content": "22:40 [Giden - Gümrükçü]: 'Alp Bey uyuduğunda alt ambardaki gümrüksüz puroları bota yükleyeceğim, saat 23:15'te koyda bekle.' [KURTARILMIŞ VERİ]",
+      "highlights": ["gümrüksüz puroları", "23:15"]
+    },
+    {
+      "node_id": "ev_pharmacy",
+      "template": "RECEIPT",
+      "category": "FİNANS",
+      "title": "Nöbetçi Eczane Kaydı",
+      "file_no": "FİŞ #4412",
+      "date": "14.10.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "Bodrum Merkez Nöbetçi Eczanesi — Saat 22:10'da 34 KRM 88 plakalı araç sürücüsü tarafından nakit ödemeyle 3 ampul konsantre Potasyum Klorür satın alındı.",
+      "highlights": ["22:10", "34 KRM 88", "Potasyum Klorür"]
+    },
+    {
+      "node_id": "ev_marina_gate",
+      "template": "RECEIPT",
+      "category": "GÜVENLİK",
+      "title": "Marina İskele Turnike Logu",
+      "file_no": "LOG #771-M",
+      "date": "14.10.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "C-İskelesi Gece Geçişleri: Saat 22:48 [Çıkış: Selin Aksoy], Saat 23:05 [Giriş: 34 KRM 88 Araç Kumandası], Saat 23:32 [Çıkış: 34 KRM 88 Araç Kumandası].",
+      "highlights": ["22:48", "23:05", "34 KRM 88", "23:32"]
+    },
+    {
+      "node_id": "ev_debt_sms",
+      "template": "DIGITAL_COMM",
+      "category": "DİJİTAL",
+      "title": "Kerem Soylu Banka İhtar SMS'i",
+      "file_no": "SMS #109-K",
+      "date": "14.10.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 1,
+      "is_red_herring": false,
+      "content": "19:30 [Gelen - KıyıBank Hukuk]: 'Sayın Kerem Soylu, 38.500.000 TL tutarındaki teminat açığınız yarın 17:00'ye kadar kapatılmazsa tüm malvarlığınıza haciz uygulanacaktır.'",
+      "highlights": ["Kerem Soylu", "38.500.000 TL", "haciz"]
+    },
+    {
+      "node_id": "ev_selin_receipt",
+      "template": "RECEIPT",
+      "category": "BELGE",
+      "title": "Marina Taksi ve Otel Kaydı",
+      "file_no": "FİŞ #5501",
+      "date": "14.10.2026",
+      "visibility": "PRIVATE",
+      "partition_group": 2,
+      "solo_cost": 0,
+      "is_red_herring": true,
+      "content": "Selin Aksoy saat 22:50'de marinadan ayrılmış, 23:05'te Yalıkavak Otel resepsiyonundan giriş yapmıştır. Çantasında Alp'in kasasından aldığı eski mücevher kutusu vardır.",
+      "highlights": ["Selin Aksoy", "22:50", "23:05"]
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "link_poison_source",
+      "source_node": "ev_autopsy",
+      "target_node": "ev_pharmacy",
+      "unlocked_node": {
+        "node_id": "ckr_poison_match",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "Zehir Kaynağı ve Plaka Bağı",
+        "content": "Maktulü öldüren Potasyum Klorür maddesi, cinayetten bir saat önce 22:10'da 34 KRM 88 plakalı aracın sahibi tarafından nöbetçi eczaneden satın alınmıştır.",
+        "highlights": ["Potasyum Klorür", "22:10", "34 KRM 88"]
+      }
+    },
+    {
+      "edge_id": "link_plate_alibi",
+      "source_node": "ev_car_registry",
+      "target_node": "ev_marina_gate",
+      "unlocked_node": {
+        "node_id": "ckr_alibi_broken",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "Kerem Soylu'nun İskele Girişi",
+        "content": "34 KRM 88 plakalı aracın sahibi Kerem Soylu, 21:30'da otele gittiği yalanının aksine saat 23:05'te marinaya geri dönmüş ve 23:32'ye kadar yatta kalmıştır.",
+        "highlights": ["Kerem Soylu", "23:05", "23:32"]
+      }
+    },
+    {
+      "edge_id": "link_financial_motive",
+      "source_node": "ev_insurance",
+      "target_node": "ev_debt_sms",
+      "unlocked_node": {
+        "node_id": "ckr_motive_insurance",
+        "template": "OFFICIAL_REPORT",
+        "category": "ÇIKARIM",
+        "title": "Haciz Kıskacı ve Sigorta Vurgunu",
+        "content": "Kerem Soylu, ertesi gün 38.5 Milyon TL'lik hacizden kurtulmak için ortağı Alp'i öldürerek 40 Milyon TL'lik ortaklık hayat sigortasını tahsil etmeyi planlamıştır.",
+        "highlights": ["Kerem Soylu", "38.5 Milyon TL", "40 Milyon TL"]
+      }
+    }
+  ],
+  "solution": {
+    "killer_id": "susp_1",
+    "required_nodes": ["ckr_motive_insurance", "ckr_alibi_broken", "ckr_poison_match"],
+    "dirty_cop_frame_target": "susp_3",
+    "dirty_cop_cover_nodes": ["ev_pharmacy", "ev_marina_gate"],
+    "headline_success": "ZEHİRLİ MİRAS ÇÖZÜLDÜ: İŞ ORTAĞI KEREM SOYLU TUTUKLANDI!",
+    "headline_failure": "DELİL YETERSİZLİĞİNDEN SERBEST: GERÇEK KATİL İZİNİ KAYBETTİRDİ!",
+    "story_summary": "Banka hacziyle köşeye sıkışan Kerem Soylu, 40 milyon TL'lik ortaklık sigortasını almak için saat 22:10'da nöbetçi eczaneden potasyum klorür aldı. 23:05'te gizlice marinaya dönüp ortağı Alp Demirci'nin içeceğine zehri karıştırdı."
+  }
+}
