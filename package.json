@@ -21,12 +21,12 @@
   "dependencies": {
     "@capacitor/android": "^6.2.0",
     "@capacitor/core": "^6.2.0",
-    "@vitejs/plugin-react": "^4.3.3",
+    "@vitejs/plugin-react": "^6.3.0",
     "lucide-react": "^0.460.0",
     "pg": "^8.13.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "vite": "^5.4.11",
+    "vite": "^8.3.7",
     "ws": "^8.18.0",
     "zustand": "^5.0.1"
   },
@@ -37,5 +37,12 @@
     "@types/react-dom": "^18.3.1",
     "@types/ws": "^8.5.13",
     "typescript": "^5.6.3"
+  },
+  "overrides": {
+    "tar": "^7.5.22",
+    "glob": "^14.0.4",
+    "minimatch": "^11.0.6",
+    "rimraf": "^6.1.4",
+    "esbuild": "^0.28.2"
   }
 }

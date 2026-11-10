@@ -795,25 +795,80 @@ setInterval(() => {
   }
 }, 1000);
 
+const MAX_BODY_BYTES = 64 * 1024; // 64 KB DoS protection limit
+const apiRateLimiter = new Map();
+
+const SECURITY_HEADERS = {
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'DENY',
+  'X-XSS-Protection': '1; mode=block',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'Permissions-Policy': 'camera=(self), microphone=(), geolocation=()',
+  'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
+};
+
+function getClientIp(req) {
+  const xff = req.headers['x-forwarded-for'];
+  if (typeof xff === 'string' && xff.trim()) {
+    return xff.split(',')[0].trim();
+  }
+  return req.socket?.remoteAddress || 'local';
+}
+
+function checkApiRateLimit(ip) {
+  const now = Date.now();
+  const entry = apiRateLimiter.get(ip) || { count: 0, resetAt: now + 60000 };
+  if (now > entry.resetAt) {
+    entry.count = 0;
+    entry.resetAt = now + 60000;
+  }
+  entry.count += 1;
+  apiRateLimiter.set(ip, entry);
+  return entry.count <= 180;
+}
+
+function sanitizeText(value, maxLen = 64, fallback = '') {
+  if (typeof value !== 'string') return fallback;
+  const cleaned = value
+    .replace(/[\x00-\x1F\x7F<>]/g, '')
+    .trim()
+    .slice(0, maxLen);
+  return cleaned || fallback;
+}
+
 function parseBody(req) {
   return new Promise((resolve) => {
     let body = '';
+    let bytes = 0;
+    let aborted = false;
     req.on('data', (chunk) => {
+      if (aborted) return;
+      bytes += chunk.length;
+      if (bytes > MAX_BODY_BYTES) {
+        aborted = true;
+        req.destroy();
+        resolve({});
+        return;
+      }
       body += chunk;
     });
     req.on('end', () => {
+      if (aborted) return;
       try {
         resolve(body ? JSON.parse(body) : {});
       } catch {
         resolve({});
       }
     });
+    req.on('error', () => resolve({}));
   });
 }
 
 function sendJson(res, status, data) {
   res.writeHead(status, {
+    ...SECURITY_HEADERS,
     'Content-Type': 'application/json; charset=utf-8',
+    'Cache-Control': 'no-store',
     'Access-Control-Allow-Origin': process.env.CORS_ORIGIN || '*',
     'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
@@ -824,6 +879,7 @@ function sendJson(res, status, data) {
 const server = http.createServer(async (req, res) => {
   if (req.method === 'OPTIONS') {
     res.writeHead(204, {
+      ...SECURITY_HEADERS,
       'Access-Control-Allow-Origin': process.env.CORS_ORIGIN || '*',
       'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
@@ -832,8 +888,15 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+  const clientIp = getClientIp(req);
   const url = new URL(req.url || '/', `http://${req.headers.host || 'localhost'}`);
   const pathname = url.pathname;
+
+  if (pathname.startsWith('/api') && pathname !== '/api/health' && !checkApiRateLimit(clientIp)) {
+    return sendJson(res, 429, {
+      error: 'İstek limiti aşıldı. Lütfen birkaç saniye bekleyip tekrar deneyin.',
+    });
+  }
 
   // 0. Health Check (For Railway / Render / Docker / Mobile Ping)
   if (pathname === '/api/health' && (req.method === 'GET' || req.method === 'HEAD')) {
@@ -852,8 +915,8 @@ const server = http.createServer(async (req, res) => {
   // 1. Guest Profile Login & Career Stats
   if (pathname === '/api/auth/guest' && req.method === 'POST') {
     const body = await parseBody(req);
-    const deviceId = body.device_id || `dev_${crypto.randomUUID()}`;
-    const displayName = (body.display_name || '').trim() || 'Dedektif K.';
+    const deviceId = sanitizeText(body.device_id, 64, `dev_${crypto.randomUUID()}`);
+    const displayName = sanitizeText(body.display_name, 32, 'Dedektif K.');
 
     let existingUser = Object.values(storage.mem.users).find((u) => u.device_id === deviceId);
     if (!existingUser) {
@@ -905,12 +968,12 @@ const server = http.createServer(async (req, res) => {
     ensureUserCareerFields(user);
 
     if (typeof body.display_name === 'string' && body.display_name.trim()) {
-      user.display_name = body.display_name.trim().slice(0, 32);
+      user.display_name = sanitizeText(body.display_name, 32, user.display_name);
     }
-    if (typeof body.avatar_id === 'string') user.avatar_id = body.avatar_id.slice(0, 24);
-    if (typeof body.theme_color === 'string') user.theme_color = body.theme_color.slice(0, 24);
-    if (typeof body.specialty === 'string') user.specialty = body.specialty.slice(0, 48);
-    if (typeof body.motto === 'string') user.motto = body.motto.slice(0, 120);
+    if (typeof body.avatar_id === 'string') user.avatar_id = sanitizeText(body.avatar_id, 24, user.avatar_id);
+    if (typeof body.theme_color === 'string') user.theme_color = sanitizeText(body.theme_color, 24, user.theme_color);
+    if (typeof body.specialty === 'string') user.specialty = sanitizeText(body.specialty, 48, user.specialty);
+    if (typeof body.motto === 'string') user.motto = sanitizeText(body.motto, 120, user.motto);
 
     await storage.upsertUser(user);
     return sendJson(res, 200, { user });
@@ -1112,7 +1175,7 @@ const server = http.createServer(async (req, res) => {
 
     room.players.set(user_id, {
       user_id,
-      display_name: display_name || 'Baş Dedektif',
+      display_name: sanitizeText(display_name, 32, 'Baş Dedektif'),
       is_ready: true,
       is_bot: false,
       connected: true,
@@ -1139,7 +1202,7 @@ const server = http.createServer(async (req, res) => {
 
   // 8. Join Room
   if (pathname === '/api/rooms/join' && req.method === 'POST') {
-    const ip = req.socket.remoteAddress || 'local';
+    const ip = clientIp;
     if (!checkJoinRateLimit(ip)) {
       return sendJson(res, 429, {
         error: 'Çok fazla başarısız oda denemesi yaptınız. Lütfen 1 dakika bekleyin.',
@@ -1156,8 +1219,8 @@ const server = http.createServer(async (req, res) => {
       });
     }
 
-    const userId = body.user_id;
-    const displayName = body.display_name || 'Dedektif';
+    const userId = sanitizeText(body.user_id, 64, `u_${crypto.randomUUID()}`);
+    const displayName = sanitizeText(body.display_name, 32, 'Dedektif');
 
     if (!room.players.has(userId)) {
       if (room.players.size >= 6) {
@@ -1202,14 +1265,17 @@ const server = http.createServer(async (req, res) => {
     });
   }
 
-  // Static production build serving
-  const distDir = path.join(ROOT_DIR, 'dist');
+  // Static production build serving with strict path traversal protection
+  const distDir = path.resolve(ROOT_DIR, 'dist');
   if ((req.method === 'GET' || req.method === 'HEAD') && !pathname.startsWith('/api') && fs.existsSync(distDir)) {
-    const safePath = pathname === '/' ? 'index.html' : pathname.slice(1);
-    const fullPath = path.join(distDir, safePath);
+    const safePath = pathname === '/' ? 'index.html' : pathname.replace(/^\/+/, '');
+    const resolvedPath = path.resolve(distDir, safePath);
+    if (!resolvedPath.startsWith(distDir)) {
+      return sendJson(res, 403, { error: 'Yetkisiz dosya yolu.' });
+    }
     const targetFile =
-      fs.existsSync(fullPath) && fs.statSync(fullPath).isFile()
-        ? fullPath
+      fs.existsSync(resolvedPath) && fs.statSync(resolvedPath).isFile()
+        ? resolvedPath
         : path.join(distDir, 'index.html');
 
     if (fs.existsSync(targetFile)) {
@@ -1222,7 +1288,10 @@ const server = http.createServer(async (req, res) => {
         '.webmanifest': 'application/manifest+json; charset=utf-8',
         '.svg': 'image/svg+xml',
       };
-      res.writeHead(200, { 'Content-Type': mimeMap[ext] || 'application/octet-stream' });
+      res.writeHead(200, {
+        ...SECURITY_HEADERS,
+        'Content-Type': mimeMap[ext] || 'application/octet-stream',
+      });
       res.end(req.method === 'HEAD' ? undefined : fs.readFileSync(targetFile));
       return;
     }
@@ -1231,10 +1300,21 @@ const server = http.createServer(async (req, res) => {
   sendJson(res, 404, { error: 'Uç nokta bulunamadı.' });
 });
 
-// WebSocket Server with 25s Cloud Proxy Heartbeat
-const wss = new WebSocketServer({ server, path: '/ws' });
+// WebSocket Server with 25s Cloud Proxy Heartbeat & 32KB Payload Protection
+const wss = new WebSocketServer({
+  server,
+  path: '/ws',
+  maxPayload: 32 * 1024,
+});
 
 setInterval(() => {
+  const now = Date.now();
+  // Clean up stale rooms older than 3 hours to prevent memory leaks
+  for (const [code, r] of rooms.entries()) {
+    if (now - r.created_at > 3 * 60 * 60 * 1000) {
+      rooms.delete(code);
+    }
+  }
   wss.clients.forEach((ws) => {
     if (ws.isAlive === false) return ws.terminate();
     ws.isAlive = false;
@@ -1244,6 +1324,8 @@ setInterval(() => {
 
 wss.on('connection', (ws) => {
   ws.isAlive = true;
+  ws.msgCount = 0;
+  ws.msgWindowStart = Date.now();
   ws.on('pong', () => {
     ws.isAlive = true;
   });
@@ -1252,6 +1334,16 @@ wss.on('connection', (ws) => {
   let boundUserId = null;
 
   ws.on('message', async (raw) => {
+    const nowWin = Date.now();
+    if (nowWin - ws.msgWindowStart > 5000) {
+      ws.msgWindowStart = nowWin;
+      ws.msgCount = 0;
+    }
+    ws.msgCount += 1;
+    if (ws.msgCount > 45) {
+      return; // Drop flood packets
+    }
+
     let msg;
     try {
       msg = JSON.parse(raw.toString());

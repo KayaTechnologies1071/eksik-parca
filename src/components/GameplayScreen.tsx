@@ -4,6 +4,7 @@ import { ProceduralDocumentView, SuspectCardView } from './ProceduralTemplates';
 import { EvidenceBoardCanvas } from './EvidenceBoardCanvas';
 import { DocumentModal } from './DocumentModal';
 import { EndgameNewspaper } from './EndgameNewspaper';
+import { HowToPlayModal } from './HowToPlayModal';
 import {
   FileText,
   FolderLock,
@@ -22,6 +23,7 @@ import {
   NotebookPen,
   Activity,
   X,
+  HelpCircle,
 } from 'lucide-react';
 
 export const GameplayScreen: React.FC = () => {
@@ -57,6 +59,7 @@ export const GameplayScreen: React.FC = () => {
   const [selectedEvidenceIds, setSelectedEvidenceIds] = useState<string[]>([]);
   const [fileFilter, setFileFilter] = useState<'ALL' | 'UNLOCKED' | 'LOCKED'>('ALL');
   const [logDrawerOpen, setLogDrawerOpen] = useState(false);
+  const [isHowToPlayOpen, setIsHowToPlayOpen] = useState(false);
   const [remainingSeconds, setRemainingSeconds] = useState<number>(900);
 
   useEffect(() => {
@@ -290,8 +293,17 @@ export const GameplayScreen: React.FC = () => {
           )}
         </div>
 
-        {/* Right: Activity Log, Mute & Quick SUÇLA */}
+        {/* Right: Help, Activity Log, Mute & Quick SUÇLA */}
         <div className="flex items-center gap-1 shrink-0">
+          <button
+            type="button"
+            onClick={() => setIsHowToPlayOpen(true)}
+            className="w-8 h-8 sm:w-9 sm:h-9 rounded-[4px] bg-elevated border border-amber/40 hover:border-amber text-amber flex items-center justify-center"
+            title="Nasıl Oynanır? — Dedektif Saha Rehberi"
+          >
+            <HelpCircle size={15} />
+          </button>
+
           <button
             type="button"
             onClick={() => setLogDrawerOpen((v) => !v)}
@@ -859,6 +871,7 @@ export const GameplayScreen: React.FC = () => {
       </nav>
 
       <DocumentModal />
+      <HowToPlayModal isOpen={isHowToPlayOpen} onClose={() => setIsHowToPlayOpen(false)} />
     </div>
   );
 };

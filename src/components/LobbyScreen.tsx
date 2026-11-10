@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useGameStore } from '../store/useGameStore';
 import { ProceduralQrCode } from './ProceduralTemplates';
+import { HowToPlayModal } from './HowToPlayModal';
 import { DifficultyPreset } from '../types/game';
 import {
   Copy,
@@ -13,6 +14,7 @@ import {
   ExternalLink,
   CheckCircle2,
   Gauge,
+  BookOpen,
 } from 'lucide-react';
 
 export const LobbyScreen: React.FC = () => {
@@ -27,6 +29,7 @@ export const LobbyScreen: React.FC = () => {
     showToast,
   } = useGameStore();
   const [copied, setCopied] = useState(false);
+  const [isHowToPlayOpen, setIsHowToPlayOpen] = useState(false);
 
   if (!room || !user) return null;
 
@@ -71,11 +74,21 @@ export const LobbyScreen: React.FC = () => {
           <ArrowLeft size={14} />
           AYRIL
         </button>
-        <span className="px-2.5 py-1 rounded-[2px] bg-crimson/20 text-crimson border border-crimson/40 font-mono text-[11px] font-bold">
-          {room.players.length >= 3
-            ? 'GRUP MODU (KİRLİ POLİS)'
-            : 'DUO MODU (2 KİŞİLİK)'}
-        </span>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setIsHowToPlayOpen(true)}
+            className="min-h-[36px] px-2.5 py-1 rounded-[4px] bg-elevated border border-amber/40 hover:border-amber text-amber font-mono text-[11px] font-bold flex items-center gap-1"
+          >
+            <BookOpen size={13} />
+            <span>NASIL OYNANIR?</span>
+          </button>
+          <span className="px-2.5 py-1 rounded-[2px] bg-crimson/20 text-crimson border border-crimson/40 font-mono text-[11px] font-bold">
+            {room.players.length >= 3
+              ? 'GRUP MODU (KİRLİ POLİS)'
+              : 'DUO MODU (2 KİŞİLİK)'}
+          </span>
+        </div>
       </div>
 
       {/* Case Briefing Header */}
@@ -289,6 +302,8 @@ export const LobbyScreen: React.FC = () => {
           </button>
         )}
       </div>
+
+      <HowToPlayModal isOpen={isHowToPlayOpen} onClose={() => setIsHowToPlayOpen(false)} />
     </div>
   );
 };

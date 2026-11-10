@@ -10,6 +10,14 @@ if (-not (Test-Path "android")) {
 }
 
 Write-Host "=== 3. Capacitor Varliklari Senkronize Ediliyor ===" -ForegroundColor Cyan
+$capTemplateJs = "node_modules\@capacitor\cli\dist\util\template.js"
+if (Test-Path $capTemplateJs) {
+  $tplContent = Get-Content $capTemplateJs -Raw
+  if ($tplContent -match 'tar_1\.default\.extract\(' -and $tplContent -notmatch 'extractFn') {
+    $tplContent = $tplContent -replace 'await tar_1\.default\.extract\(\{ file: src, cwd: dir \}\);', 'const extractFn = (tar_1.default && tar_1.default.extract) ? tar_1.default.extract : tar_1.extract; await extractFn({ file: src, cwd: dir });'
+    Set-Content -Path $capTemplateJs -Value $tplContent -Encoding UTF8
+  }
+}
 npx cap sync android
 
 # Android SDK yolunu local.properties dosyasina yaz

@@ -3,6 +3,7 @@ import { useGameStore } from '../store/useGameStore';
 import { DifficultyPreset } from '../types/game';
 import { getCustomServerUrl, setCustomServerUrl } from '../config/env';
 import { ProfileScreen } from './ProfileScreen';
+import { HowToPlayModal } from './HowToPlayModal';
 import {
   Users,
   FolderArchive,
@@ -33,6 +34,7 @@ import {
   Wifi,
   WifiOff,
   RefreshCw,
+  BookOpen,
 } from 'lucide-react';
 
 export const MainMenuScreen: React.FC = () => {
@@ -75,6 +77,7 @@ export const MainMenuScreen: React.FC = () => {
   const [serverUrlInput, setServerUrlInput] = useState(() => getCustomServerUrl());
   const [multiplayerSubMode, setMultiplayerSubMode] = useState<'DUO' | 'GROUP'>('DUO');
   const [caseLevelFilter, setCaseLevelFilter] = useState<0 | 1 | 2 | 3>(0);
+  const [isHowToPlayOpen, setIsHowToPlayOpen] = useState(false);
 
   const newReleaseCase = cases.find((c) => c.meta.is_new_release);
   const tutorialCase = cases.find((c) => c.meta.is_tutorial);
@@ -164,6 +167,17 @@ export const MainMenuScreen: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
+          <button
+            type="button"
+            onClick={() => setIsHowToPlayOpen(true)}
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-[4px] bg-elevated hover:bg-amber/20 border border-amber/40 text-amber font-mono text-[11px] font-bold transition-all"
+            title="Nasıl Oynanır? — Dedektif Saha El Kitabı"
+          >
+            <BookOpen size={13} />
+            <span className="hidden sm:inline">NASIL OYNANIR?</span>
+            <span className="sm:hidden">REHBER</span>
+          </button>
+
           <button
             type="button"
             onClick={toggleMobilePreviewFrame}
@@ -512,6 +526,27 @@ export const MainMenuScreen: React.FC = () => {
                       Merkez Arşiv Veritabanı'na bağlan. Sınırlı sorgu jetonlarıyla soğuk vakaları
                       çöz.
                     </p>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setIsHowToPlayOpen(true)}
+                    className="w-full p-4 rounded-[6px] bg-elevated/80 hover:bg-elevated text-left border border-amber/40 hover:border-amber transition-all flex items-center justify-between gap-3"
+                  >
+                    <div>
+                      <div className="flex items-center gap-1.5 mb-0.5">
+                        <span className="px-2 py-0.5 rounded-[2px] bg-amber/20 font-mono text-[10px] text-amber font-bold uppercase">
+                          DEDEKTİF SAHA EL KİTABI
+                        </span>
+                      </div>
+                      <div className="font-sans font-bold text-base sm:text-lg text-primary">
+                        4. NASIL OYNANIR? (REHBER & KURALLAR)
+                      </div>
+                      <p className="font-mono text-[11px] text-secondary mt-0.5">
+                        Çözüm Üçgeni (3 Kanıt Kuralı), Kirli Polis rolü ve Kırmızı İp mekaniğini incele.
+                      </p>
+                    </div>
+                    <BookOpen size={22} className="text-amber shrink-0" />
                   </button>
                 </div>
 
@@ -1016,6 +1051,17 @@ export const MainMenuScreen: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* HOW TO PLAY MODAL */}
+      <HowToPlayModal
+        isOpen={isHowToPlayOpen}
+        onClose={() => setIsHowToPlayOpen(false)}
+        onStartTutorial={
+          tutorialCase
+            ? () => createRoom(tutorialCase.case_id, 'SOLO', 'EASY')
+            : undefined
+        }
+      />
     </div>
   );
 };
