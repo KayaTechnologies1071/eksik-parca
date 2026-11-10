@@ -1,7 +1,7 @@
 -- EKSİK PARÇA (THE MISSING PIECE) — ÜRETİM POSTGRESQL VERİTABANI ŞEMASI (v2.0)
--- Supabase, Railway PostgreSQL ve Neon Serverless Postgres ile %100 uyumludur.
+-- Supabase (Proje: dedektifgame / zioqzlzhvdvxddwsnhem), Railway PostgreSQL ve Neon Serverless Postgres ile %100 uyumludur.
 
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE IF NOT EXISTS public.users (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     device_id VARCHAR(128) UNIQUE NOT NULL,
     display_name VARCHAR(50) NOT NULL DEFAULT 'Dedektif K.',
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS users (
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE TABLE IF NOT EXISTS case_packs (
+CREATE TABLE IF NOT EXISTS public.case_packs (
     pack_id VARCHAR(64) PRIMARY KEY,
     title VARCHAR(120) NOT NULL,
     subtitle VARCHAR(240),
@@ -31,26 +31,26 @@ CREATE TABLE IF NOT EXISTS case_packs (
     is_active BOOLEAN DEFAULT TRUE
 );
 
-CREATE TABLE IF NOT EXISTS user_entitlements (
-    user_id UUID REFERENCES users(id) ON DELETE CASCADE,
-    pack_id VARCHAR(64) REFERENCES case_packs(pack_id) ON DELETE CASCADE,
+CREATE TABLE IF NOT EXISTS public.user_entitlements (
+    user_id UUID REFERENCES public.users(id) ON DELETE CASCADE,
+    pack_id VARCHAR(64) REFERENCES public.case_packs(pack_id) ON DELETE CASCADE,
     transaction_id VARCHAR(128) UNIQUE NOT NULL,
     purchased_at TIMESTAMPTZ DEFAULT NOW(),
     PRIMARY KEY (user_id, pack_id)
 );
 
-CREATE TABLE IF NOT EXISTS cases (
+CREATE TABLE IF NOT EXISTS public.cases (
     case_id VARCHAR(64) PRIMARY KEY,
-    pack_id VARCHAR(64) REFERENCES case_packs(pack_id),
+    pack_id VARCHAR(64) REFERENCES public.case_packs(pack_id),
     version INT NOT NULL DEFAULT 1,
     content_hash VARCHAR(64) NOT NULL,
     payload JSONB NOT NULL,
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE TABLE IF NOT EXISTS match_history (
+CREATE TABLE IF NOT EXISTS public.match_history (
     match_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id UUID REFERENCES users(id) ON DELETE SET NULL,
+    user_id UUID REFERENCES public.users(id) ON DELETE SET NULL,
     case_id VARCHAR(64),
     case_title VARCHAR(160),
     mode VARCHAR(16) NOT NULL,
@@ -66,5 +66,30 @@ CREATE TABLE IF NOT EXISTS match_history (
     played_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX IF NOT EXISTS idx_users_device_id ON users(device_id);
-CREATE INDEX IF NOT EXISTS idx_match_history_played_at ON match_history(played_at DESC);
+-- Sorgu ve Yabancı Anahtar (FK) İndeksleri
+CREATE INDEX IF NOT EXISTS idx_users_device_id ON public.users(device_id);
+CREATE INDEX IF NOT EXISTS idx_user_entitlements_pack_id ON public.user_entitlements(pack_id);
+CREATE INDEX IF NOT EXISTS idx_cases_pack_id ON public.cases(pack_id);
+CREATE INDEX IF NOT EXISTS idx_match_history_user_id ON public.match_history(user_id);
+CREATE INDEX IF NOT EXISTS idx_match_history_played_at ON public.match_history(played_at DESC);
+
+-- Row Level Security (RLS) Aktivasyonu
+ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.case_packs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.user_entitlements ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.cases ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.match_history ENABLE ROW LEVEL SECURITY;
+
+-- Varsayılan Vaka Paketleri
+INSERT INTO public.case_packs (pack_id, title, subtitle, price_tier, price_label, badge, is_active)
+VALUES
+    ('pack_starter', 'Başlangıç Paketi: Şehir Dosyaları', '5 Tam Vaka + 90 Sn İnteraktif Eğitim Dosyası', 0, 'ÜCRETSİZ', 'BAŞLANGIÇ', true),
+    ('pack_couples', 'Çiftler Özel: Gizemli Randevu', '2 Kişilik İkili (Duo) Mod İçin Özel Kurgulanmış 5 Asimetrik Vaka', 1, '₺89,99', 'DUO ÖZEL', true),
+    ('pack_criminal', 'Ağır Ceza: Kusursuz Cinayetler', '3-6 Kişilik Grup & Kirli Polis Modu İçin 5 Yüksek Zorluklu Dosya', 2, '₺129,99', 'HARDCORE', true)
+ON CONFLICT (pack_id) DO UPDATE SET
+    title = EXCLUDED.title,
+    subtitle = EXCLUDED.subtitle,
+    price_tier = EXCLUDED.price_tier,
+    price_label = EXCLUDED.price_label,
+    badge = EXCLUDED.badge,
+    is_active = EXCLUDED.is_active;
