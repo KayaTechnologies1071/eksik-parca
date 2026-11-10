@@ -384,6 +384,28 @@ export const useGameStore = create<GameStoreState>((set, get) => {
         });
         return true;
       } catch {
+        // Check if Supabase Cloud Edge API is reachable for cloud DB sync on Android APK
+        const supabaseHealthUrl =
+          'https://zioqzlzhvdvxddwsnhem.supabase.co/functions/v1/eksik-parca-api/api/health';
+        try {
+          const sbRes = await fetchWithTimeout(supabaseHealthUrl, {}, 2800);
+          if (sbRes.ok) {
+            const sbData = await sbRes.json();
+            const latency = Math.round(performance.now() - t0);
+            set({
+              isOfflineMode: true,
+              serverHealth: {
+                online: true,
+                storage: sbData.storage || 'supabase-postgresql',
+                cases_loaded: sbData.cases_loaded || 16,
+                active_rooms: 1,
+                latency_ms: latency,
+              },
+            });
+            return true;
+          }
+        } catch {}
+
         set({
           isOfflineMode: true,
           serverHealth: {
@@ -433,7 +455,7 @@ export const useGameStore = create<GameStoreState>((set, get) => {
           return;
         }
       } catch {
-        // Activate Standalone Mobile APK Offline Engine seamlessly!
+        // Activate Standalone Mobile APK Offline Engine + Supabase Cloud DB Sync!
         const localUser = offlineEngine.loadOrCreateUser(deviceId, savedName || undefined);
         localStorage.setItem('eksik_parca_name', localUser.display_name);
         set({
@@ -454,6 +476,7 @@ export const useGameStore = create<GameStoreState>((set, get) => {
             latency_ms: 0,
           },
         });
+        get().checkServerHealth();
       }
     },
 

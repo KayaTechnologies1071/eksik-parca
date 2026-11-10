@@ -136,6 +136,29 @@ function computeRank(xp: number) {
 const STORAGE_USER_KEY = 'ep_offline_user_v2';
 const STORAGE_PACKS_KEY = 'ep_offline_owned_packs_v2';
 const STORAGE_HIST_KEY = 'ep_offline_history_v2';
+const SUPABASE_CLOUD_SYNC_URL =
+  'https://zioqzlzhvdvxddwsnhem.supabase.co/functions/v1/eksik-parca-api/api/sync/push';
+
+function generateUuid(): string {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID();
+  }
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
+
+function syncToSupabaseCloud(payload: Record<string, unknown>) {
+  try {
+    fetch(SUPABASE_CLOUD_SYNC_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    }).catch(() => {});
+  } catch {}
+}
 
 class OfflineGameEngine {
   private activeRoom: {
@@ -153,26 +176,26 @@ class OfflineGameEngine {
       if (raw) saved = JSON.parse(raw);
     } catch {}
 
-    if (!saved) {
+    if (!saved || !saved.id || saved.id.startsWith('local_')) {
       saved = {
-        id: `local_${deviceId.slice(0, 10)}`,
+        id: generateUuid(),
         device_id: deviceId,
-        display_name: customName || 'Dedektif K.',
-        linked_provider: null,
-        subscription_active: false,
-        avatar_id: 'raven',
-        theme_color: 'crimson',
-        specialty: 'Kriminal Analist',
-        motto: 'Her yalan ardında bir iz bırakır.',
-        badge_code: `TR-EP-${Math.floor(1000 + Math.random() * 8999)}`,
-        xp: 0,
+        display_name: customName || saved?.display_name || 'Dedektif K.',
+        linked_provider: saved?.linked_provider || null,
+        subscription_active: saved?.subscription_active || false,
+        avatar_id: saved?.avatar_id || 'raven',
+        theme_color: saved?.theme_color || 'crimson',
+        specialty: saved?.specialty || 'Kriminal Analist',
+        motto: saved?.motto || 'Her yalan ardında bir iz bırakır.',
+        badge_code: saved?.badge_code || `TR-EP-${Math.floor(1000 + Math.random() * 8999)}`,
+        xp: saved?.xp || 0,
         rank_level: 1,
         rank_title: 'Çaylak Memur',
         next_rank_xp: 200,
-        solved_cases: {},
-        badges: [],
-        claimed_directives: [],
-        stats: {
+        solved_cases: saved?.solved_cases || {},
+        badges: saved?.badges || [],
+        claimed_directives: saved?.claimed_directives || [],
+        stats: saved?.stats || {
           matches_played: 0,
           matches_won: 0,
           win_streak: 0,
@@ -186,7 +209,7 @@ class OfflineGameEngine {
           duo_wins: 0,
           group_wins: 0,
         },
-        created_at: new Date().toISOString(),
+        created_at: saved?.created_at || new Date().toISOString(),
       };
     } else if (customName) {
       saved.display_name = customName;
@@ -206,6 +229,7 @@ class OfflineGameEngine {
     user.rank_title = rk.title;
     user.next_rank_xp = rk.nextXp;
     localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(user));
+    syncToSupabaseCloud({ type: 'upsert_user', user });
   }
 
   public getOwnedPacks(): string[] {
@@ -668,9 +692,9 @@ class OfflineGameEngine {
       const killerObj = rawCase.suspects.find((s) => s.id === sol.killer_id);
       const chosenObj = rawCase.suspects.find((s) => s.id === suspectId);
 
-      const hist = this.getHistory();
-      hist.unshift({
-        match_id: `loc_${Date.now()}`,
+      const matchItem = {
+        match_id: generateUuid(),
+        user_id: user.id,
         case_id: rawCase.case_id,
         case_title: rawCase.meta.title,
         mode: snapshot.mode,
@@ -684,8 +708,11 @@ class OfflineGameEngine {
         killer_name: killerObj?.name || '',
         arrested_name: chosenObj?.name || '',
         played_at: new Date().toISOString(),
-      });
+      };
+      const hist = this.getHistory();
+      hist.unshift(matchItem);
       localStorage.setItem(STORAGE_HIST_KEY, JSON.stringify(hist.slice(0, 50)));
+      syncToSupabaseCloud({ type: 'record_match', match: matchItem });
 
       snapshot.status = 'ENDED';
       snapshot.endgame_result = {

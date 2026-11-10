@@ -1683,7 +1683,7 @@ wss.on('connection', (ws) => {
 });
 
 const PORT = process.env.PORT || 3001;
-storage.init().then(() => {
+storage.init().finally(() => {
   server.listen(PORT, () => {
     console.log(
       `[EKSİK PARÇA SUNUCUSU] http://localhost:${PORT} üzerinde aktif | Depolama: ${storage.mode}`

@@ -4,11 +4,15 @@ import pg from 'pg';
 
 const { Pool } = pg;
 
+const DEFAULT_SUPABASE_EDGE_API =
+  process.env.SUPABASE_EDGE_API_URL ||
+  'https://zioqzlzhvdvxddwsnhem.supabase.co/functions/v1/eksik-parca-api';
+
 /**
- * EKSİK PARÇA — Üretim Hibrit Veritabanı Katmanı (PostgreSQL + Yerel JSON Fallback)
- * Ortam değişkeninde DATABASE_URL tanımlıysa (Supabase / Railway / Neon PostgreSQL),
- * tüm kalıcı verileri doğrudan PostgreSQL üzerinde tutar ve şemayı otomatik kurar.
- * Tanımlı değilse yerel geliştirme için database/db.json kullanır.
+ * EKSİK PARÇA — Üretim Hibrit Veritabanı Katmanı
+ * 1) DATABASE_URL tanımlıysa doğrudan PostgreSQL TCP havuzu (pg.Pool) kullanır.
+ * 2) Tanımlı değilse aktif Supabase Cloud Edge API (zioqzlzhvdvxddwsnhem) üzerinden
+ *    canlı PostgreSQL tablolarıyla gerçek zamanlı senkronize çalışır + yerel disk yedeği tutar.
  */
 export class StorageAdapter {
   constructor({ dbFilePath, schemaFilePath, defaultPacks }) {
@@ -16,6 +20,8 @@ export class StorageAdapter {
     this.schemaFilePath = schemaFilePath;
     this.defaultPacks = defaultPacks;
     this.pool = null;
+    this.supabaseEdgeUrl = DEFAULT_SUPABASE_EDGE_API;
+    this.supabaseCloudActive = false;
     this.mode = 'local-json';
     this.mem = {
       users: {},
@@ -26,8 +32,22 @@ export class StorageAdapter {
   }
 
   async init() {
+    // Load local disk cache first so we don't lose any local data
+    const dir = path.dirname(this.dbFilePath);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    if (fs.existsSync(this.dbFilePath)) {
+      try {
+        const parsed = JSON.parse(fs.readFileSync(this.dbFilePath, 'utf-8'));
+        this.mem.users = parsed.users || {};
+        this.mem.user_entitlements = parsed.user_entitlements || {};
+        this.mem.match_history = parsed.match_history || [];
+      } catch {}
+    }
+
     const dbUrl = process.env.DATABASE_URL?.trim();
-    if (dbUrl) {
+    if (dbUrl && !dbUrl.includes('VERITABANI_SIFRENIZ') && !dbUrl.includes('SIFRENIZ')) {
       try {
         const useSsl =
           !dbUrl.includes('localhost') &&
@@ -46,21 +66,6 @@ export class StorageAdapter {
           await this.pool.query(schemaSql);
         }
 
-        for (const p of this.defaultPacks) {
-          await this.pool.query(
-            `INSERT INTO case_packs (pack_id, title, subtitle, price_tier, price_label, badge, is_active)
-             VALUES ($1, $2, $3, $4, $5, $6, $7)
-             ON CONFLICT (pack_id) DO UPDATE SET
-               title = EXCLUDED.title,
-               subtitle = EXCLUDED.subtitle,
-               price_tier = EXCLUDED.price_tier,
-               price_label = EXCLUDED.price_label,
-               badge = EXCLUDED.badge`,
-            [p.pack_id, p.title, p.subtitle, p.price_tier, p.price_label, p.badge, p.is_active]
-          );
-        }
-
-        // Hydrate warm cache from PostgreSQL for sub-millisecond reads during gameplay
         const usersRes = await this.pool.query('SELECT * FROM users');
         for (const row of usersRes.rows) {
           this.mem.users[row.id] = row;
@@ -78,35 +83,56 @@ export class StorageAdapter {
         this.mem.match_history = histRes.rows;
 
         this.mode = 'postgresql';
-        console.log('[VERİTABANI] PostgreSQL bağlantısı ve şema senkronizasyonu aktif.');
+        console.log('[VERİTABANI] Doğrudan PostgreSQL TCP bağlantısı aktif.');
         return;
       } catch (err) {
-        console.error('[VERİTABANI UYARISI] PostgreSQL bağlanamadı, yerel JSON moduna geçiliyor:', err.message);
+        console.error('[VERİTABANI UYARISI] Doğrudan PostgreSQL bağlanamadı:', err.message);
         this.pool = null;
       }
     }
 
-    // Local JSON fallback
-    const dir = path.dirname(this.dbFilePath);
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
-    }
-    if (fs.existsSync(this.dbFilePath)) {
+    // 2. Connect to Live Supabase Cloud Edge API (zioqzlzhvdvxddwsnhem)
+    if (this.supabaseEdgeUrl) {
       try {
-        const parsed = JSON.parse(fs.readFileSync(this.dbFilePath, 'utf-8'));
-        this.mem.users = parsed.users || {};
-        this.mem.user_entitlements = parsed.user_entitlements || {};
-        this.mem.match_history = parsed.match_history || [];
-      } catch {}
-    } else {
-      this.flushLocal();
+        const ctrl = new AbortController();
+        const timer = setTimeout(() => ctrl.abort(), 4500);
+        const res = await fetch(`${this.supabaseEdgeUrl}/api/sync/bootstrap`, {
+          signal: ctrl.signal,
+        });
+        clearTimeout(timer);
+
+        if (res.ok) {
+          const cloud = await res.json();
+          for (const u of cloud.users || []) {
+            this.mem.users[u.id] = u;
+          }
+          for (const ent of cloud.entitlements || []) {
+            const list = this.mem.user_entitlements[ent.user_id] || [];
+            if (!list.some((e) => e.pack_id === ent.pack_id)) {
+              list.push(ent);
+              this.mem.user_entitlements[ent.user_id] = list;
+            }
+          }
+          if (Array.isArray(cloud.match_history) && cloud.match_history.length > 0) {
+            this.mem.match_history = cloud.match_history;
+          }
+          this.supabaseCloudActive = true;
+          this.mode = 'supabase-postgresql (zioqzlzhvdvxddwsnhem)';
+          this.flushLocal();
+          console.log('[VERİTABANI] Canlı Supabase PostgreSQL (zioqzlzhvdvxddwsnhem) bulut senkronizasyonu aktif.');
+          return;
+        }
+      } catch (err) {
+        console.warn('[VERİTABANI] Supabase Bulut API erişilemedi, yerel JSON modunda devam ediliyor.');
+      }
     }
+
+    this.flushLocal();
     this.mode = 'local-json';
     console.log('[VERİTABANI] Yerel disk modu aktif (database/db.json).');
   }
 
   flushLocal() {
-    if (this.mode === 'postgresql') return;
     try {
       fs.writeFileSync(this.dbFilePath, JSON.stringify(this.mem, null, 2), 'utf-8');
     } catch (err) {
@@ -114,8 +140,21 @@ export class StorageAdapter {
     }
   }
 
+  async pushToSupabaseCloud(payload) {
+    if (!this.supabaseCloudActive || !this.supabaseEdgeUrl) return;
+    try {
+      await fetch(`${this.supabaseEdgeUrl}/api/sync/push`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+    } catch {}
+  }
+
   async upsertUser(user) {
     this.mem.users[user.id] = user;
+    this.flushLocal();
+
     if (this.pool) {
       await this.pool.query(
         `INSERT INTO users (
@@ -156,18 +195,20 @@ export class StorageAdapter {
           JSON.stringify(user.claimed_directives || []),
         ]
       );
-    } else {
-      this.flushLocal();
+    } else if (this.supabaseCloudActive) {
+      await this.pushToSupabaseCloud({ type: 'upsert_user', user });
     }
   }
 
   async deleteUser(userId) {
     delete this.mem.users[userId];
     delete this.mem.user_entitlements[userId];
+    this.flushLocal();
+
     if (this.pool) {
       await this.pool.query('DELETE FROM users WHERE id = $1', [userId]);
-    } else {
-      this.flushLocal();
+    } else if (this.supabaseCloudActive) {
+      await this.pushToSupabaseCloud({ type: 'delete_user', user_id: userId });
     }
   }
 
@@ -177,6 +218,8 @@ export class StorageAdapter {
       list.push(ent);
       this.mem.user_entitlements[ent.user_id] = list;
     }
+    this.flushLocal();
+
     if (this.pool) {
       await this.pool.query(
         `INSERT INTO user_entitlements (user_id, pack_id, transaction_id, purchased_at)
@@ -184,8 +227,8 @@ export class StorageAdapter {
          ON CONFLICT (user_id, pack_id) DO NOTHING`,
         [ent.user_id, ent.pack_id, ent.transaction_id, ent.purchased_at]
       );
-    } else {
-      this.flushLocal();
+    } else if (this.supabaseCloudActive) {
+      await this.pushToSupabaseCloud({ type: 'add_entitlement', entitlement: ent });
     }
   }
 
@@ -194,6 +237,8 @@ export class StorageAdapter {
     if (this.mem.match_history.length > 60) {
       this.mem.match_history.length = 60;
     }
+    this.flushLocal();
+
     if (this.pool) {
       await this.pool.query(
         `INSERT INTO match_history (
@@ -218,8 +263,8 @@ export class StorageAdapter {
           matchItem.played_at,
         ]
       );
-    } else {
-      this.flushLocal();
+    } else if (this.supabaseCloudActive) {
+      await this.pushToSupabaseCloud({ type: 'record_match', match: matchItem });
     }
   }
 }

@@ -72,7 +72,16 @@ async function runTests() {
     stdio: 'pipe',
   });
 
-  await new Promise((r) => setTimeout(r, 800));
+  await new Promise((resolve) => {
+    const timeout = setTimeout(resolve, 5500);
+    serverProc.stdout.on('data', (chunk) => {
+      const text = chunk.toString();
+      if (text.includes('[EKSİK PARÇA SUNUCUSU]')) {
+        clearTimeout(timeout);
+        resolve();
+      }
+    });
+  });
 
   try {
     // 1. Zero-Friction Guest Login
