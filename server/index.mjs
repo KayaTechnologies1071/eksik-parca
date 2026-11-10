@@ -836,7 +836,7 @@ const server = http.createServer(async (req, res) => {
   const pathname = url.pathname;
 
   // 0. Health Check (For Railway / Render / Docker / Mobile Ping)
-  if (pathname === '/api/health' && req.method === 'GET') {
+  if (pathname === '/api/health' && (req.method === 'GET' || req.method === 'HEAD')) {
     return sendJson(res, 200, {
       status: 'ok',
       service: 'eksik-parca-server',
@@ -1204,7 +1204,7 @@ const server = http.createServer(async (req, res) => {
 
   // Static production build serving
   const distDir = path.join(ROOT_DIR, 'dist');
-  if (req.method === 'GET' && !pathname.startsWith('/api') && fs.existsSync(distDir)) {
+  if ((req.method === 'GET' || req.method === 'HEAD') && !pathname.startsWith('/api') && fs.existsSync(distDir)) {
     const safePath = pathname === '/' ? 'index.html' : pathname.slice(1);
     const fullPath = path.join(distDir, safePath);
     const targetFile =
@@ -1223,7 +1223,7 @@ const server = http.createServer(async (req, res) => {
         '.svg': 'image/svg+xml',
       };
       res.writeHead(200, { 'Content-Type': mimeMap[ext] || 'application/octet-stream' });
-      res.end(fs.readFileSync(targetFile));
+      res.end(req.method === 'HEAD' ? undefined : fs.readFileSync(targetFile));
       return;
     }
   }
@@ -1682,11 +1682,10 @@ wss.on('connection', (ws) => {
   });
 });
 
-const PORT = process.env.PORT || 3001;
-storage.init().finally(() => {
-  server.listen(PORT, () => {
-    console.log(
-      `[EKSİK PARÇA SUNUCUSU] http://localhost:${PORT} üzerinde aktif | Depolama: ${storage.mode}`
-    );
-  });
+const PORT = Number(process.env.PORT) || 3001;
+server.listen(PORT, '0.0.0.0', () => {
+  console.log(`[EKSİK PARÇA SUNUCUSU] http://0.0.0.0:${PORT} üzerinde dinlemede...`);
+});
+storage.init().then(() => {
+  console.log(`[EKSİK PARÇA SUNUCUSU] Aktif Depolama: ${storage.mode}`);
 });

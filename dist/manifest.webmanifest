@@ -1,0 +1,18 @@
+{
+  "name": "Eksik Parça — Siber Dedektiflik",
+  "short_name": "Eksik Parça",
+  "description": "Kimse gerçeğin tamamına sahip değildir. Gerçek zamanlı asimetrik dedektiflik simülasyonu.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#090A0F",
+  "theme_color": "#090A0F",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
