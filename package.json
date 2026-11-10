@@ -5,7 +5,7 @@
   "description": "Eksik Parça (The Missing Piece) — Gerçek Zamanlı Asimetrik Siber Dedektiflik Simülasyonu",
   "type": "module",
   "engines": {
-    "node": ">=20.0.0"
+    "node": "22.x"
   },
   "scripts": {
     "start": "node server/index.mjs",
